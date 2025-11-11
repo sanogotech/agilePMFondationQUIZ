@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM Foundation v3 - Focus Produits, Planification & Qualité</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --agile-purple: #8e44ad;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--primary-color);
+            min-height: 100vh;
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--agile-purple), var(--secondary-color));
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .focus-badge {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-pills {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .chapter-pill {
+            background: linear-gradient(45deg, #e74c3c, #e67e22);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: #e74c3c;
+            background-color: #fef5f5;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+        
+        .exam-info {
+            background-color: #fdeded;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .chapter-analysis {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .chapter-progress {
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-weakness {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength {
+            background-color: #e9f7ef;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .weakness {
+            background-color: #fdeded;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .focus-areas {
+            background: linear-gradient(135deg, #e74c3c, #e67e22);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-cogs" style="color:#e74c3c;"></i> AgilePM Foundation v3 - Focus Assessment</h1>
+                <p>Quiz spécialisé sur les chapitres 4 à 6 : Produits, Planification & Qualité</p>
+                <div class="text-center">
+                    <div class="focus-badge">
+                        <i class="fas fa-crosshairs"></i> FOCUS CHAPITRES 4-6
+                    </div>
+                </div>
+                <div class="chapter-pills">
+                    <div class="chapter-pill">4. Produits & Artéfacts</div>
+                    <div class="chapter-pill">5. Planification & Contrôle</div>
+                    <div class="chapter-pill">6. Qualité & Gestion des Risques</div>
+                </div>
+            </div>
+            
+            <div class="focus-areas">
+                <h5><i class="fas fa-target"></i> Domaines de Concentration</h5>
+                <p class="mb-1">25 questions spécialisées sur les aspects opérationnels d'AgilePM</p>
+                <p class="mb-0">Maîtrisez la mise en œuvre pratique des concepts AgilePM</p>
+            </div>
+
+            <div class="exam-info">
+                <h5><i class="fas fa-info-circle"></i> Détails de l'Évaluation</h5>
+                <p class="mb-1"><strong>Format:</strong> 25 questions à choix multiples</p>
+                <p class="mb-1"><strong>Focus:</strong> Produits, Planification, Qualité & Risques</p>
+                <p class="mb-0"><strong>Résultat:</strong> Analyse détaillée par chapitre avec recommandations</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 25</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 4%; background: linear-gradient(90deg, #e74c3c, #e67e22);" aria-valuenow="4" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <h2 id="question-text">Chargement de la question...</h2>
+                    <div id="options-container">
+                        <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button id="next-btn" class="btn btn-primary nav-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none pulse">Terminer & Voir l'Analyse</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-chart-bar modal-title-icon"></i>Résultats - Focus Chapitres 4-6</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <h4 class="score-text">Votre Score de Performance:</h4>
+                        <p class="final-score" id="final-score-percentage">0%</p>
+                        <p class="text-muted fs-5">
+                            <span id="final-score-correct">0</span> bonnes réponses sur 
+                            <span id="final-score-total">0</span>
+                        </p>
+                        <div id="pass-fail-message" class="mt-3"></div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5 class="mb-3"><i class="fas fa-analytics"></i> Analyse par Chapitre</h5>
+                    <div id="chapter-analysis-container"></div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-check-circle text-success"></i> Points Forts</h6>
+                            <div id="strengths-list"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-exclamation-triangle text-danger"></i> Axes d'Amélioration</h6>
+                            <div id="weaknesses-list"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h6><i class="fas fa-lightbulb text-warning"></i> Recommandations</h6>
+                        <div id="final-recommendations"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Recommencer le Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const quizData = {
+            questions: [
+                // Chapitre 4: Produits & Artéfacts (9 questions)
+                {
+                    question: "Quelle est la relation principale entre le Business Case et l'Évaluation des Bénéfices tout au long du cycle de vie du projet?",
+                    options: [
+                        "Le Business Case remplace l'Évaluation des Bénéfices après les Fondations",
+                        "L'Évaluation des Bénéfices valide les hypothèses du Business Case",
+                        "Ce sont les mêmes documents avec des noms différents",
+                        "L'Évaluation des Bénéfices n'est utilisée que si le Business Case est faible"
+                    ],
+                    correctAnswer: "L'Évaluation des Bénéfices valide les hypothèses du Business Case",
+                    explanation: "L'Évaluation des Bénéfices teste et valide activement les hypothèses de bénéfices faites dans le Business Case au fur et à mesure que le projet livre des incréments.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Quel artéfact fournit la référence définitive pour ce qui constitue 'terminé' pour toute livraison?",
+                    options: [
+                        "Liste des Exigences Prioritaires",
+                        "Définition de l'Architecture de Solution",
+                        "Approche de Gestion de la Qualité",
+                        "Plan de Timebox"
+                    ],
+                    correctAnswer: "Approche de Gestion de la Qualité",
+                    explanation: "L'Approche de Gestion de la Qualité définit les standards et critères qui déterminent quand le travail est complet et de qualité suffisante.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Comment le Plan de Livraison diffère-t-il des Plans de Timebox individuels?",
+                    options: [
+                        "Le Plan de Livraison contient des tâches détaillées tandis que les Plans de Timebox contiennent des jalons de haut niveau",
+                        "Le Plan de Livraison couvre l'ensemble du projet tandis que les Plans de Timebox couvrent des itérations spécifiques",
+                        "Il n'y a pas de différence significative entre eux",
+                        "Le Plan de Livraison est pour les parties prenantes tandis que les Plans de Timebox sont pour l'équipe"
+                    ],
+                    correctAnswer: "Le Plan de Livraison couvre l'ensemble du projet tandis que les Plans de Timebox couvrent des itérations spécifiques",
+                    explanation: "Le Plan de Livraison fournit la feuille de route de haut niveau du projet, tandis que les Plans de Timebox détaillent le travail spécifique pour chaque itération.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Quel est l'objectif principal du Plan de Déploiement?",
+                    options: [
+                        "Planifier les activités de développement",
+                        "Décrire comment la solution sera déployée aux utilisateurs",
+                        "Documenter la stratégie de test",
+                        "Suivre la progression du projet"
+                    ],
+                    correctAnswer: "Décrire comment la solution sera déployée aux utilisateurs",
+                    explanation: "Le Plan de Déploiement décrit comment la solution sera transitionnée vers une opération en direct et mise à disposition des utilisateurs.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Quelle est la différence clé entre la Définition de l'Approche de Développement et la Définition de l'Architecture de Solution?",
+                    options: [
+                        "L'Approche de Développement se concentre sur les standards techniques tandis que l'Architecture de Solution se concentre sur les processus métier",
+                        "L'Approche de Développement décrit comment la solution sera construite tandis que l'Architecture de Solution décrit ce qui sera construit",
+                        "L'Approche de Développement est créée en Faisabilité tandis que l'Architecture de Solution est créée en Fondations",
+                        "Il n'y a pas de différence significative entre les deux artéfacts"
+                    ],
+                    correctAnswer: "L'Approche de Développement décrit comment la solution sera construite tandis que l'Architecture de Solution décrit ce qui sera construit",
+                    explanation: "La Définition de l'Approche de Développement se concentre sur les méthodes, outils et processus de développement, tandis que la Définition de l'Architecture de Solution décrit la structure et les composants de la solution.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Quel artéfact contiendrait les critères d'acceptation détaillés pour une exigence 'Must Have' spécifique?",
+                    options: [
+                        "Liste des Exigences Prioritaires",
+                        "Business Case",
+                        "Plan de Timebox",
+                        "Définition de l'Architecture de Solution"
+                    ],
+                    correctAnswer: "Liste des Exigences Prioritaires",
+                    explanation: "La Liste des Exigences Prioritaires contient des exigences détaillées avec leurs critères d'acceptation, priorisées en utilisant MoSCoW.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Comment l'Évaluation des Bénéfices évolue-t-elle tout au long du cycle de vie du projet?",
+                    options: [
+                        "Elle reste inchangée une fois créée en Fondations",
+                        "Elle est mise à jour basée sur la réalisation réelle des bénéfices des incréments livrés",
+                        "Elle est remplacée par le Business Case après la Faisabilité",
+                        "Elle n'est utilisée que pendant la phase de Post-projet"
+                    ],
+                    correctAnswer: "Elle est mise à jour basée sur la réalisation réelle des bénéfices des incréments livrés",
+                    explanation: "L'Évaluation des Bénéfices est un document vivant qui évolue au fur et à mesure que les bénéfices réels sont mesurés et validés à partir des incréments de solution livrés.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Quel est l'objectif principal des Enregistrements de Revue de Timebox?",
+                    options: [
+                        "Documenter ce qui a été réalisé dans chaque timebox",
+                        "Suivre la performance individuelle des membres de l'équipe",
+                        "Enregistrer les procès-verbaux de réunion",
+                        "Documenter les spécifications techniques"
+                    ],
+                    correctAnswer: "Documenter ce qui a été réalisé dans chaque timebox",
+                    explanation: "Les Enregistrements de Revue de Timebox documentent les résultats de chaque timebox, incluant ce qui a été livré, les leçons apprises et les ajustements nécessaires.",
+                    chapter: "Produits"
+                },
+                {
+                    question: "Quel artéfact décrit l'approche technique pour développer la solution, incluant méthodes, outils et standards?",
+                    options: [
+                        "Définition de l'Approche de Développement",
+                        "Définition de l'Architecture de Solution",
+                        "Approche de Gestion de la Qualité",
+                        "Plan de Livraison"
+                    ],
+                    correctAnswer: "Définition de l'Approche de Développement",
+                    explanation: "La Définition de l'Approche de Développement décrit l'approche technique pour développer la solution, incluant méthodes, outils et standards.",
+                    chapter: "Produits"
+                },
+
+                // Chapitre 5: Planification & Contrôle (8 questions)
+                {
+                    question: "Quel est l'avantage principal de l'utilisation du timeboxing dans la planification AgilePM?",
+                    options: [
+                        "Il élimine le besoin d'estimation détaillée",
+                        "Il crée des délais fixes qui ne peuvent pas être changés",
+                        "Il fournit des points de contrôle réguliers pour l'inspection et l'adaptation",
+                        "Il assure que tout le travail est complété en séquence"
+                    ],
+                    correctAnswer: "Il fournit des points de contrôle réguliers pour l'inspection et l'adaptation",
+                    explanation: "Le timeboxing crée un rythme naturel et des opportunités régulières pour inspecter le progrès, recueillir des retours et adapter les plans basés sur l'apprentissage.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Comment la contingence devrait-elle être gérée dans un timebox AgilePM?",
+                    options: [
+                        "En incluant un temps tampon pour chaque tâche",
+                        "À travers la priorisation MoSCoW des exigences",
+                        "En ayant un timebox de contingence séparé",
+                        "La contingence n'est pas nécessaire en AgilePM"
+                    ],
+                    correctAnswer: "À travers la priorisation MoSCoW des exigences",
+                    explanation: "En AgilePM, la contingence est intégrée dans la priorisation - les exigences 'Should Have' et 'Could Have' fournissent la flexibilité pour accommoder l'incertitude.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Quel est l'objectif principal de l'établissement de tolérances aux différents niveaux de planification?",
+                    options: [
+                        "Créer des processus bureaucratiques de contrôle des changements",
+                        "Permettre la gestion par exception et autonomiser les équipes",
+                        "Éliminer tous les risques du projet",
+                        "Assurer une précision parfaite du plan"
+                    ],
+                    correctAnswer: "Permettre la gestion par exception et autonomiser les équipes",
+                    explanation: "Les tolérances définissent les limites dans lesquelles les équipes peuvent opérer de manière autonome, avec une escalade requise seulement lorsque les limites sont menacées.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Quelle est la valeur principale du timeboxing dans la gouvernance de projet?",
+                    options: [
+                        "Il crée des délais rigides qui ne peuvent pas être changés",
+                        "Il fournit un rythme prévisible pour la prise de décision",
+                        "Il élimine le besoin d'autres mécanismes de gouvernance",
+                        "Il assure que tout le travail est complété exactement comme planifié"
+                    ],
+                    correctAnswer: "Il fournit un rythme prévisible pour la prise de décision",
+                    explanation: "Le timeboxing crée des intervalles réguliers et prévisibles pour la revue, la prise de décision et la correction de trajectoire tout au long du projet.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Comment l'approche de planification d'AgilePM gère-t-elle l'incertitude dans les premières étapes du projet?",
+                    options: [
+                        "En créant des plans détaillés pour l'ensemble du projet",
+                        "En planifiant en détail seulement le travail immédiat tout en esquissant les objectifs à long terme",
+                        "En éliminant toutes les exigences incertaines",
+                        "En retardant la planification jusqu'à ce que toute incertitude soit résolue"
+                    ],
+                    correctAnswer: "En planifiant en détail seulement le travail immédiat tout en esquissant les objectifs à long terme",
+                    explanation: "AgilePM utilise la planification en vagues - planification détaillée pour le travail immédiat avec des plans de haut niveau pour le travail futur, reconnaissant et accommodant l'incertitude.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Quel est l'avantage principal de la priorisation MoSCoW dans la planification de timebox?",
+                    options: [
+                        "Elle élimine le besoin d'implication des parties prenantes",
+                        "Elle fournit des limites claires pour la négociation de scope",
+                        "Elle garantit que toutes les exigences seront livrées",
+                        "Elle supprime la complexité technique des exigences"
+                    ],
+                    correctAnswer: "Elle fournit des limites claires pour la négociation de scope",
+                    explanation: "La priorisation MoSCoW crée des limites claires pour la négociation de scope, assurant que les 'Must Have' sont livrés tout en fournissant de la flexibilité pour les 'Should' et 'Could Have'.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Quel facteur devrait avoir le MOINS d'influence sur la durée d'un timebox en AgilePM?",
+                    options: [
+                        "Complexité des exigences",
+                        "Vélocité et capacité de l'équipe",
+                        "Disponibilité des parties prenantes pour les revues",
+                        "La préférence personnelle du Chef de Projet"
+                    ],
+                    correctAnswer: "La préférence personnelle du Chef de Projet",
+                    explanation: "La durée du timebox devrait être basée sur des facteurs objectifs comme la complexité, la capacité de l'équipe et la disponibilité des parties prenantes, pas sur des préférences personnelles.",
+                    chapter: "Planification"
+                },
+                {
+                    question: "Que devrait faire une équipe si une tâche prend plus de temps que prévu pendant un timebox?",
+                    options: [
+                        "Travailler le week-end pour rattraper le retard",
+                        "Collaborer pour trouver une solution et, si nécessaire, informer le Product Owner pour renégocier le périmètre",
+                        "Simplifier la 'Definition of Done'",
+                        "Demander au Scrum Master de résoudre le problème"
+                    ],
+                    correctAnswer: "Collaborer pour trouver une solution et, si nécessaire, informer le Product Owner pour renégocier le périmètre",
+                    explanation: "L'équipe est responsable de son travail. Elle doit d'abord tenter de résoudre le problème en interne. Si l'objectif du timebox est menacé, elle doit travailler avec le Product Owner pour ajuster le périmètre.",
+                    chapter: "Planification"
+                },
+
+                // Chapitre 6: Qualité & Gestion des Risques (8 questions)
+                {
+                    question: "Comment l'approche de la qualité d'AgilePM diffère-t-elle le plus significativement des approches traditionnelles?",
+                    options: [
+                        "La qualité est considérée comme moins importante que la vitesse",
+                        "La qualité est intégrée tout au long du développement via des tests continus",
+                        "La qualité est seulement évaluée à la fin du projet",
+                        "La qualité est la seule responsabilité des testeurs"
+                    ],
+                    correctAnswer: "La qualité est intégrée tout au long du développement via des tests continus",
+                    explanation: "AgilePM intègre les activités de qualité tout au long du processus via des tests continus, des revues et des validations plutôt que de traiter la qualité comme une phase séparée.",
+                    chapter: "Qualité"
+                },
+                {
+                    question: "Quelle stratégie de réponse aux risques est la plus alignée avec AgilePM face à des exigences utilisateur incertaines?",
+                    options: [
+                        "Évitement - ne pas implémenter les exigences incertaines",
+                        "Mitigation - utiliser des prototypes et recueillir des retours précoces",
+                        "Transfert - rendre les parties prenantes métier responsables",
+                        "Acceptation - documenter l'incertitude et procéder"
+                    ],
+                    correctAnswer: "Mitigation - utiliser des prototypes et recueillir des retours précoces",
+                    explanation: "AgilePM favorise la mitigation active des risques à travers le développement itératif, les retours précoces et la validation empirique des exigences.",
+                    chapter: "Risques"
+                },
+                {
+                    question: "Quel est l'objectif principal de la 'Definition of Done' dans la gestion de la qualité AgilePM?",
+                    options: [
+                        "Créer des spécifications techniques détaillées",
+                        "Établir une compréhension partagée des critères d'achèvement",
+                        "Mesurer la productivité des développeurs individuels",
+                        "Fournir une checklist pour la clôture du projet"
+                    ],
+                    correctAnswer: "Établir une compréhension partagée des critères d'achèvement",
+                    explanation: "La 'Definition of Done' crée une compréhension partagée à travers l'équipe de ce que 'terminé' signifie pour toute livraison, assurant des standards de qualité cohérents.",
+                    chapter: "Qualité"
+                },
+                {
+                    question: "Comment l'approche de gestion des risques d'AgilePM diffère-t-elle des approches traditionnelles?",
+                    options: [
+                        "Elle élimine tous les risques du projet",
+                        "Elle utilise des revues fréquentes et l'apprentissage empirique pour gérer les risques",
+                        "Elle documente les risques mais ne prend pas d'action",
+                        "Elle transfère tous les risques aux parties prenantes métier"
+                    ],
+                    correctAnswer: "Elle utilise des revues fréquentes et l'apprentissage empirique pour gérer les risques",
+                    explanation: "AgilePM gère les risques à travers des inspections fréquentes, l'apprentissage empirique et l'adaptation continue plutôt qu'à travers une analyse détaillée initiale.",
+                    chapter: "Risques"
+                },
+                {
+                    question: "Quelle est la valeur principale de la 'Definition of Done' pour assurer une qualité cohérente?",
+                    options: [
+                        "Elle crée une documentation technique détaillée",
+                        "Elle établit une compréhension partagée des critères d'achèvement à travers l'équipe",
+                        "Elle mesure la performance individuelle",
+                        "Elle fournit une checklist pour la clôture du projet"
+                    ],
+                    correctAnswer: "Elle établit une compréhension partagée des critères d'achèvement à travers l'équipe",
+                    explanation: "La 'Definition of Done' crée une compréhension partagée de ce que 'terminé' signifie, assurant que des standards de qualité cohérents sont appliqués à travers tout le travail.",
+                    chapter: "Qualité"
+                },
+                {
+                    question: "Quelle stratégie de réponse aux risques est la plus alignée avec AgilePM face à l'incertitude technique?",
+                    options: [
+                        "Évitement - ne pas implémenter les solutions techniques incertaines",
+                        "Mitigation - utiliser des spikes et prototypes pour réduire l'incertitude",
+                        "Transfert - externaliser le travail technique incertain",
+                        "Acceptation - procéder avec l'incertitude et espérer le meilleur"
+                    ],
+                    correctAnswer: "Mitigation - utiliser des spikes et prototypes pour réduire l'incertitude",
+                    explanation: "AgilePM favorise la mitigation active des risques à travers des spikes techniques, des prototypes et une validation itérative pour réduire l'incertitude technique.",
+                    chapter: "Risques"
+                },
+                {
+                    question: "Comment l'approche de qualité intégrée d'AgilePM diffère-t-elle des portes de qualité traditionnelles?",
+                    options: [
+                        "La qualité est considérée comme moins importante",
+                        "Les activités de qualité sont intégrées tout au long du développement plutôt qu'étant une phase séparée",
+                        "La qualité est seulement vérifiée à la fin du projet",
+                        "La qualité est la responsabilité d'une équipe QA séparée"
+                    ],
+                    correctAnswer: "Les activités de qualité sont intégrées tout au long du développement plutôt qu'étant une phase séparée",
+                    explanation: "AgilePM intègre les vérifications de qualité tout au long du processus de développement via des tests continus, des revues et des validations plutôt qu'en utilisant des portes de qualité en fin de phase.",
+                    chapter: "Qualité"
+                },
+                {
+                    question: "Quel est l'objectif principal de la gestion de la configuration dans AgilePM?",
+                    options: [
+                        "Gérer la documentation du projet",
+                        "Contrôler les changements aux livrables du projet",
+                        "Configurer les outils de développement",
+                        "Gérer la composition de l'équipe"
+                    ],
+                    correctAnswer: "Contrôler les changements aux livrables du projet",
+                    explanation: "La gestion de la configuration assure que les changements aux livrables du projet sont correctement contrôlés, tracés et documentés.",
+                    chapter: "Qualité"
+                }
+            ]
+        };
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const passFailMessageEl = document.getElementById('pass-fail-message');
+        const chapterAnalysisContainer = document.getElementById('chapter-analysis-container');
+        const strengthsList = document.getElementById('strengths-list');
+        const weaknessesList = document.getElementById('weaknesses-list');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+        let chapterPerformance = {};
+
+        function initializeChapterPerformance() {
+            const chapters = ["Produits", "Planification", "Qualité"];
+            chapterPerformance = {};
+            chapters.forEach(chapter => {
+                chapterPerformance[chapter] = {
+                    correct: 0,
+                    total: 0,
+                    percentage: 0
+                };
+            });
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...quizData.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            initializeChapterPerformance();
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.textContent = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect,
+                chapter: question.chapter
+            };
+            
+            // Update chapter performance
+            chapterPerformance[question.chapter].total++;
+            if(isCorrect) {
+                score++;
+                chapterPerformance[question.chapter].correct++;
+            }
+            
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Correct!";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explication:";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function calculateChapterPerformance() {
+            // Calculate percentages for each chapter
+            Object.keys(chapterPerformance).forEach(chapter => {
+                const data = chapterPerformance[chapter];
+                if (data.total > 0) {
+                    data.percentage = Math.round((data.correct / data.total) * 100);
+                }
+            });
+        }
+
+        function getPerformanceColor(percentage) {
+            if (percentage >= 80) return 'success';
+            if (percentage >= 60) return 'warning';
+            return 'danger';
+        }
+
+        function showFinalResults() {
+            calculateChapterPerformance();
+            const percentage = (score / questions.length) * 100;
+            const passed = percentage >= 70;
+            let scoreColor;
+            let recommendationsHtml;
+            let passFailHtml;
+
+            if (passed) {
+                scoreColor = 'var(--success-color)';
+                passFailHtml = '<div class="alert alert-success"><i class="fas fa-trophy"></i> <strong>Excellent!</strong> Vous démontrez une maîtrise solide des aspects opérationnels.</div>';
+                recommendationsHtml = '<p>Votre performance indique une compréhension approfondie des produits, de la planification et de la qualité AgilePM. Vous maîtrisez les aspects pratiques de mise en œuvre.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                passFailHtml = '<div class="alert alert-danger"><i class="fas fa-graduation-cap"></i> <strong>Bon effort!</strong> Concentrez-vous sur les domaines identifiés pour amélioration.</div>';
+                recommendationsHtml = '<p>Revoyez les concepts des chapitres 4-6 avec attention. Ces aspects opérationnels sont cruciaux pour la mise en œuvre réussie d\'AgilePM.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            passFailMessageEl.innerHTML = passFailHtml;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            // Generate chapter analysis
+            generateChapterAnalysis();
+            
+            // Generate strengths and weaknesses
+            generateStrengthsWeaknesses();
+
+            resultsModal.show();
+        }
+
+        function generateChapterAnalysis() {
+            let analysisHtml = '<div class="chapter-analysis">';
+            
+            Object.keys(chapterPerformance).forEach(chapter => {
+                const data = chapterPerformance[chapter];
+                if (data.total > 0) {
+                    const color = getPerformanceColor(data.percentage);
+                    analysisHtml += `
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>${chapter}</span>
+                                <span class="fw-bold text-${color}">${data.percentage}%</span>
+                            </div>
+                            <div class="progress chapter-progress">
+                                <div class="progress-bar bg-${color}" role="progressbar" style="width: ${data.percentage}%" aria-valuenow="${data.percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">${data.correct}/${data.total} correct</small>
+                        </div>
+                    `;
+                }
+            });
+            
+            analysisHtml += '</div>';
+            chapterAnalysisContainer.innerHTML = analysisHtml;
+        }
+
+        function generateStrengthsWeaknesses() {
+            let strengthsHtml = '';
+            let weaknessesHtml = '';
+            
+            Object.keys(chapterPerformance).forEach(chapter => {
+                const data = chapterPerformance[chapter];
+                if (data.total > 0) {
+                    if (data.percentage >= 80) {
+                        strengthsHtml += `<div class="strength-weakness strength">${chapter} (${data.percentage}%)</div>`;
+                    } else if (data.percentage < 60) {
+                        weaknessesHtml += `<div class="strength-weakness weakness">${chapter} (${data.percentage}%)</div>`;
+                    }
+                }
+            });
+            
+            if (strengthsHtml === '') {
+                strengthsHtml = '<div class="text-muted">Aucun point fort clairement identifié. Concentrez-vous sur les concepts opérationnels.</div>';
+            }
+            
+            if (weaknessesHtml === '') {
+                weaknessesHtml = '<div class="text-muted">Aucune faiblesse majeure identifiée. Bonne compréhension globale des chapitres 4-6.</div>';
+            }
+            
+            strengthsList.innerHTML = strengthsHtml;
+            weaknessesList.innerHTML = weaknessesHtml;
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', () => {
+            resultsModal.hide();
+            // A short delay to allow modal to close before restarting
+            setTimeout(startQuiz, 500);
+        });
+        
+        // Initial call
+        document.addEventListener('DOMContentLoaded', startQuiz);
+    </script>
+</body>
+</html>
+
+
+Ce quiz focalisé complète parfaitement le premier quiz sur les chapitres 1-3, couvrant tous les aspects pratiques de mise en œuvre d'AgilePM Foundation v3.
