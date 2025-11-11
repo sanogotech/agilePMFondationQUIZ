@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM Foundation v3 - Advanced Assessment V4</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --agile-purple: #8e44ad;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--primary-color);
+            min-height: 100vh;
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, var(--agile-purple), var(--secondary-color));
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .difficulty-badge {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .version-badge {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .collection-complete {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--agile-purple);
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--agile-purple);
+            background-color: #f8f5ff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background: linear-gradient(135deg, var(--agile-purple), #6c5ce7);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+        
+        .exam-info {
+            background-color: #e8f4fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+
+        .chapter-analysis {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .chapter-progress {
+            height: 8px;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-weakness {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength {
+            background-color: #e9f7ef;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .weakness {
+            background-color: #fdeded;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        .collection-stats {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .celebration {
+            animation: celebration 1s ease-in-out;
+        }
+
+        @keyframes celebration {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-graduation-cap" style="color:var(--agile-purple);"></i> AgilePM Foundation v3 - Advanced Assessment</h1>
+                <p>Version 4 - Final 25 questions to complete your AgilePM assessment collection</p>
+                <div class="text-center">
+                    <span class="difficulty-badge"><i class="fas fa-fire"></i> ADVANCED LEVEL</span>
+                    <span class="version-badge"><i class="fas fa-code-branch"></i> VERSION 4</span>
+                </div>
+                <div class="text-center">
+                    <div class="collection-complete">
+                        <i class="fas fa-trophy"></i> COMPLETE COLLECTION - 100 UNIQUE QUESTIONS
+                    </div>
+                </div>
+            </div>
+            
+            <div class="collection-stats">
+                <h5><i class="fas fa-chart-bar"></i> Collection Overview</h5>
+                <p class="mb-1">4 Versions × 25 Questions = 100 Unique Assessment Items</p>
+                <p class="mb-0">Complete coverage of AgilePM Foundation v3 syllabus</p>
+            </div>
+
+            <div class="exam-info">
+                <h5><i class="fas fa-info-circle"></i> Assessment Details</h5>
+                <p class="mb-1"><strong>Format:</strong> 25 challenging multiple-choice questions</p>
+                <p class="mb-1"><strong>Focus:</strong> Deep understanding of AgilePM concepts</p>
+                <p class="mb-0"><strong>Outcome:</strong> Detailed chapter analysis with recommendations</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 25</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 4%; background: linear-gradient(90deg, var(--agile-purple), var(--secondary-color));" aria-valuenow="4" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <h2 id="question-text">Loading question...</h2>
+                    <div id="options-container">
+                        <!-- Option buttons will be inserted here by JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="next-btn" class="btn btn-primary nav-btn">Next <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none pulse">Finish & View Analysis</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-chart-bar modal-title-icon"></i>Advanced Assessment Results - V4</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <h4 class="score-text">Your Performance Score:</h4>
+                        <p class="final-score" id="final-score-percentage">0%</p>
+                        <p class="text-muted fs-5">
+                            <span id="final-score-correct">0</span> out of 
+                            <span id="final-score-total">0</span> correct answers
+                        </p>
+                        <div id="pass-fail-message" class="mt-3"></div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h5 class="mb-3"><i class="fas fa-analytics"></i> Chapter Performance Analysis</h5>
+                    <div id="chapter-analysis-container"></div>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-check-circle text-success"></i> Key Strengths</h6>
+                            <div id="strengths-list"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><i class="fas fa-exclamation-triangle text-danger"></i> Areas for Improvement</h6>
+                            <div id="weaknesses-list"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h6><i class="fas fa-lightbulb text-warning"></i> Recommendations</h6>
+                        <div id="final-recommendations"></div>
+                    </div>
+
+                    <div class="collection-stats mt-4">
+                        <h5><i class="fas fa-trophy"></i> Collection Complete!</h5>
+                        <p class="mb-1">You've completed all 4 versions of the AgilePM Advanced Assessment</p>
+                        <p class="mb-0">Total unique questions: 100 | Comprehensive syllabus coverage achieved</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Retake Assessment</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const quizData = {
+            questions: [
+                // AgilePM Principles (Advanced Questions - V4)
+                {
+                    question: "Which AgilePM principle is most directly demonstrated when a team maintains quality standards despite schedule pressure by de-scoping lower priority requirements?",
+                    options: [
+                        "Focus on the business need",
+                        "Never compromise quality", 
+                        "Deliver on time",
+                        "Build incrementally from firm foundations"
+                    ],
+                    correctAnswer: "Never compromise quality",
+                    explanation: "The 'Never compromise quality' principle prioritizes maintaining quality standards over delivering all functionality, using MoSCoW to protect quality.",
+                    chapter: "Principles"
+                },
+                {
+                    question: "How does the 'Develop iteratively' principle help in managing changing stakeholder expectations?",
+                    options: [
+                        "By freezing requirements early in the project",
+                        "By providing frequent opportunities for feedback and adjustment",
+                        "By limiting stakeholder involvement to key milestones",
+                        "By documenting all potential changes upfront"
+                    ],
+                    correctAnswer: "By providing frequent opportunities for feedback and adjustment",
+                    explanation: "Iterative development creates regular checkpoints where stakeholders can provide feedback and expectations can be adjusted based on working software.",
+                    chapter: "Principles"
+                },
+                {
+                    question: "Which scenario best exemplifies the 'Demonstrate control' principle in practice?",
+                    options: [
+                        "The Project Manager makes all decisions without consultation",
+                        "The team follows a rigid plan without deviation",
+                        "Progress is transparently tracked and communicated with clear metrics",
+                        "All work is documented in detailed reports"
+                    ],
+                    correctAnswer: "Progress is transparently tracked and communicated with clear metrics",
+                    explanation: "Demonstrating control means making progress visible and measurable through transparent tracking and clear communication, not through rigid control or documentation.",
+                    chapter: "Principles"
+                },
+                
+                // Lifecycle Phases (Advanced Questions - V4)
+                {
+                    question: "What is the key differentiator between the Exploration and Engineering phases in terms of solution maturity?",
+                    options: [
+                        "Exploration focuses on prototypes while Engineering focuses on production code",
+                        "Exploration delivers the Minimum Usable Subset while Engineering enhances it",
+                        "Exploration involves users while Engineering involves only developers",
+                        "There is no significant difference in solution maturity"
+                    ],
+                    correctAnswer: "Exploration delivers the Minimum Usable Subset while Engineering enhances it",
+                    explanation: "Exploration delivers the initial usable solution (MUS), while Engineering focuses on evolving and maturing this solution based on feedback and additional requirements.",
+                    chapter: "Lifecycle"
+                },
+                {
+                    question: "During which phase would you expect the most significant refinement of the Development Approach Definition?",
+                    options: [
+                        "Feasibility phase",
+                        "Foundations phase", 
+                        "Early Exploration phase",
+                        "Post-project phase"
+                    ],
+                    correctAnswer: "Early Exploration phase",
+                    explanation: "The Development Approach often requires refinement during early Exploration as the team gains practical experience with the project's technical challenges.",
+                    chapter: "Lifecycle"
+                },
+                {
+                    question: "How does the Deployment phase contribute to business value realization?",
+                    options: [
+                        "By ensuring the solution is technically perfect",
+                        "By transitioning the solution to operational use where benefits are realized",
+                        "By documenting all project learnings",
+                        "By planning the next project"
+                    ],
+                    correctAnswer: "By transitioning the solution to operational use where benefits are realized",
+                    explanation: "The Deployment phase focuses on making the solution available for business use, which is where actual business value and benefits are realized.",
+                    chapter: "Lifecycle"
+                },
+                
+                // Roles & Responsibilities (Advanced Questions - V4)
+                {
+                    question: "Which role has the primary responsibility for ensuring that the solution delivers expected business benefits?",
+                    options: [
+                        "Business Visionary",
+                        "Business Ambassador", 
+                        "Project Manager",
+                        "Business Sponsor"
+                    ],
+                    correctAnswer: "Business Visionary",
+                    explanation: "The Business Visionary owns the business vision and is ultimately responsible for ensuring the solution delivers the expected business benefits.",
+                    chapter: "Roles"
+                },
+                {
+                    question: "In a situation requiring urgent technical decisions that impact business functionality, which roles should collaborate most closely?",
+                    options: [
+                        "Technical Coordinator and Business Ambassador",
+                        "Project Manager and Team Leader", 
+                        "Business Visionary and Solution Developer",
+                        "All of the above should be involved"
+                    ],
+                    correctAnswer: "Technical Coordinator and Business Ambassador",
+                    explanation: "The Technical Coordinator and Business Ambassador collaborate closely on technical decisions with business impact, balancing technical and business considerations.",
+                    chapter: "Roles"
+                },
+                {
+                    question: "Which role is primarily responsible for facilitating communication between the development team and business stakeholders?",
+                    options: [
+                        "Business Ambassador", 
+                        "Project Manager",
+                        "Team Leader",
+                        "Business Analyst"
+                    ],
+                    correctAnswer: "Business Ambassador",
+                    explanation: "The Business Ambassador acts as the primary communication bridge between the development team and business stakeholders, ensuring clear understanding in both directions.",
+                    chapter: "Roles"
+                },
+                
+                // Products & Artifacts (Advanced Questions - V4)
+                {
+                    question: "What is the primary purpose of the Management Approach Definition in project governance?",
+                    options: [
+                        "To document detailed technical specifications",
+                        "To define how the project will be managed and controlled",
+                        "To list all project requirements",
+                        "To describe the business benefits"
+                    ],
+                    correctAnswer: "To define how the project will be managed and controlled",
+                    explanation: "The Management Approach Definition establishes the framework for how the project will be managed, including roles, processes, and control mechanisms.",
+                    chapter: "Products"
+                },
+                {
+                    question: "How does the Prioritized Requirements List support effective decision-making during timebox planning?",
+                    options: [
+                        "By eliminating the need for stakeholder input",
+                        "By providing clear guidance on what to deliver when scope must be adjusted",
+                        "By guaranteeing all requirements will be delivered",
+                        "By removing technical complexity from requirements"
+                    ],
+                    correctAnswer: "By providing clear guidance on what to deliver when scope must be adjusted",
+                    explanation: "The PRL's MoSCoW prioritization provides clear guidance for scope negotiation and decision-making when adjustments are needed during timebox planning.",
+                    chapter: "Products"
+                },
+                {
+                    question: "What is the relationship between the Solution Architecture Definition and the Development Approach Definition?",
+                    options: [
+                        "They are the same document with different names",
+                        "Solution Architecture defines what will be built, Development Approach defines how",
+                        "Development Approach replaces Solution Architecture after Foundations",
+                        "Solution Architecture is technical, Development Approach is business-focused"
+                    ],
+                    correctAnswer: "Solution Architecture defines what will be built, Development Approach defines how",
+                    explanation: "The Solution Architecture Definition describes the solution structure and components, while the Development Approach Definition describes the methods and processes for building it.",
+                    chapter: "Products"
+                },
+                
+                // Planning & Control (Advanced Questions - V4)
+                {
+                    question: "What is the primary value of timeboxing in managing project uncertainty?",
+                    options: [
+                        "It eliminates all uncertainty through detailed planning",
+                        "It provides regular opportunities to reassess and adapt to uncertainty",
+                        "It transfers uncertainty to the business stakeholders",
+                        "It documents uncertainty for future reference"
+                    ],
+                    correctAnswer: "It provides regular opportunities to reassess and adapt to uncertainty",
+                    explanation: "Timeboxing creates regular intervals where uncertainty can be reassessed and plans can be adapted based on current understanding and learning.",
+                    chapter: "Planning"
+                },
+                {
+                    question: "How does MoSCoW prioritization support effective risk management?",
+                    options: [
+                        "By eliminating all project risks",
+                        "By providing flexibility to address uncertainties while protecting core delivery",
+                        "By transferring risks to lower priority requirements",
+                        "By documenting risks in the prioritization list"
+                    ],
+                    correctAnswer: "By providing flexibility to address uncertainties while protecting core delivery",
+                    explanation: "MoSCoW prioritization creates a risk buffer by ensuring Must Haves are protected while allowing flexibility with Should and Could Haves to accommodate uncertainties.",
+                    chapter: "Planning"
+                },
+                {
+                    question: "What is the primary purpose of establishing different planning horizons in AgilePM?",
+                    options: [
+                        "To create bureaucratic planning processes",
+                        "To plan with appropriate detail for each time horizon", 
+                        "To eliminate the need for replanning",
+                        "To satisfy audit requirements"
+                    ],
+                    correctAnswer: "To plan with appropriate detail for each time horizon",
+                    explanation: "Different planning horizons allow for detailed planning of immediate work while maintaining higher-level direction for future work, acknowledging uncertainty.",
+                    chapter: "Planning"
+                },
+                
+                // Risk & Quality (Advanced Questions - V4)
+                {
+                    question: "How does AgilePM's embedded quality approach differ from traditional quality assurance?",
+                    options: [
+                        "Quality is considered less important than speed",
+                        "Quality activities are integrated throughout development rather than being a separate phase",
+                        "Quality is only the responsibility of testers",
+                        "Quality is measured only at the end of the project"
+                    ],
+                    correctAnswer: "Quality activities are integrated throughout development rather than being a separate phase",
+                    explanation: "AgilePM embeds quality activities throughout the development process via continuous testing, reviews, and validation, rather than treating quality as a separate phase.",
+                    chapter: "Quality"
+                },
+                {
+                    question: "Which risk response strategy is most aligned with AgilePM when facing technical uncertainty?",
+                    options: [
+                        "Avoidance - don't implement uncertain technical solutions",
+                        "Mitigation - use spikes and prototypes to reduce uncertainty", 
+                        "Transfer - outsource the uncertain technical work",
+                        "Acceptance - proceed with the uncertainty and hope for the best"
+                    ],
+                    correctAnswer: "Mitigation - use spikes and prototypes to reduce uncertainty",
+                    explanation: "AgilePM favors active risk mitigation through technical spikes, prototypes, and iterative validation to reduce technical uncertainty.",
+                    chapter: "Risk"
+                },
+                {
+                    question: "What is the primary value of the Definition of Done in ensuring consistent quality?",
+                    options: [
+                        "It creates detailed technical documentation",
+                        "It establishes shared understanding of completion criteria across the team",
+                        "It measures individual performance",
+                        "It provides a checklist for project closure"
+                    ],
+                    correctAnswer: "It establishes shared understanding of completion criteria across the team",
+                    explanation: "The Definition of Done creates a shared understanding of what 'done' means, ensuring consistent quality standards are applied across all work.",
+                    chapter: "Quality"
+                },
+                
+                // Governance & Controls (Advanced Questions - V4)
+                {
+                    question: "Which governance mechanism provides the most immediate feedback on project health?",
+                    options: [
+                        "Quarterly business reviews",
+                        "Timebox end reviews", 
+                        "Daily progress tracking and stand-ups",
+                        "Monthly steering committee meetings"
+                    ],
+                    correctAnswer: "Daily progress tracking and stand-ups",
+                    explanation: "Daily progress tracking and stand-ups provide the most immediate visibility into project health and emerging issues.",
+                    chapter: "Governance"
+                },
+                {
+                    question: "How does AgilePM's control approach support team empowerment?",
+                    options: [
+                        "By eliminating all controls for maximum autonomy",
+                        "By establishing clear boundaries within which teams can operate autonomously", 
+                        "By having managers make all important decisions",
+                        "By transferring all control to the business stakeholders"
+                    ],
+                    correctAnswer: "By establishing clear boundaries within which teams can operate autonomously",
+                    explanation: "AgilePM empowers teams by establishing clear tolerances and boundaries, within which teams have autonomy to make decisions and manage their work.",
+                    chapter: "Governance"
+                },
+                {
+                    question: "What is the primary value of transparent progress tracking in AgilePM governance?",
+                    options: [
+                        "It creates additional work for the team",
+                        "It enables informed decision-making based on actual progress", 
+                        "It eliminates the need for other governance mechanisms",
+                        "It ensures perfect plan execution"
+                    ],
+                    correctAnswer: "It enables informed decision-making based on actual progress",
+                    explanation: "Transparent progress tracking provides the visibility needed for informed decision-making and timely intervention when needed.",
+                    chapter: "Governance"
+                },
+                
+                // Communication & Workshops (Advanced Questions - V4)
+                {
+                    question: "What distinguishes an AgilePM facilitated workshop from a traditional requirements gathering meeting?",
+                    options: [
+                        "Workshops are always longer and more formal",
+                        "Workshops use collaborative techniques to explore and refine requirements", 
+                        "Workshops only involve business stakeholders",
+                        "Workshops don't require preparation or follow-up"
+                    ],
+                    correctAnswer: "Workshops use collaborative techniques to explore and refine requirements",
+                    explanation: "Facilitated workshops employ specific collaborative techniques to actively explore, refine, and reach consensus on requirements.",
+                    chapter: "Communication"
+                },
+                {
+                    question: "Which communication approach is most effective for ensuring shared understanding in complex AgilePM projects?",
+                    options: [
+                        "Relying solely on detailed documentation",
+                        "Using rich, interactive communication combined with working software", 
+                        "Limiting communication to formal channels",
+                        "Having a single person responsible for all communication"
+                    ],
+                    correctAnswer: "Using rich, interactive communication combined with working software",
+                    explanation: "Complex projects benefit from rich, interactive communication combined with frequent demonstration of working software to ensure shared understanding.",
+                    chapter: "Communication"
+                },
+                {
+                    question: "What is the primary purpose of the Daily Stand-up in maintaining project transparency?",
+                    options: [
+                        "To provide detailed reporting to senior management",
+                        "To solve complex technical problems",
+                        "To make progress and impediments visible to the entire team", 
+                        "To assign specific tasks to team members"
+                    ],
+                    correctAnswer: "To make progress and impediments visible to the entire team",
+                    explanation: "The Daily Stand-up creates transparency by making progress, plans, and impediments visible to the entire team, enabling collective problem-solving.",
+                    chapter: "Communication"
+                },
+                {
+                    question: "Which factor is most critical for effective decision-making in AgilePM workshops?",
+                    options: [
+                        "The most senior person making all decisions",
+                        "Having comprehensive documentation available",
+                        "Inclusive participation and clear decision-making processes", 
+                        "Strict adherence to the agenda without discussion"
+                    ],
+                    correctAnswer: "Inclusive participation and clear decision-making processes",
+                    explanation: "Effective workshop decision-making requires inclusive participation from all relevant perspectives and clear processes for reaching decisions.",
+                    chapter: "Communication"
+                }
+            ]
+        };
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const passFailMessageEl = document.getElementById('pass-fail-message');
+        const chapterAnalysisContainer = document.getElementById('chapter-analysis-container');
+        const strengthsList = document.getElementById('strengths-list');
+        const weaknessesList = document.getElementById('weaknesses-list');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+        let chapterPerformance = {};
+
+        function initializeChapterPerformance() {
+            const chapters = ["Principles", "Lifecycle", "Roles", "Products", "Planning", "Quality", "Risk", "Governance", "Communication"];
+            chapterPerformance = {};
+            chapters.forEach(chapter => {
+                chapterPerformance[chapter] = {
+                    correct: 0,
+                    total: 0,
+                    percentage: 0
+                };
+            });
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...quizData.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            initializeChapterPerformance();
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.textContent = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect,
+                chapter: question.chapter
+            };
+            
+            // Update chapter performance
+            chapterPerformance[question.chapter].total++;
+            if(isCorrect) {
+                score++;
+                chapterPerformance[question.chapter].correct++;
+            }
+            
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Correct!";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explanation:";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function calculateChapterPerformance() {
+            // Calculate percentages for each chapter
+            Object.keys(chapterPerformance).forEach(chapter => {
+                const data = chapterPerformance[chapter];
+                if (data.total > 0) {
+                    data.percentage = Math.round((data.correct / data.total) * 100);
+                }
+            });
+        }
+
+        function getPerformanceColor(percentage) {
+            if (percentage >= 80) return 'success';
+            if (percentage >= 60) return 'warning';
+            return 'danger';
+        }
+
+        function showFinalResults() {
+            calculateChapterPerformance();
+            const percentage = (score / questions.length) * 100;
+            const passed = percentage >= 70;
+            let scoreColor;
+            let recommendationsHtml;
+            let passFailHtml;
+
+            if (passed) {
+                scoreColor = 'var(--success-color)';
+                passFailHtml = '<div class="alert alert-success"><i class="fas fa-trophy"></i> <strong>Excellent!</strong> You demonstrate advanced AgilePM knowledge.</div>';
+                recommendationsHtml = '<p>Your performance across all 4 versions indicates comprehensive AgilePM mastery. You are well-prepared for certification and practical application.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                passFailHtml = '<div class="alert alert-danger"><i class="fas fa-graduation-cap"></i> <strong>Good effort!</strong> Focus on the identified improvement areas across all versions.</div>';
+                recommendationsHtml = '<p>Review your performance across all 4 versions to identify consistent patterns. Focus your study on areas where you consistently score lower.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            passFailMessageEl.innerHTML = passFailHtml;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            // Generate chapter analysis
+            generateChapterAnalysis();
+            
+            // Generate strengths and weaknesses
+            generateStrengthsWeaknesses();
+
+            resultsModal.show();
+        }
+
+        function generateChapterAnalysis() {
+            let analysisHtml = '<div class="chapter-analysis">';
+            
+            Object.keys(chapterPerformance).forEach(chapter => {
+                const data = chapterPerformance[chapter];
+                if (data.total > 0) {
+                    const color = getPerformanceColor(data.percentage);
+                    analysisHtml += `
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>${chapter}</span>
+                                <span class="fw-bold text-${color}">${data.percentage}%</span>
+                            </div>
+                            <div class="progress chapter-progress">
+                                <div class="progress-bar bg-${color}" role="progressbar" style="width: ${data.percentage}%" aria-valuenow="${data.percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">${data.correct}/${data.total} correct</small>
+                        </div>
+                    `;
+                }
+            });
+            
+            analysisHtml += '</div>';
+            chapterAnalysisContainer.innerHTML = analysisHtml;
+        }
+
+        function generateStrengthsWeaknesses() {
+            let strengthsHtml = '';
+            let weaknessesHtml = '';
+            
+            Object.keys(chapterPerformance).forEach(chapter => {
+                const data = chapterPerformance[chapter];
+                if (data.total > 0) {
+                    if (data.percentage >= 80) {
+                        strengthsHtml += `<div class="strength-weakness strength">${chapter} (${data.percentage}%)</div>`;
+                    } else if (data.percentage < 60) {
+                        weaknessesHtml += `<div class="strength-weakness weakness">${chapter} (${data.percentage}%)</div>`;
+                    }
+                }
+            });
+            
+            if (strengthsHtml === '') {
+                strengthsHtml = '<div class="text-muted">No clear strengths identified. Focus on fundamental concepts across all versions.</div>';
+            }
+            
+            if (weaknessesHtml === '') {
+                weaknessesHtml = '<div class="text-muted">No major weaknesses identified. Good overall understanding across the collection.</div>';
+            }
+            
+            strengthsList.innerHTML = strengthsHtml;
+            weaknessesList.innerHTML = weaknessesHtml;
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', () => {
+            resultsModal.hide();
+            // A short delay to allow modal to close before restarting
+            setTimeout(startQuiz, 500);
+        });
+        
+        // Initial call
+        document.addEventListener('DOMContentLoaded', startQuiz);
+    </script>
+</body>
+</html>
