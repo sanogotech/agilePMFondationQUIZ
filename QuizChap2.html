@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM v3 Foundation Quiz: Chapters 4-6 (40 Questions)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --background-light: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--background-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin-top: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-card {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f0f4f7;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+        }
+
+        .option-label:hover {
+            background-color: #dae0e5;
+            border-color: #c0c7cf;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        /* Feedback Styling */
+        .feedback-area {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .correct-feedback {
+            background-color: #e6ffed; /* Light green */
+            border-left: 5px solid var(--success-color);
+        }
+
+        .incorrect-feedback {
+            background-color: #ffe6e6; /* Light red */
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .rationale-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .tip-badge {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .progress-bar-striped {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .btn-check-answer {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: background-color 0.3s;
+        }
+        
+        .btn-check-answer:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-next-question {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-next-question:hover {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Result Section Styling */
+        .result-box {
+            background: var(--background-light);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pass-color { color: var(--success-color); }
+        .fail-color { color: var(--danger-color); }
+        
+        .recommendation-list li {
+            margin-bottom: 10px;
+            padding-left: 0;
+            list-style-type: none;
+        }
+        
+        .recommendation-list li::before {
+            content: "\f058"; /* Font Awesome check-circle */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container quiz-container mb-5">
+    <h1 class="text-center mb-4 text-primary"><i class="fas fa-tasks me-2"></i>AgilePM® v3 Foundation Quiz</h1>
+    <p class="text-center text-secondary mb-5">Chapters 4-6: AgilePM Fundamentals; Individuals and Interactions; Collaboration and Communication. You need 80% (32/40) to pass!</p>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h5 class="mb-2">Progress: <span id="progress-text">1/40</span></h5>
+            <div class="progress" style="height: 25px;">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <h5 class="mb-0">Current Score: <span id="current-score" class="badge bg-primary">0/40</span></h5>
+        </div>
+    </div>
+
+    <div id="quiz-area">
+        </div>
+
+    <div id="result-area" class="result-box text-center" style="display: none;">
+        <h2 id="result-title" class="mb-4">Quiz Complete!</h2>
+        <div id="result-icon" class="mb-4" style="font-size: 4rem;"></div>
+        <p class="fs-4">Your Final Score: <span id="final-score" class="badge bg-primary fs-4">0/40</span></p>
+        <p class="fs-5">Percentage: <span id="final-percentage" class="fw-bold">0%</span></p>
+        
+        <div id="pass-fail-message" class="alert fs-5 fw-bold mt-4 p-3"></div>
+
+        <h4 class="mt-5 text-start text-primary">Recommendations & Focus Areas:</h4>
+        <ul id="recommendations-list" class="text-start recommendation-list ps-0">
+            </ul>
+        
+        <button class="btn btn-primary mt-4" onclick="location.reload();"><i class="fas fa-redo me-2"></i>Retake Quiz</button>
+    </div>
+
+    <div id="noSelectionAlert" class="alert alert-warning text-center mt-4" style="display: none;">
+        <i class="fas fa-exclamation-triangle me-2"></i> Please select an option before checking the answer!
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // --- Chapter 4: AgilePM Fundamentals (14 Questions) ---
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the primary purpose of **Timeboxing** in AgilePM?",
+            options: [
+                { text: "To guarantee that all 'Should Have' and 'Could Have' requirements are delivered.", isCorrect: false, rationale: "Timeboxes fix time and cost, allowing scope flexibility. 'Could Have's are often dropped." },
+                { text: "To reduce uncertainty and manage risk by forcing prioritization and achieving tangible results in short, fixed periods.", isCorrect: true, rationale: "Timeboxes fix the delivery deadline for a set of requirements, forcing the team to focus and manage risk by demonstrating control and early delivery." },
+                { text: "To allow the Development Team to self-organize without any external Project Management oversight.", isCorrect: false, rationale: "Project Management oversight (Demonstrate Control) is still vital within a Timebox." },
+                { text: "To replace the need for a Project Manager with the Team Leader.", isCorrect: false, rationale: "The Project Manager role remains essential for the overall project governance." }
+            ],
+            tip: "Good Practice: Timeboxing is a core mechanism to **'Deliver on Time'** (Principle 2).",
+            focus: "Ch 4: Timeboxing purpose."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "Which DSDM Principle states that the minimum acceptable level of quality is established at the outset and must not be reduced?",
+            options: [
+                { text: "Focus on the Business Need", isCorrect: false, rationale: "This focuses on value and business justification." },
+                { text: "Develop Iteratively", isCorrect: false, rationale: "This focuses on incremental development." },
+                { text: "Never Compromise Quality", isCorrect: true, rationale: "This principle dictates that quality is a non-negotiable fixed constraint." },
+                { text: "Demonstrate Control", isCorrect: false, rationale: "This focuses on management and governance." }
+            ],
+            tip: "Good Practice: Always fix Quality and compromise on Scope if a timebox is threatened.",
+            focus: "Ch 4: Principle 4 (Quality)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "Which of the following is considered **fixed** in the AgilePM approach?",
+            options: [
+                { text: "Scope and Requirements", isCorrect: false, rationale: "Scope is the primary variable." },
+                { text: "Time and Cost", isCorrect: true, rationale: "AgilePM fixes time (Timeboxes) and cost (Team size and resources), and allows scope to flex." },
+                { text: "Quality and Scope", isCorrect: false, rationale: "Quality is fixed, but Scope is variable." },
+                { text: "Resources and Requirements", isCorrect: false, rationale: "Requirements (scope) are variable." }
+            ],
+            tip: "Tip: Time and Cost are fixed; Scope is variable; Quality is fixed.",
+            focus: "Ch 4: Fixed/Variable Constraints."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "The **Project Approach Questionnaire (PAQ)** is primarily used to assess which factor?",
+            options: [
+                { text: "The size of the Development Team required for the project.", isCorrect: false, rationale: "The PAQ is not primarily a sizing tool." },
+                { text: "The fit of the DSDM/AgilePM approach to the project's environment and organizational culture.", isCorrect: true, rationale: "The PAQ assesses the suitability and risks of applying the DSDM philosophy and AgilePM to the specific project context, covering people, process, and environment." },
+                { text: "The commercial viability and ROI (Return on Investment) of the project.", isCorrect: false, rationale: "This is the purpose of the Business Case." },
+                { text: "The detailed design of the solution's architecture.", isCorrect: false, rationale: "This happens in the Foundations phase, after Feasibility." }
+            ],
+            tip: "Tip: The PAQ is crucial in the **Feasibility** phase to ensure the project is 'Agile-Ready'.",
+            focus: "Ch 4: Project Approach Questionnaire (PAQ)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the primary objective of the **Deployment** phase in the AgilePM lifecycle?",
+            options: [
+                { text: "To complete the last set of user stories and features.", isCorrect: false, rationale: "This is part of Evolutionary Development." },
+                { text: "To transition the working Solution Increment into the live business environment for operational use.", isCorrect: true, rationale: "The Deployment phase is focused on the handover, training, and smooth transition of the solution into production for the users." },
+                { text: "To measure the actual benefits achieved against those predicted in the Business Case.", isCorrect: false, rationale: "This is the purpose of the Post-Project phase." },
+                { text: "To define the team roles and responsibilities.", isCorrect: false, rationale: "This is defined in the Foundations phase." }
+            ],
+            tip: "Tip: Deployment is the bridge between Development and the realization of business benefits.",
+            focus: "Ch 4: Project Lifecycle (Deployment)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "The **Project Initiation Document (PID)** in traditional projects is most closely aligned with which key AgilePM product?",
+            options: [
+                { text: "The Prioritised Requirements List (PRL)", isCorrect: false, rationale: "PRL is purely requirements." },
+                { text: "The Business Case", isCorrect: false, rationale: "Business Case is purely justification." },
+                { text: "The Foundation Summary (FD)", isCorrect: true, rationale: "The FD encapsulates the project's scope, roles, approach, governance, and strategy, similar to a PID but tailored for an agile approach." },
+                { text: "The Solution Increment", isCorrect: false, rationale: "Solution Increment is the working product." }
+            ],
+            tip: "Tip: The Foundation Summary provides the structure and plan for the evolutionary development.",
+            focus: "Ch 4: Key Product (Foundation Summary)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What must be included in the **Minimum Usable SubseT (MUST)** of the solution?",
+            options: [
+                { text: "All 'Should Have' and 'Could Have' requirements.", isCorrect: false, rationale: "MUST only includes 'Must Have' requirements." },
+                { text: "Only the features that are technically complex and high-risk.", isCorrect: false, rationale: "It must include the core functional requirements." },
+                { text: "All 'Must Have' requirements that deliver a viable solution, without which the project will fail.", isCorrect: true, rationale: "The MUST is defined by the 'Must Have' requirements. It ensures the delivered product is actually usable and viable for the business." },
+                { text: "Any requirement that contributes to the project's ROI.", isCorrect: false, rationale: "All requirements should contribute, but only the critical ones are MUST." }
+            ],
+            tip: "Tip: The MUST defines the core viability of the solution.",
+            focus: "Ch 4: MUST definition."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the key difference between **Evolutionary Development** and **Timebox Development** in the DSDM process?",
+            options: [
+                { text: "Evolutionary Development is about development across the entire project; Timebox Development is the technique for executing a fixed period of work.", isCorrect: true, rationale: "Evolutionary Development describes the overall iterative delivery approach, while Timebox Development is the specific structured process used within each iteration/timebox." },
+                { text: "Evolutionary Development is only used in Feasibility; Timebox Development is used in Foundations.", isCorrect: false, rationale: "Both are primarily used in the Evolutionary Development phase." },
+                { text: "Evolutionary Development produces the Solution Increment; Timebox Development produces the Business Case.", isCorrect: false, rationale: "Timebox Development produces the Increment." },
+                { text: "There is no difference; the terms are interchangeable.", isCorrect: false, rationale: "They are related but distinct concepts." }
+            ],
+            tip: "Tip: Evolutionary Development is the *what* (iterative delivery); Timebox Development is the *how* (the structure of the work).",
+            focus: "Ch 4: Evolutionary vs Timebox Development."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the main output of the **Feasibility** phase?",
+            options: [
+                { text: "The fully documented system architecture.", isCorrect: false, rationale: "This is Foundations." },
+                { text: "The Business Case and the high-level Project Approach Questionnaire (PAQ).", isCorrect: true, rationale: "Feasibility determines if the project is feasible (Business Case) and if DSDM/AgilePM is a suitable approach (PAQ)." },
+                { text: "The first fully tested Solution Increment.", isCorrect: false, rationale: "This is Evolutionary Development." },
+                { text: "The final Benefit Assessment Report.", isCorrect: false, rationale: "This is Post-Project." }
+            ],
+            tip: "Tip: Feasibility is about **'Should we do it?'** and **'Can we do it (with AgilePM)?'**",
+            focus: "Ch 4: Project Lifecycle (Feasibility)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "In the DSDM Timebox structure, which activity involves detailed design, building the solution, and reviewing the deliverable against acceptance criteria?",
+            options: [
+                { text: "Kick-off", isCorrect: false, rationale: "Kick-off sets the stage." },
+                { text: "Daily Stand-up", isCorrect: false, rationale: "Stand-up is coordination." },
+                { text: "Refinement (Design and Build)", isCorrect: true, rationale: "Refinement is where the majority of the detailed technical work, including design and actual coding/building, occurs." },
+                { text: "Close-out", isCorrect: false, rationale: "Close-out finishes the timebox." }
+            ],
+            tip: "Tip: The Timebox consists of Kick-off, Daily Stand-up, Refinement, and Close-out.",
+            focus: "Ch 4: Timebox Structure."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "The Principle **'Collaborate'** focuses on which key aspect of the project team?",
+            options: [
+                { text: "Ensuring that the documentation is always up-to-date.", isCorrect: false, rationale: "This relates to documentation standards, not collaboration." },
+                { text: "Involving the right stakeholders at the right time to facilitate rapid decision-making.", isCorrect: true, rationale: "Collaboration means working together proactively, which requires the right people to be involved and empowered to make decisions quickly." },
+                { text: "Only communicating through formal written reports to ensure clarity.", isCorrect: false, rationale: "This contradicts the preference for rich communication." },
+                { text: "Delegating all major decisions to the Business Sponsor.", isCorrect: false, rationale: "Decisions should be made at the lowest practical level (Ambassador/Team)." }
+            ],
+            tip: "Tip: This principle drives the need for **empowerment** and **accessibility**.",
+            focus: "Ch 4: Principle 3 (Collaborate)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "Which term describes the process of reviewing the products and deliverables at the end of a Timebox to gain formal acceptance by the appropriate business roles?",
+            options: [
+                { text: "Daily Stand-up", isCorrect: false, rationale: "Daily Stand-up is for progress coordination." },
+                { text: "Retrospective", isCorrect: false, rationale: "Retrospective is for process improvement." },
+                { text: "Timebox Review / Close-out", isCorrect: true, rationale: "The Close-out activity involves formally reviewing the solution increment against the acceptance criteria with the Business Ambassador and gaining sign-off." },
+                { text: "Feasibility Study", isCorrect: false, rationale: "Feasibility is the initial phase of the project." }
+            ],
+            tip: "Tip: Acceptance occurs at the end of the Timebox, not at the beginning.",
+            focus: "Ch 4: Timebox Close-out."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the purpose of the **Pre-Project** phase in AgilePM?",
+            options: [
+                { text: "To define the high-level business vision and identify the Project Sponsor and Visionary.", isCorrect: true, rationale: "The Pre-Project phase focuses on initiating the project idea, ensuring it is valuable, appointing the Sponsor and Visionary, and authorizing the start of the Feasibility phase." },
+                { text: "To create the fully detailed Prioritised Requirements List (PRL).", isCorrect: false, rationale: "This is done in Foundations/Evolutionary Development." },
+                { text: "To deploy the solution to the live environment.", isCorrect: false, rationale: "This is the Deployment phase." },
+                { text: "To perform benefit assessment.", isCorrect: false, rationale: "This is the Post-Project phase." }
+            ],
+            tip: "Tip: Pre-Project answers the question: **'Is this idea worth investigating?'**",
+            focus: "Ch 4: Project Lifecycle (Pre-Project)."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "When applying MoSCoW, which category represents requirements that are non-critical but would provide a significant business advantage if included?",
+            options: [
+                { text: "Must Have", isCorrect: false, rationale: "Must Have are essential for viability." },
+                { text: "Should Have", isCorrect: true, rationale: "Should Haves are important but not vital, often representing a significant benefit." },
+                { text: "Could Have", isCorrect: false, rationale: "Could Haves are desirable but low-impact." },
+                { text: "Won't Have This Time", isCorrect: false, rationale: "Won't Haves are out of scope for the current delivery." }
+            ],
+            tip: "Tip: Should Haves are often the first to be compromised if time runs low.",
+            focus: "Ch 4: MoSCoW Prioritization."
+        },
+        
+        // --- Chapter 5: Individuals and Interactions (13 Questions) ---
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which DSDM role is primarily responsible for the **technical quality and integrity** of the solution and manages technical risk?",
+            options: [
+                { text: "Solution Developer", isCorrect: false, rationale: "Developers build the product; the TC guides the technical direction." },
+                { text: "Project Manager", isCorrect: false, rationale: "The PM focuses on the project process and governance." },
+                { text: "Technical Coordinator (TC)", isCorrect: true, rationale: "The TC is the technical authority, responsible for the technical environment, architecture, and overall technical standards of the solution." },
+                { text: "Solution Tester", isCorrect: false, rationale: "Testers confirm quality, they don't set the technical standard." }
+            ],
+            tip: "Good Practice: The TC is the counterpart to the Business Analyst/Ambassador on the technical side.",
+            focus: "Ch 5: Role: Technical Coordinator."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Who is the **single, empowered representative** of the business, responsible for making decisions and providing requirements for the Development Team on a day-to-day basis?",
+            options: [
+                { text: "Business Visionary", isCorrect: false, rationale: "The Visionary provides the high-level goal." },
+                { text: "Business Sponsor", isCorrect: false, rationale: "The Sponsor owns the Business Case and funding." },
+                { text: "Business Ambassador", isCorrect: true, rationale: "The Business Ambassador acts as the 'customer' for the Development Team, making decisions and clarifying requirements daily to ensure continuous progress." },
+                { text: "Project Manager", isCorrect: false, rationale: "The PM manages the process, not the product requirements." }
+            ],
+            tip: "Good Practice: The Ambassador must be empowered and collocated (or highly accessible).",
+            focus: "Ch 5: Role: Business Ambassador."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "What is the primary focus of the **Project Manager** role in an AgilePM/DSDM project?",
+            options: [
+                { text: "Designing the solution and managing the detailed technical architecture.", isCorrect: false, rationale: "This is the Technical Coordinator's responsibility." },
+                { text: "Optimizing the value of the product and managing the requirements list.", isCorrect: false, rationale: "This is the Business Ambassador's/Business Analyst's responsibility." },
+                { text: "Ensuring the process is followed, managing the project's governance, external reporting, and overall risk.", isCorrect: true, rationale: "The PM focuses on the process, managing the project at a high-level, reporting to the Sponsor, and protecting the Development Team from external interference." },
+                { text: "Leading the Development Team in a servant-leader capacity and resolving impediments.", isCorrect: false, rationale: "This is the Team Leader's responsibility." }
+            ],
+            tip: "Tip: The PM in AgilePM is more focused on **governance and control**.",
+            focus: "Ch 5: Role: Project Manager."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which role is responsible for the overall financial and business success of the project and has the ultimate power to stop the project?",
+            options: [
+                { text: "Project Manager", isCorrect: false, rationale: "The PM recommends action, but does not own the business case or have the authority to stop it." },
+                { text: "Business Visionary", isCorrect: false, rationale: "The Visionary defines the goals, but the Sponsor owns the budget." },
+                { text: "Business Sponsor", isCorrect: true, rationale: "The Sponsor is the person who holds the budget and is ultimately accountable for the project achieving its objectives and delivering a return on investment (ROI)." },
+                { text: "Project Assurance", isCorrect: false, rationale: "Project Assurance is a guiding/monitoring function, not a decision-making one." }
+            ],
+            tip: "Good Practice: The Sponsor must be fully committed and engaged, as they are the source of power and funding.",
+            focus: "Ch 5: Role: Business Sponsor."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "The **Team Leader** in AgilePM is a **servant-leader**. Which of the following best describes this role's primary responsibility?",
+            options: [
+                { text: "To directly assign tasks to individual Solution Developers.", isCorrect: false, rationale: "Team members self-organize and choose their tasks." },
+                { text: "To create and maintain the Prioritised Requirements List (PRL).", isCorrect: false, rationale: "This is the responsibility of the Business Analyst/Ambassador." },
+                { text: "To facilitate the team, protect it from external distractions, and ensure the right quality of solution is developed.", isCorrect: true, rationale: "As a servant-leader, the Team Leader's main job is to remove impediments and create an environment where the team can be productive, while guiding on development practices." },
+                { text: "To liaise with suppliers and external commercial providers.", isCorrect: false, rationale: "This is generally the PM or Technical Coordinator's role." }
+            ],
+            tip: "Tip: The Team Leader acts as the internal guardian and facilitator for the Development Team.",
+            focus: "Ch 5: Role: Team Leader."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Who is responsible for interpreting the high-level business requirements and refining them into user stories or detailed functional requirements?",
+            options: [
+                { text: "Business Visionary", isCorrect: false, rationale: "The Visionary provides the initial high-level vision." },
+                { text: "Business Analyst (BA)", isCorrect: true, rationale: "The BA works with the Business Ambassador to analyze and document the requirements for the Development Team." },
+                { text: "Solution Developer", isCorrect: false, rationale: "Developers code the solution based on the requirements." },
+                { text: "Project Assurance", isCorrect: false, rationale: "Project Assurance checks adherence to standards." }
+            ],
+            tip: "Tip: The BA is the bridge between the business need and the technical solution.",
+            focus: "Ch 5: Role: Business Analyst."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which role is primarily concerned with confirming that the developed solution is fit for purpose, meets the acceptance criteria, and is usable by the business?",
+            options: [
+                { text: "Solution Developer", isCorrect: false, rationale: "Developers build, Testers check." },
+                { text: "Solution Tester", isCorrect: true, rationale: "The Tester executes tests and confirms the product meets the defined quality standards and acceptance criteria." },
+                { text: "Project Assurance", isCorrect: false, rationale: "Project Assurance monitors the project process." },
+                { text: "Business Visionary", isCorrect: false, rationale: "The Visionary focuses on the overall goal." }
+            ],
+            tip: "Tip: Testing is a continuous, iterative activity in AgilePM.",
+            focus: "Ch 5: Role: Solution Tester."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "The role of **Project Assurance** is typically performed by whom?",
+            options: [
+                { text: "The Business Sponsor and Project Manager jointly.", isCorrect: false, rationale: "The Sponsor and PM are roles being assured." },
+                { text: "An independent person or group reporting to the Sponsor or business governance body.", isCorrect: true, rationale: "Project Assurance needs to be independent to provide an objective check on the project's adherence to standards and suitability of the solution." },
+                { text: "The Team Leader, who ensures quality standards are met.", isCorrect: false, rationale: "The Team Leader is assuring quality on the development side, not the project as a whole." },
+                { text: "The Business Ambassador, who accepts the product.", isCorrect: false, rationale: "The Ambassador accepts the product, but does not assure the project." }
+            ],
+            tip: "Tip: Assurance is all about independent oversight and monitoring.",
+            focus: "Ch 5: Role: Project Assurance."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "What is the key responsibility of the **Business Visionary**?",
+            options: [
+                { text: "To manage the budget and project finance.", isCorrect: false, rationale: "This is the Sponsor's job." },
+                { text: "To interpret and refine requirements into user stories.", isCorrect: false, rationale: "This is the Business Analyst's job." },
+                { text: "To set the high-level goal and direction of the project, ensuring alignment with the business strategy.", isCorrect: true, rationale: "The Visionary owns the 'big picture' and ensures the project maintains alignment with the strategic direction." },
+                { text: "To perform all integration and technical installation tasks.", isCorrect: false, rationale: "This is a technical team responsibility." }
+            ],
+            tip: "Tip: The Visionary defines **'What does success look like?'** for the project.",
+            focus: "Ch 5: Role: Business Visionary."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which of the following describes the key characteristic of an effective DSDM **Development Team**?",
+            options: [
+                { text: "It is composed entirely of business roles to maximize business focus.", isCorrect: false, rationale: "The team must be balanced with business and technical roles." },
+                { text: "It is small, self-organizing, empowered, and contains a mix of business and technical competencies.", isCorrect: true, rationale: "This combination of features (small, cross-functional, empowered) is essential for rapid, high-quality iterative delivery." },
+                { text: "It reports daily to the Project Manager for task assignment and prioritization.", isCorrect: false, rationale: "The team self-organizes and reports to the Team Leader/uses the Daily Stand-up." },
+                { text: "It should include temporary team members to handle peak loads during the project.", isCorrect: false, rationale: "The team should be stable and dedicated." }
+            ],
+            tip: "Tip: Stability and dedication are vital for team performance.",
+            focus: "Ch 5: Development Team characteristics."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "In the context of the **Solution Developer** role, what is their primary responsibility?",
+            options: [
+                { text: "To manage the Timebox schedule and budget.", isCorrect: false, rationale: "This is the PM's responsibility." },
+                { text: "To create the physical elements of the solution, including coding and unit testing.", isCorrect: true, rationale: "Developers are responsible for designing the solution details, coding, and performing unit testing to deliver the required functionality." },
+                { text: "To sign off on the Project's adherence to standards.", isCorrect: false, rationale: "This is Project Assurance." },
+                { text: "To gather and write all high-level requirements.", isCorrect: false, rationale: "This is the BA/Ambassador." }
+            ],
+            tip: "Tip: The developer role is focused on the **'Build'** aspect of the Timebox.",
+            focus: "Ch 5: Role: Solution Developer."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "A **Business Analyst (BA)** is often combined with which other DSDM role?",
+            options: [
+                { text: "Business Sponsor", isCorrect: false, rationale: "The Sponsor is too high-level." },
+                { text: "Project Manager", isCorrect: false, rationale: "The BA and PM have distinct focuses (product vs. process)." },
+                { text: "Business Ambassador", isCorrect: true, rationale: "The BA and Ambassador often work closely together or the Ambassador performs the BA's function, especially in smaller teams, focusing on requirements and business detail." },
+                { text: "Technical Coordinator", isCorrect: false, rationale: "These roles have opposing focuses (business detail vs. technical detail)." }
+            ],
+            tip: "Tip: Combining roles is common in smaller AgilePM projects.",
+            focus: "Ch 5: Role combinations."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which role acts as the bridge between the technical team and the business users, ensuring that the delivered solution is acceptable to the end-users?",
+            options: [
+                { text: "Business Visionary", isCorrect: false, rationale: "Visionary is high-level strategy." },
+                { text: "Project Assurance", isCorrect: false, rationale: "Assurance is process monitoring." },
+                { text: "Business Ambassador", isCorrect: true, rationale: "The Ambassador is the key link, representing the operational users and ensuring the product meets their needs and is accepted by them." },
+                { text: "Team Leader", isCorrect: false, rationale: "Team Leader manages the development team." }
+            ],
+            tip: "Tip: Acceptance must be continuous and driven by the operational business representatives.",
+            focus: "Ch 5: Role: Business Ambassador."
+        },
+        
+        // --- Chapter 6: Collaboration and Communication (13 Questions) ---
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which DSDM Principle is most directly supported by the practice of co-locating the Development Team and key Business Roles?",
+            options: [
+                { text: "Build Incrementally from Firm Foundations", isCorrect: false, rationale: "This relates to architecture and development approach." },
+                { text: "Collaborate", isCorrect: true, rationale: "The Principle of Collaborate emphasizes that 'teams must engage proactively and consistently with business stakeholders', and co-location is the single best way to achieve this continuous collaboration." },
+                { text: "Develop Iteratively", isCorrect: false, rationale: "This relates to the cycle of development." },
+                { text: "Demonstrate Control", isCorrect: false, rationale: "This relates to management and governance." }
+            ],
+            tip: "Good Practice: Face-to-face communication (rich communication) is the most effective form of collaboration.",
+            focus: "Ch 6: Principle 3 (Collaborate)."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "What is the key benefit of running a **Facilitated Workshop** as a requirements and design technique?",
+            options: [
+                { text: "It ensures detailed, individual requirements are documented and approved by all stakeholders before work begins.", isCorrect: false, rationale: "It reduces the need for extensive detailed documentation upfront." },
+                { text: "It allows for a quick, consensus-based decision-making process involving multiple perspectives simultaneously.", isCorrect: true, rationale: "Workshops bring the right people together at the right time to reach an agreed outcome quickly, minimizing the elapsed time for decision-making and requirements gathering." },
+                { text: "It replaces the need for the Daily Stand-up and regular Team Meetings.", isCorrect: false, rationale: "Workshops are for major tasks like requirements or design, not daily coordination." },
+                { text: "It is the only acceptable method for MoSCoW prioritization.", isCorrect: false, rationale: "MoSCoW can be done through various methods." }
+            ],
+            tip: "Tip: Workshops are highly effective for accelerating the Foundations phase activities.",
+            focus: "Ch 6: Facilitated Workshops."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "In the context of the **Daily Stand-up** (Timebox Daily Review), what is the focus of the discussion?",
+            options: [
+                { text: "Detailed problem-solving for all outstanding technical challenges.", isCorrect: false, rationale: "Detailed discussions should be taken offline immediately after the stand-up to keep it short." },
+                { text: "The progress of the Timebox, what was achieved yesterday, what will be achieved today, and any impediments.", isCorrect: true, rationale: "The Stand-up is a progress and coordination meeting focused on the team's planned work to ensure the Timebox goal is on track." },
+                { text: "Reviewing the completed products and accepting/rejecting the deliverables.", isCorrect: false, rationale: "This is done in the formal Timebox Review/Demonstration." },
+                { text: "Presenting the final design and architecture to external stakeholders for approval.", isCorrect: false, rationale: "This is part of the Foundations or Review phases." }
+            ],
+            tip: "Good Practice: Keep the Stand-up short (e.g., 15 minutes max) and focused on **progress to the Timebox Goal**.",
+            focus: "Ch 6: Daily Stand-up (Timebox Daily Review)."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which of the following best describes the purpose of **Modeling** as a technique in AgilePM?",
+            options: [
+                { text: "To create detailed, formal diagrams that serve as the project's final documentation before deployment.", isCorrect: false, rationale: "Models are used for understanding, not necessarily for final, formal documentation." },
+                { text: "To provide a simple, visual representation that promotes a common understanding between business and technical roles.", isCorrect: true, rationale: "Models (like Use Case diagrams, Flowcharts) simplify complexity and ensure everyone, regardless of background, shares the same vision." },
+                { text: "To permanently lock down the scope and architecture during the Foundations phase.", isCorrect: false, rationale: "AgilePM embraces change and adaptation." },
+                { text: "To calculate the final Return on Investment (ROI) for the Business Sponsor.", isCorrect: false, rationale: "ROI is covered in the Business Case." }
+            ],
+            tip: "Good Practice: Models are a communication tool and should be **'just enough'** to facilitate understanding.",
+            focus: "Ch 6: Technique: Modeling."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Communication channels are categorized as 'Rich' or 'Lean'. Which channel is considered the **richest** for resolving complex or emotional issues?",
+            options: [
+                { text: "Detailed email report", isCorrect: false, rationale: "This is a Lean channel (low feedback, no body language)." },
+                { text: "Telephone conference call", isCorrect: false, rationale: "Better than email, but lacks visual cues and body language." },
+                { text: "Face-to-face conversation (or high-quality video call)", isCorrect: true, rationale: "Rich channels maximize the transfer of context, emotional cues, and allow for immediate, two-way feedback, which is essential for complex or contentious issues." },
+                { text: "Formal written Project Review Document", isCorrect: false, rationale: "This is a Lean channel, best for archiving or simple information sharing." }
+            ],
+            tip: "Tip: Use rich channels for ambiguity, complexity, conflict, and collaboration; use lean channels for simple updates and archiving.",
+            focus: "Ch 6: Communication Channels."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "What is the primary objective of a **Prioritisation** technique like MoSCoW in AgilePM?",
+            options: [
+                { text: "To ensure the maximum possible scope is delivered by the deadline.", isCorrect: false, rationale: "Prioritisation is about ensuring the **most valuable** scope is delivered." },
+                { text: "To determine which features are technically possible to build.", isCorrect: false, rationale: "Technical feasibility is a different assessment." },
+                { text: "To ensure that the most important requirements are delivered first, supporting the fixed time and fixed quality goals.", isCorrect: true, rationale: "Prioritisation protects the fixed constraints by ensuring flexibility is applied to the least important items (Could/Won't Have)." },
+                { text: "To fix the requirements list so that no changes can be introduced.", isCorrect: false, rationale: "AgilePM embraces change." }
+            ],
+            tip: "Tip: Prioritisation is the mechanism that enables **Scope Flexibility**.",
+            focus: "Ch 6: Prioritisation purpose."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which communication technique is best suited for quickly confirming a simple factual detail to a large group of stakeholders?",
+            options: [
+                { text: "Facilitated Workshop", isCorrect: false, rationale: "Too heavy for simple facts." },
+                { text: "Formal Written Report (email, newsletter)", isCorrect: true, rationale: "Lean communication (written) is efficient for simple, non-ambiguous information sharing to a wide audience." },
+                { text: "Face-to-face discussion", isCorrect: false, rationale: "Too resource-intensive for a simple fact." },
+                { text: "Daily Stand-up", isCorrect: false, rationale: "Daily Stand-ups are for the Development Team." }
+            ],
+            tip: "Tip: Match the channel richness to the complexity and sensitivity of the message.",
+            focus: "Ch 6: Lean Communication usage."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "A **Timebox Review** (Demonstration) is primarily an opportunity to communicate what?",
+            options: [
+                { text: "The team's success in adhering to the overall project budget.", isCorrect: false, rationale: "Budget is PM's focus." },
+                { text: "The status of team members' training and skill development.", isCorrect: false, rationale: "This is internal team/HR matter." },
+                { text: "The functionality of the working Solution Increment and to gain business feedback and acceptance.", isCorrect: true, rationale: "The Review is about demonstrating the working product and getting the essential feedback and formal sign-off from the Business Ambassador." },
+                { text: "A detailed report on the technical debt accumulated during the timebox.", isCorrect: false, rationale: "This is internal technical detail." }
+            ],
+            tip: "Tip: The Review ensures the Principle **'Deliver on Time'** is supported by gaining acceptance.",
+            focus: "Ch 6: Timebox Review purpose."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "What is the key difference between a **Timebox Retrospective** and a **Timebox Review**?",
+            options: [
+                { text: "Review focuses on **the product**; Retrospective focuses on **the process**.", isCorrect: true, rationale: "The Review looks at *what* was built (the product); the Retrospective looks at *how* it was built (the process) for improvement." },
+                { text: "Review is mandatory; Retrospective is optional.", isCorrect: false, rationale: "Both are mandatory activities at the end of a timebox in the DSDM process." },
+                { text: "Review is led by the Team Leader; Retrospective is led by the Project Manager.", isCorrect: false, rationale: "The Team Leader usually facilitates both." },
+                { text: "The Review involves the Development Team only; the Retrospective involves the entire project team.", isCorrect: false, rationale: "The Review involves the Business Ambassador; the Retrospective involves the Development Team and key stakeholders." }
+            ],
+            tip: "Tip: Review = What; Retrospective = How.",
+            focus: "Ch 6: Review vs Retrospective."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which of the following is NOT a characteristic of a well-facilitated workshop?",
+            options: [
+                { text: "A prepared and agreed-upon agenda and objective.", isCorrect: false, rationale: "Essential for efficiency." },
+                { text: "The presence of a neutral facilitator to guide the discussion.", isCorrect: false, rationale: "Essential for impartiality." },
+                { text: "Allowing detailed technical design discussions to dominate the time spent.", isCorrect: true, rationale: "Workshops should remain focused on the business objective, vision, and high-level requirements, deferring detailed technical work to the Timebox Refinement activity." },
+                { text: "Involving all relevant decision-makers at the same time.", isCorrect: false, rationale: "Essential for rapid decision-making." }
+            ],
+            tip: "Tip: Workshops are designed to promote rapid consensus and decision-making.",
+            focus: "Ch 6: Facilitated Workshops best practices."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "In the Principle **'Communicate Continuously and Clearly'**, what is the preferred method of communication?",
+            options: [
+                { text: "Formal written documentation and status reports.", isCorrect: false, rationale: "This is lean communication." },
+                { text: "Detailed graphical models and diagrams.", isCorrect: false, rationale: "These are good, but not the primary preference." },
+                { text: "Rich, informal, face-to-face communication.", isCorrect: true, rationale: "Rich communication (face-to-face, co-location) is preferred for continuous, clear, and efficient information exchange." },
+                { text: "Structured meeting minutes and action item logs.", isCorrect: false, rationale: "These are lean communication." }
+            ],
+            tip: "Tip: This principle directly aligns with the 'Individuals and interactions over processes and tools' Manifesto value.",
+            focus: "Ch 6: Principle 6 (Communication)."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which technique is specifically used to gain business acceptance for the deployed solution and ensure the benefits are being realized?",
+            options: [
+                { text: "Business Acceptance Testing (BAT)", isCorrect: false, rationale: "BAT is part of Evolutionary Development." },
+                { text: "Project Review Report", isCorrect: false, rationale: "Project Review is for the PM to report on project success." },
+                { text: "Benefit Assessment", isCorrect: true, rationale: "This technique, performed in the Post-Project phase, formally measures the success criteria and the financial/operational benefits realization." },
+                { text: "Requirements Refinement", isCorrect: false, rationale: "This is done in Foundations/Evolutionary Development." }
+            ],
+            tip: "Tip: Benefits are assessed *after* the solution has been used in the live environment for a period.",
+            focus: "Ch 6: Technique: Benefit Assessment."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "The **Project Review Report (PRR)**, completed at the end of the Deployment phase, mainly communicates what to the Business Sponsor?",
+            options: [
+                { text: "The plan for future development iterations (the next project).", isCorrect: false, rationale: "This is part of the Benefits Assessment." },
+                { text: "The overall success of the project against its objectives, risks encountered, and final product status.", isCorrect: true, rationale: "The PRR summarizes the project's performance (process, adherence to objectives, lessons learned) before the official benefits realization begins." },
+                { text: "The detailed design and technical architecture used for the solution.", isCorrect: false, rationale: "Too much detail for a summary report." },
+                { text: "A list of all team members and their individual performance reviews.", isCorrect: false, rationale: "Personnel reviews are separate." }
+            ],
+            tip: "Tip: The PRR closes the **Project Lifecycle** and leads into the Post-Project phase.",
+            focus: "Ch 6: Project Review Report."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which of the following is the most important factor for maximizing the effectiveness of the **Daily Stand-up**?",
+            options: [
+                { text: "Inviting external stakeholders to listen in.", isCorrect: false, rationale: "Stand-up is for the Development Team." },
+                { text: "Ensuring the meeting is held in a large, comfortable boardroom.", isCorrect: false, rationale: "Location is less important than focus." },
+                { text: "Keeping the meeting short, on time, and strictly focused on impediments and progress towards the Timebox objective.", isCorrect: true, rationale: "Efficiency, brevity, and focus are critical to the success of the Daily Stand-up." },
+                { text: "Having the Project Manager lead the entire discussion.", isCorrect: false, rationale: "The Team Leader usually facilitates, or the team self-manages it." }
+            ],
+            tip: "Tip: Stand-ups are for coordination, not detailed problem-solving.",
+            focus: "Ch 6: Daily Stand-up effectiveness."
+        },
+        
+        // --- Remaining 3 Questions (Mixed Focus) ---
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "The DSDM Philosophy states: **'The best business value emerges when projects are aligned to clear business goals, business stakeholders are engaged, and delivery is iterative.'** Which Principle is *most* strongly represented here?",
+            options: [
+                { text: "Develop Iteratively", isCorrect: false, rationale: "Iterative delivery is mentioned, but the focus is on the business context." },
+                { text: "Focus on the Business Need", isCorrect: true, rationale: "The entire statement is about aligning to business goals and delivering value." },
+                { text: "Collaborate", isCorrect: false, rationale: "Stakeholder engagement is mentioned, but the overarching theme is value." },
+                { text: "Deliver on Time", isCorrect: false, rationale: "This relates to timeboxing and deadlines." }
+            ],
+            tip: "Tip: The philosophy is the foundation for all 8 principles.",
+            focus: "Ch 4: DSDM Philosophy."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "When a single person performs both the **Business Ambassador** and the **Team Leader** roles, what is the main potential risk?",
+            options: [
+                { text: "Technical standards will be compromised.", isCorrect: false, rationale: "This is the TC's area of focus." },
+                { text: "Lack of project governance and process control.", isCorrect: false, rationale: "This is the PM's area of focus." },
+                { text: "Bias towards the development process over the business need, or vice-versa, due to conflicting internal priorities.", isCorrect: true, rationale: "These roles have different, potentially conflicting, priorities (Product focus vs. Process/Team focus), leading to burnout or compromised decisions." },
+                { text: "The Business Sponsor will lose interest in the project.", isCorrect: false, rationale: "This is unrelated to the combined roles." }
+            ],
+            tip: "Tip: Combining roles increases efficiency but introduces complexity and conflict of interest.",
+            focus: "Ch 5: Role combination risk."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "What is the primary AgilePM technique used to manage the project-level risk of not delivering the **Minimum Usable SubseT (MUST)** by the deadline?",
+            options: [
+                { text: "Modeling and Prototyping", isCorrect: false, rationale: "These are design tools." },
+                { text: "Facilitated Workshops", isCorrect: false, rationale: "These are requirements gathering tools." },
+                { text: "MoSCoW Prioritisation", isCorrect: true, rationale: "By continuously prioritizing requirements, the team ensures that 'Must Haves' are always the focus, protecting the MUST against time pressure." },
+                { text: "Daily Stand-ups", isCorrect: false, rationale: "Daily Stand-ups track progress, but MoSCoW manages the risk of scope creep." }
+            ],
+            tip: "Tip: MoSCoW is the ultimate tool for controlling scope flexibility against fixed time.",
+            focus: "Ch 6: Technique: MoSCoW and risk management."
+        },
+        
+        // --- 10 Additional Questions (Focus on Detail) ---
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "In the DSDM lifecycle, which two phases form the core of the iterative and incremental delivery cycle?",
+            options: [
+                { text: "Pre-Project and Feasibility", isCorrect: false, rationale: "These are initial phases." },
+                { text: "Foundations and Deployment", isCorrect: false, rationale: "Deployment is the final phase." },
+                { text: "Evolutionary Development and Deployment", isCorrect: false, rationale: "Deployment is the end of the delivery cycle." },
+                { text: "Evolutionary Development and Foundations", isCorrect: true, rationale: "The Foundations phase sets up the strategy and high-level architecture; Evolutionary Development then executes the iterative delivery based on these foundations." }
+            ],
+            tip: "Tip: Foundations (The Plan) and Evolutionary Development (The Build).",
+            focus: "Ch 4: Core Delivery Phases."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which DSDM role is NOT considered part of the core Development Team (Team Leader, Developer, Tester, Ambassador)?",
+            options: [
+                { text: "Team Leader", isCorrect: false, rationale: "Team Leader is part of the core team." },
+                { text: "Solution Developer", isCorrect: false, rationale: "Developer is part of the core team." },
+                { text: "Project Manager", isCorrect: true, rationale: "The PM manages the project process and governance externally to the core Development Team, which is led by the Team Leader." },
+                { text: "Business Ambassador", isCorrect: false, rationale: "The Ambassador is the essential business component of the core team." }
+            ],
+            tip: "Tip: The PM has governance responsibility, the Team Leader has servant-leadership responsibility within the team.",
+            focus: "Ch 5: Core Team Membership."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Which DSDM technique is used specifically to ensure that the delivered solution can be run and supported effectively in the live environment?",
+            options: [
+                { text: "Modeling", isCorrect: false, rationale: "Modeling is a design aid." },
+                { text: "Retrospective", isCorrect: false, rationale: "Retrospective is for process improvement." },
+                { text: "Deployment Planning", isCorrect: true, rationale: "Deployment planning ensures all aspects of transition, training, support, and maintenance are considered and prepared for before the solution goes live." },
+                { text: "MoSCoW Prioritisation", isCorrect: false, rationale: "MoSCoW is for requirements prioritization." }
+            ],
+            tip: "Tip: Deployment is often overlooked but critical for benefits realization.",
+            focus: "Ch 6: Technique: Deployment Planning."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the primary input to the **Feasibility** phase?",
+            options: [
+                { text: "The Foundation Summary", isCorrect: false, rationale: "Foundation Summary is the output of the next phase." },
+                { text: "The Prioritised Requirements List (PRL)", isCorrect: false, rationale: "PRL is developed in Foundations." },
+                { text: "The Terms of Reference/Project Request from the Pre-Project phase.", isCorrect: true, rationale: "Feasibility starts with the initial project idea and high-level goal defined in the Pre-Project phase." },
+                { text: "The Benefit Assessment Report", isCorrect: false, rationale: "Benefit Assessment is the final output." }
+            ],
+            tip: "Tip: Terms of Reference (ToR) formalize the need for the Feasibility phase.",
+            focus: "Ch 4: Project Lifecycle (Feasibility input)."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Who is the primary audience for the **Project Review Report (PRR)**?",
+            options: [
+                { text: "The Development Team", isCorrect: false, rationale: "The Development Team focuses on the Retrospective." },
+                { text: "The Business Ambassador", isCorrect: false, rationale: "The Ambassador focuses on the Timebox Review." },
+                { text: "The Business Sponsor and other corporate governance bodies.", isCorrect: true, rationale: "The PRR summarizes the overall project success and is essential for the Sponsor to justify the final outcome." },
+                { text: "The Solution Tester", isCorrect: false, rationale: "The Tester focuses on the product." }
+            ],
+            tip: "Tip: The PRR is an external, high-level report.",
+            focus: "Ch 5: PRR audience."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "The technique of **Prototyping** in AgilePM is best described as what?",
+            options: [
+                { text: "Creating throwaway code to test technical feasibility.", isCorrect: false, rationale: "Prototyping can be throwaway but also evolutionary." },
+                { text: "Building models quickly for the sole purpose of validating user requirements and refining the design.", isCorrect: true, rationale: "Prototypes are designed to provide early visual or interactive feedback, rapidly testing assumptions and refining requirements and design iteratively." },
+                { text: "Developing the entire solution for a single Must Have requirement.", isCorrect: false, rationale: "Prototyping is a tool, not the entire solution development." },
+                { text: "A detailed, structured architectural document.", isCorrect: false, rationale: "This is a Model/Design output." }
+            ],
+            tip: "Tip: Prototyping supports the principles of **'Develop Iteratively'** and **'Communicate Continuously and Clearly'**.",
+            focus: "Ch 6: Technique: Prototyping."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "What is the purpose of the **Management View** within the Foundation Summary?",
+            options: [
+                { text: "To list the high-level business requirements.", isCorrect: false, rationale: "This is the Business View." },
+                { text: "To detail the project team's roles and responsibilities and the structure of the Timeboxes.", isCorrect: true, rationale: "The Management View details how the project will be managed: governance, roles, timeboxing, risk management approach." },
+                { text: "To describe the technical architecture and tools to be used.", isCorrect: false, rationale: "This is the Technical View." },
+                { text: "To justify the financial investment in the project.", isCorrect: false, rationale: "This is the Business Case." }
+            ],
+            tip: "Tip: The Foundation Summary covers Business, Technical, and Management Views.",
+            focus: "Ch 4: Foundation Summary Views."
+        },
+        {
+            chapter: "Individuals and Interactions (Ch 5)",
+            question: "Which role, though external to the Development Team, is essential for ensuring that the project's output can be maintained and supported in the future?",
+            options: [
+                { text: "Business Visionary", isCorrect: false, rationale: "The Visionary focuses on the business goal." },
+                { text: "Maintenance and Support Team Representative", isCorrect: true, rationale: "Bringing in support representatives ensures that operational concerns (Non-functional requirements) are addressed during development and deployment." },
+                { text: "Project Manager", isCorrect: false, rationale: "The PM focuses on the project, not the future product support." },
+                { text: "Team Leader", isCorrect: false, rationale: "The Team Leader is focused on development." }
+            ],
+            tip: "Tip: Always involve future users and support personnel.",
+            focus: "Ch 5: External Stakeholders."
+        },
+        {
+            chapter: "Collaboration and Communication (Ch 6)",
+            question: "Why is the use of **Post-it Notes and Whiteboards** considered highly valuable in AgilePM?",
+            options: [
+                { text: "They are the cheapest form of project documentation.", isCorrect: false, rationale: "Cost is not the main driver." },
+                { text: "They are legally binding for final requirements sign-off.", isCorrect: false, rationale: "They are informal." },
+                { text: "They promote continuous visibility, low-cost modeling, and support rich, collaborative communication.", isCorrect: true, rationale: "Physical artifacts support the principles of rich communication, visibility, and collaboration over complex tools." },
+                { text: "They are exclusively used for the Daily Stand-up meeting structure.", isCorrect: false, rationale: "They are used for many techniques (MoSCoW, Modeling, etc.)." }
+            ],
+            tip: "Tip: Physical communication promotes engagement and understanding.",
+            focus: "Ch 6: Collaboration tools."
+        },
+        {
+            chapter: "AgilePM Fundamentals (Ch 4)",
+            question: "In the DSDM Principle **'Never Compromise Quality'**, what does **'Quality'** specifically refer to?",
+            options: [
+                { text: "The team's satisfaction with the process.", isCorrect: false, rationale: "This is internal morale." },
+                { text: "The final budget adherence and timely delivery.", isCorrect: false, rationale: "This is Time and Cost constraints." },
+                { text: "The suitability and robustness of the solution's non-functional requirements and acceptance criteria.", isCorrect: true, rationale: "Quality is fixed by defining and meeting the required non-functional standards (performance, security, usability) and the product's acceptance criteria." },
+                { text: "The amount of documentation produced for the final solution.", isCorrect: false, rationale: "Documentation is a product, not the definition of quality itself." }
+            ],
+            tip: "Tip: Quality is often defined by the **Non-Functional Requirements (NFRs)**.",
+            focus: "Ch 4: Quality Definition."
+        }
+    ];
+
+    // --- Core Quiz Logic (Reused from previous version) ---
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const totalQuestions = questions.length;
+    const passingScore = 0.80; // 80% pass mark (32/40)
+    let isAnswerChecked = false;
+
+    // Object to track correct/total for each Focus Area
+    const focusAreas = {}; 
+    const chapterScores = {
+        "AgilePM Fundamentals (Ch 4)": { correct: 0, total: 0 },
+        "Individuals and Interactions (Ch 5)": { correct: 0, total: 0 },
+        "Collaboration and Communication (Ch 6)": { correct: 0, total: 0 }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQuestion();
+        document.getElementById('progress-text').textContent = `1/${totalQuestions}`;
+        document.getElementById('current-score').textContent = `0/${totalQuestions}`;
+    });
+
+    function updateProgress() {
+        const percentage = (currentQuestionIndex / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
+        document.getElementById('progress-bar').setAttribute('aria-valuenow', percentage);
+    }
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= totalQuestions) {
+            showResults();
+            return;
+        }
+        const qData = questions[currentQuestionIndex];
+        const quizArea = document.getElementById('quiz-area');
+        isAnswerChecked = false;
+        document.getElementById('noSelectionAlert').style.display = 'none';
+
+        const optionsHtml = qData.options.map((opt, i) => `
+            <div class="mb-2">
+                <input type="radio" class="btn-check" name="answer" id="option${i}" autocomplete="off" value="${i}">
+                <label class="btn btn-outline-secondary w-100 text-start option-label" for="option${i}">
+                    <i class="fas fa-dot-circle me-3"></i> ${opt.text}
+                </label>
+            </div>
+        `).join('');
+
+        quizArea.innerHTML = `
+            <div class="question-card">
+                <p class="text-secondary mb-1">Chapter: <strong>${qData.chapter}</strong></p>
+                <p class="question-text">${currentQuestionIndex + 1}. ${qData.question}</p>
+                <div id="options-container">
+                    ${optionsHtml}
+                </div>
+                <div id="feedback-${currentQuestionIndex}" class="feedback-area">
+                    </div>
+                <div class="mt-4 text-end">
+                    <button class="btn btn-primary btn-check-answer" onclick="checkAnswer(event)">Check Answer</button>
+                    <button class="btn btn-success btn-next-question" onclick="nextQuestion(event)" style="display: none;">Next Question <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('progress-text').textContent = `${currentQuestionIndex + 1}/${totalQuestions}`;
+        updateProgress();
+    }
+
+    function checkAnswer(event) {
+        if (isAnswerChecked) return;
+
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        const nextButton = event.target.nextElementSibling;
+        const feedbackArea = document.getElementById(`feedback-${currentQuestionIndex}`);
+        const qData = questions[currentQuestionIndex];
+        const optionsContainer = document.getElementById('options-container');
+
+        if (!selectedOption) {
+            document.getElementById('noSelectionAlert').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('noSelectionAlert').style.display = 'none';
+        isAnswerChecked = true;
+        
+        const selectedIndex = parseInt(selectedOption.value);
+        const isCorrect = qData.options[selectedIndex].isCorrect;
+        const correctRationale = qData.options.find(opt => opt.isCorrect).rationale;
+        const correctIndex = qData.options.findIndex(opt => opt.isCorrect);
+
+        // Update Focus Area Score
+        if (!focusAreas[qData.focus]) {
+            focusAreas[qData.focus] = { correct: 0, total: 0 };
+        }
+        focusAreas[qData.focus].total++;
+        chapterScores[qData.chapter].total++;
+
+        // Add feedback message
+        let feedbackContent = '';
+        if (isCorrect) {
+            score++;
+            feedbackArea.classList.add('correct-feedback');
+            feedbackContent = `<p class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i> Correct! </p>`;
+            feedbackArea.classList.remove('incorrect-feedback');
+            focusAreas[qData.focus].correct++;
+            chapterScores[qData.chapter].correct++;
+        } else {
+            feedbackArea.classList.add('incorrect-feedback');
+            feedbackContent = `<p class="fw-bold text-danger"><i class="fas fa-times-circle me-2"></i> Incorrect. </p>`;
+            feedbackArea.classList.remove('correct-feedback');
+            // Show the correct option's rationale
+            feedbackContent += `<p class="rationale-title">Correct Rationale:</p><p class="mb-1">${correctRationale}</p>`;
+        }
+        
+        feedbackContent += `<p class="tip-badge">Tip: ${qData.tip}</p>`;
+        feedbackArea.innerHTML = feedbackContent;
+        feedbackArea.style.display = 'block';
+        
+        // Disable all options and style them
+        const optionLabels = optionsContainer.querySelectorAll('.option-label');
+        optionLabels.forEach((label, i) => {
+            label.style.pointerEvents = 'none';
+            label.classList.remove('btn-outline-secondary');
+            
+            if (i === correctIndex) {
+                label.classList.add('bg-success', 'text-white', 'border-success');
+                label.querySelector('.fa-dot-circle').classList.replace('fa-dot-circle', 'fa-check-circle');
+            } else if (i === selectedIndex && !isCorrect) {
+                label.classList.add('bg-danger', 'text-white', 'border-danger');
+                label.querySelector('.fa-dot-circle').classList.replace('fa-dot-circle', 'fa-times-circle');
+            } else {
+                label.classList.add('bg-light');
+            }
+        });
+
+        // Update score display
+        document.getElementById('current-score').textContent = `${score}/${totalQuestions}`;
+
+        // Show Next button, hide Check button
+        event.target.style.display = 'none';
+        nextButton.style.display = 'inline-block';
+    }
+
+    function nextQuestion(event) {
+        event.target.style.display = 'none'; // Hide Next button for a split second
+        if (currentQuestionIndex < totalQuestions) {
+            currentQuestionIndex++;
+            loadQuestion();
+        } else {
+            // This case is handled by showResults()
+            showResults(); 
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-area').style.display = 'none';
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+
+        const finalPercentage = (score / totalQuestions) * 100;
+        const requiredScore = Math.ceil(totalQuestions * passingScore);
+        const passed = score >= requiredScore; 
+
+        document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+        document.getElementById('final-percentage').textContent = `${finalPercentage.toFixed(1)}%`;
+
+        const messageDiv = document.getElementById('pass-fail-message');
+        const iconDiv = document.getElementById('result-icon');
+        const resultTitle = document.getElementById('result-title');
+        
+        if (passed) {
+            messageDiv.classList.remove('alert-danger');
+            messageDiv.classList.add('alert-success');
+            messageDiv.innerHTML = `<i class="fas fa-trophy me-2"></i> Congratulations! You Passed! (${requiredScore} needed).`;
+            resultTitle.classList.remove('fail-color');
+            resultTitle.classList.add('pass-color');
+            iconDiv.innerHTML = '<i class="far fa-smile pass-color"></i>';
+        } else {
+            messageDiv.classList.remove('alert-success');
+            messageDiv.classList.add('alert-danger');
+            messageDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i> Keep practicing! You need ${requiredScore} to pass.`;
+            resultTitle.classList.remove('pass-color');
+            resultTitle.classList.add('fail-color');
+            iconDiv.innerHTML = '<i class="far fa-frown fail-color"></i>';
+        }
+
+        generateRecommendations(passed);
+    }
+    
+    function generateRecommendations(passed) {
+        const recList = document.getElementById('recommendations-list');
+        recList.innerHTML = '';
+        
+        // 1. Focus on weakest areas (by focus area)
+        let weakestAreas = Object.entries(focusAreas)
+            .filter(([, data]) => data.total > 0 && (data.correct / data.total) < 1.0) // Only show areas with incorrect answers
+            .sort(([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total));
+
+        if (weakestAreas.length > 0) {
+            recList.innerHTML += `<li><strong><i class="fas fa-crosshairs me-1"></i> Priority Focus Areas:</strong>`;
+            weakestAreas.slice(0, 5).forEach(([focus, data]) => { // Show up to 5 weakest
+                const acc = (data.correct / data.total) * 100;
+                recList.innerHTML += `<p class="ms-3 mb-1 text-danger"><i class="fas fa-minus-circle me-1"></i> ${focus}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+            });
+            recList.innerHTML += `</li>`;
+        } else {
+             recList.innerHTML += `<li><strong><i class="fas fa-check-double me-1"></i> Priority Focus Areas:</strong> Excellent work! You answered all questions correctly in this section.</li>`;
+        }
+
+        // 2. Chapter Breakdown
+        recList.innerHTML += `<li><strong><i class="fas fa-book-open me-1"></i> Chapter Breakdown:</strong>`;
+        for (const [chapter, data] of Object.entries(chapterScores)) {
+            const acc = data.total > 0 ? (data.correct / data.total) * 100 : 0;
+            const style = acc < 70 ? 'text-danger' : acc < 90 ? 'text-warning' : 'text-success';
+            recList.innerHTML += `<p class="ms-3 mb-1 ${style}"><i class="fas fa-angle-right me-1"></i> ${chapter}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+        }
+        recList.innerHTML += `</li>`;
+        
+        // 3. Final Recommendation & Next Steps
+        const finalRec = passed 
+            ? "You have a solid understanding of these foundational chapters. Focus on reviewing the 'Priority Focus Areas' to ensure full competency before moving on to the next section of the manual."
+            : "Based on the results, we strongly recommend re-studying the 'Priority Focus Areas' and practicing more on the AgilePM Roles (Ch 5) and core concepts (Timeboxing, Quality Principle, and Communication) to solidify your understanding.";
+
+        recList.innerHTML += `<li><strong><i class="fas fa-brain me-1"></i> Next Steps Recommendation:</strong> ${finalRec}</li>`;
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM v3 Foundation Quiz: Chapters 10-12 (40 Questions)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --background-light: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--background-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin-top: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-card {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f0f4f7;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+        }
+
+        .option-label:hover {
+            background-color: #dae0e5;
+            border-color: #c0c7cf;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        /* Feedback Styling */
+        .feedback-area {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .correct-feedback {
+            background-color: #e6ffed; /* Light green */
+            border-left: 5px solid var(--success-color);
+        }
+
+        .incorrect-feedback {
+            background-color: #ffe6e6; /* Light red */
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .rationale-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .tip-badge {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .progress-bar-striped {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .btn-check-answer {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: background-color 0.3s;
+        }
+        
+        .btn-check-answer:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-next-question {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-next-question:hover {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Result Section Styling */
+        .result-box {
+            background: var(--background-light);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pass-color { color: var(--success-color); }
+        .fail-color { color: var(--danger-color); }
+        
+        .recommendation-list li {
+            margin-bottom: 10px;
+            padding-left: 0;
+            list-style-type: none;
+        }
+        
+        .recommendation-list li::before {
+            content: "\f058"; /* Font Awesome check-circle */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container quiz-container mb-5">
+    <h1 class="text-center mb-4 text-primary"><i class="fas fa-chart-line me-2"></i>AgilePM® v3 Foundation Quiz</h1>
+    <p class="text-center text-secondary mb-5">Chapters 10-12: Planning & Controlling; Risk Management; Governance & Products. You need 80% (32/40) to pass!</p>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h5 class="mb-2">Progress: <span id="progress-text">1/40</span></h5>
+            <div class="progress" style="height: 25px;">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <h5 class="mb-0">Current Score: <span id="current-score" class="badge bg-primary">0/40</span></h5>
+        </div>
+    </div>
+
+    <div id="quiz-area">
+        </div>
+
+    <div id="result-area" class="result-box text-center" style="display: none;">
+        <h2 id="result-title" class="mb-4">Quiz Complete!</h2>
+        <div id="result-icon" class="mb-4" style="font-size: 4rem;"></div>
+        <p class="fs-4">Your Final Score: <span id="final-score" class="badge bg-primary fs-4">0/40</span></p>
+        <p class="fs-5">Percentage: <span id="final-percentage" class="fw-bold">0%</span></p>
+        
+        <div id="pass-fail-message" class="alert fs-5 fw-bold mt-4 p-3"></div>
+
+        <h4 class="mt-5 text-start text-primary">Recommendations & Focus Areas:</h4>
+        <ul id="recommendations-list" class="text-start recommendation-list ps-0">
+            </ul>
+        
+        <button class="btn btn-primary mt-4" onclick="location.reload();"><i class="fas fa-redo me-2"></i>Retake Quiz</button>
+    </div>
+
+    <div id="noSelectionAlert" class="alert alert-warning text-center mt-4" style="display: none;">
+        <i class="fas fa-exclamation-triangle me-2"></i> Please select an option before checking the answer!
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // --- Chapter 10: Planning and Controlling the Work of the Project (14 Questions) ---
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "In AgilePM, what is the key characteristic of the Timebox schedule that ensures the 'Deliver on Time' principle is met?",
+            options: [
+                { text: "The scope is fixed, and the time is variable.", isCorrect: false, rationale: "In AgilePM, Time/Cost/Quality are fixed; Scope is variable/negotiable (via MoSCoW)." },
+                { text: "The team size is variable, and the quality is negotiable.", isCorrect: false, rationale: "Team size is fixed; Quality is fixed (Never Compromise Quality)." },
+                { text: "The time (duration) is **fixed** and the **scope** (features) is **variable/negotiable**.", isCorrect: true, rationale: "Fixing time and flexing scope (using MoSCoW) is the core mechanism for ensuring the deadline is met." },
+                { text: "Both time and scope are fixed by the Project Manager.", isCorrect: false, rationale: "Fixing both time and scope is a high-risk approach." }
+            ],
+            tip: "Tip: The AgilePM triangle: Fixed Time/Cost/Quality, Flexed Scope.",
+            focus: "Ch 10: Fixed vs. Flexed Constraints."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "What is the primary planning output of the **Foundations** phase?",
+            options: [
+                { text: "The detailed Daily To-Do list for the first Timebox.", isCorrect: false, rationale: "Too detailed; this is Timebox Kick-off." },
+                { text: "The **Deployment Plan** and the final sign-off.", isCorrect: false, rationale: "Deployment Plan is finalized closer to Deployment." },
+                { text: "The **Timebox Plan** (listing all timeboxes, their high-level objectives, and estimated effort).", isCorrect: true, rationale: "Foundations defines the high-level roadmap and the schedule of timeboxes for the entire Evolutionary Development phase." },
+                { text: "The Project Approach Questionnaire (PAQ) results.", isCorrect: false, rationale: "PAQ is Feasibility." }
+            ],
+            tip: "Tip: Foundations delivers the **Management View** of the project schedule.",
+            focus: "Ch 10: Foundations Planning Output."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "Which planning technique is most suitable for collaboratively estimating the **relative size/complexity** of requirements during the Foundations phase?",
+            options: [
+                { text: "Critical Path Analysis (CPA).", isCorrect: false, rationale: "CPA is a traditional planning tool." },
+                { text: "Gantt Charts.", isCorrect: false, rationale: "Traditional scheduling tool." },
+                { text: "Relative Sizing / Planning Poker.", isCorrect: true, rationale: "Relative sizing methods focus on estimating the complexity of items relative to each other, which is key for high-level planning where detailed task breakdowns are not yet done." },
+                { text: "Functional Breakdown Structure (FBS).", isCorrect: false, rationale: "FBS is a decomposition method." }
+            ],
+            tip: "Good Practice: Relative sizing allows for quick, collaborative, and high-level estimates.",
+            focus: "Ch 10: Estimation Techniques."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "The **Daily Stand-up** meeting serves primarily as a control mechanism to manage progress at which level?",
+            options: [
+                { text: "The Business Sponsor level (project level).", isCorrect: false, rationale: "Sponsor is high-level." },
+                { text: "The Team Leader / Development Team level (Timebox level).", isCorrect: true, rationale: "The Daily Stand-up is an internal team control, ensuring that the team coordinates efforts, identifies immediate blockers, and tracks progress towards the Timebox objectives." },
+                { text: "The Organizational level.", isCorrect: false, rationale: "Too high-level." },
+                { text: "The Portfolio level.", isCorrect: false, rationale: "Too high-level." }
+            ],
+            tip: "Tip: Stand-up = Team's coordination and internal control.",
+            focus: "Ch 10: Daily Stand-up Purpose."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "In the context of the **Project Review Report (PRR)**, what is the key metric used by the Project Manager to demonstrate control and progress to the Business Sponsor?",
+            options: [
+                { text: "The number of lines of code written.", isCorrect: false, rationale: "Code lines are not a business metric." },
+                { text: "The total number of hours worked.", isCorrect: false, rationale: "Effort tracking is internal." },
+                { text: "The percentage of **Must Have** requirements completed and accepted.", isCorrect: true, rationale: "Progress is measured by the delivery of accepted, working features, prioritized by MoSCoW. The completion of Must Haves is the clearest indicator of project health." },
+                { text: "The variance from the original budget.", isCorrect: false, rationale: "Cost is tracked, but feature completion is the primary progress metric." }
+            ],
+            tip: "Tip: Progress in AgilePM is feature-driven and measured by business acceptance.",
+            focus: "Ch 10: Progress Measurement."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "What is the primary goal of the **Timebox Review** (part of Close-out)?",
+            options: [
+                { text: "To plan the next Timebox's MoSCoW list.", isCorrect: false, rationale: "This is the next Kick-off." },
+                { text: "To retrospect on the team's process and improve collaboration.", isCorrect: false, rationale: "This is the Retrospective." },
+                { text: "To **demonstrate the working Solution Increment** to the Business Ambassador for formal acceptance/sign-off.", isCorrect: true, rationale: "The Review is the formal acceptance gate, ensuring the product is fit for purpose and provides objective evidence of progress." },
+                { text: "To update the Risk Log with new identified risks.", isCorrect: false, rationale: "This is continuous." }
+            ],
+            tip: "Tip: Review = Product Acceptance. Retrospective = Process Improvement.",
+            focus: "Ch 10: Timebox Review."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "If the Development Team realizes they cannot complete all 'Should Have' requirements within a Timebox, which role is responsible for deciding which 'Should Have' requirement to drop?",
+            options: [
+                { text: "The Project Manager.", isCorrect: false, rationale: "PM manages the process/risks." },
+                { text: "The Technical Coordinator.", isCorrect: false, rationale: "TC manages technical quality." },
+                { text: "The **Business Ambassador** (or Business Analyst, under the BA's direction).", isCorrect: true, rationale: "The Business Ambassador owns the requirements and their prioritization (MoSCoW) and is the only person authorized to negotiate/flex the scope." },
+                { text: "The Team Leader.", isCorrect: false, rationale: "TL facilitates; they do not own the business priority." }
+            ],
+            tip: "Good Practice: Scope negotiation is a business responsibility.",
+            focus: "Ch 10: Scope Negotiation Authority."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "What is the main purpose of creating a **Deployment Plan** during the Evolutionary Development phase?",
+            options: [
+                { text: "To define the team's working hours.", isCorrect: false, rationale: "Internal management." },
+                { text: "To detail the steps and resources required to **transition the Solution Increment into the live business environment**.", isCorrect: true, rationale: "The Deployment Plan covers all activities needed for the final handover: testing, training, data migration, and technical cut-over." },
+                { text: "To list all possible risks.", isCorrect: false, rationale: "Risk Log." },
+                { text: "To calculate the team's Velocity.", isCorrect: false, rationale: "Velocity is calculated from historical data." }
+            ],
+            tip: "Tip: The Deployment Plan ensures the final 'Deployment' phase runs smoothly.",
+            focus: "Ch 10: Deployment Plan."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "The **Retrospective** (part of Close-out) primarily supports which DSDM Principle?",
+            options: [
+                { text: "Develop Iteratively.", isCorrect: false, rationale: "This is the Timebox structure." },
+                { text: "Focus on the Business Need.", isCorrect: false, rationale: "This is MoSCoW." },
+                { text: "**Collaborate**.", isCorrect: false, rationale: "Collaboration is continuous." },
+                { text: "**Communicate Continuously and Clearly**.", isCorrect: false, rationale: "This is related to feedback." },
+                { text: "The principle of **Build Incrementally from Firm Foundations**.", isCorrect: false, rationale: "This is project lifecycle." },
+                { text: "**Demonstrate Control** and **Improve Continuously** (an implicit agile goal).", isCorrect: true, rationale: "While not one of the 8 explicit DSDM principles, the Retrospective's goal is continuous *process* improvement, which supports the overall control and maturity of the team." }
+            ],
+            tip: "Good Practice: Retrospectives ensure the team learns and adapts its *way of working*.",
+            focus: "Ch 10: Retrospective Purpose."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "In AgilePM, planning is conducted at three levels. Which of the following is **NOT** one of those levels?",
+            options: [
+                { text: "The Project Level (Foundations/Overall Timebox Schedule).", isCorrect: false, rationale: "This is Level 1." },
+                { text: "The Iteration Level (Timebox Kick-off/Detailed MoSCoW list).", isCorrect: false, rationale: "This is Level 2." },
+                { text: "The Portfolio Level (Strategic management of multiple projects).", isCorrect: true, rationale: "AgilePM planning focuses on the Project, Timebox, and Day/Task levels, not the Portfolio." },
+                { text: "The Day/Task Level (Daily Stand-up/Personal To-Do list).", isCorrect: false, rationale: "This is Level 3." }
+            ],
+            tip: "Tip: AgilePM focuses on the project and below.",
+            focus: "Ch 10: Levels of Planning."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "When creating a **Timebox Plan**, what is the primary input derived from the Foundations phase?",
+            options: [
+                { text: "The detailed architecture documents.", isCorrect: false, rationale: "Too technical." },
+                { text: "The **high-level Timebox Objectives** and the subset of the **Prioritised Requirements List (PRL)** allocated to the Timebox.", isCorrect: true, rationale: "The Timebox is scoped by its objective and the high-level M/S/C requirements assigned to it during Foundations." },
+                { text: "The list of approved vacation days for the team.", isCorrect: false, rationale: "Administrative detail." },
+                { text: "The Benefit Assessment Report.", isCorrect: false, rationale: "Post-Project product." }
+            ],
+            tip: "Tip: Planning is hierarchical: Foundations sets the objectives, the Timebox Kick-off refines them.",
+            focus: "Ch 10: Timebox Plan Inputs."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "What is the key difference between the Timebox **Review** and the Timebox **Retrospective**?",
+            options: [
+                { text: "Review is for the Project Manager; Retrospective is for the Business Sponsor.", isCorrect: false, rationale: "Review involves the Business Ambassador; Retrospective is primarily for the Development Team." },
+                { text: "Review focuses on the **product** (what was built); Retrospective focuses on the **process** (how it was built).", isCorrect: true, rationale: "The Review confirms product quality/acceptance; the Retrospective confirms and improves the team's way of working." },
+                { text: "Review is mandatory; Retrospective is optional.", isCorrect: false, rationale: "Both are mandatory Close-out activities in AgilePM." },
+                { text: "Review happens at the start; Retrospective happens at the end.", isCorrect: false, rationale: "Both happen at the end (Close-out)." }
+            ],
+            tip: "Tip: Product vs. Process.",
+            focus: "Ch 10: Review vs. Retrospective."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "In the context of the **MoSCoW buffer**, what is the primary responsibility of the Project Manager?",
+            options: [
+                { text: "To perform all the technical work that the team cannot finish.", isCorrect: false, rationale: "PM does not build." },
+                { text: "To ensure the **flexibility** (S and C requirements) is actively managed and used to guarantee the delivery of the Must Haves by the deadline.", isCorrect: true, rationale: "The PM's primary control mechanism is protecting the deadline by managing the scope buffer through dialogue with the Business Ambassador." },
+                { text: "To change the deadline if the team requests it.", isCorrect: false, rationale: "Deadline is fixed, change requires Sponsor approval." },
+                { text: "To document all requirements in extreme detail.", isCorrect: false, rationale: "BA/Ambassador role." }
+            ],
+            tip: "Tip: The PM **protects the deadline** using MoSCoW.",
+            focus: "Ch 10: PM's Role in Control."
+        },
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "What term is used in AgilePM to describe the rate at which a Development Team delivers accepted, tested functionality (often measured in Story Points per Timebox)?",
+            options: [
+                { text: "Productivity Index.", isCorrect: false, rationale: "Not a standard AgilePM term." },
+                { text: "Utilization Factor.", isCorrect: false, rationale: "Resource management term." },
+                { text: "**Velocity**.", isCorrect: true, rationale: "Velocity is the measure of the team's capacity and is essential for forecasting and planning future Timeboxes." },
+                { text: "Criticality Ratio.", isCorrect: false, rationale: "MoSCoW concept." }
+            ],
+            tip: "Tip: Velocity is calculated historically and used to forecast future capacity.",
+            focus: "Ch 10: Velocity."
+        },
+
+        // --- Chapter 11: Risk Management and the Project Approach (13 Questions) ---
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "What is the key output of the **Feasibility** phase that ensures the DSDM approach is appropriate for the project?",
+            options: [
+                { text: "The Timebox Review Record.", isCorrect: false, rationale: "Review is later." },
+                { text: "The **Project Approach Questionnaire (PAQ)**.", isCorrect: true, rationale: "The PAQ is used to assess the suitability of DSDM/AgilePM based on people, process, and environment factors." },
+                { text: "The Detailed Risk Log.", isCorrect: false, rationale: "Too detailed for Feasibility." },
+                { text: "The final Solution Increment.", isCorrect: false, rationale: "Solution is much later." }
+            ],
+            tip: "Tip: PAQ helps answer: 'Can we use AgilePM here?'",
+            focus: "Ch 11: Project Approach Questionnaire (PAQ)."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "AgilePM emphasizes a **Proactive** approach to risk management. What does this mean in practice?",
+            options: [
+                { text: "Spending all the budget on insurance policies.", isCorrect: false, rationale: "Not agile." },
+                { text: "Waiting until a risk occurs, then reacting quickly.", isCorrect: false, rationale: "Reactive approach." },
+                { text: "Continuously identifying potential risks and planning **mitigation actions** to reduce their probability or impact.", isCorrect: true, rationale: "Proactive risk management involves continuous, early identification and the establishment of response strategies *before* the problem occurs." },
+                { text: "Delegating all risks to the Business Sponsor.", isCorrect: false, rationale: "Sponsor owns major risks, but delegation is not a proactive approach." }
+            ],
+            tip: "Good Practice: Always be ready for potential issues.",
+            focus: "Ch 11: Proactive Risk Management."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "Who is the primary owner and manager of the **Risk Log** throughout the project lifecycle?",
+            options: [
+                { text: "The Technical Coordinator.", isCorrect: false, rationale: "TC handles technical risks only." },
+                { text: "The Business Ambassador.", isCorrect: false, rationale: "BA handles requirements risks." },
+                { text: "The **Project Manager (PM)**.", isCorrect: true, rationale: "The PM is responsible for maintaining the Risk Log and ensuring appropriate actions are taken for all identified risks." },
+                { text: "The Team Leader.", isCorrect: false, rationale: "TL handles Timebox issues." }
+            ],
+            tip: "Tip: The PM is the custodian of project control products.",
+            focus: "Ch 11: Risk Log Ownership."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "Which of the following is **NOT** one of the standard risk response strategies (TREAT/PURSUE)?",
+            options: [
+                { text: "Avoid (Eliminating the threat).", isCorrect: false, rationale: "Valid T-response." },
+                { text: "Exploit (Maximizing the opportunity).", isCorrect: false, rationale: "Valid P-response." },
+                { text: "**Delegate** (Assigning the risk to another project).", isCorrect: true, rationale: "Transferring the risk to another party is a valid response, but 'Delegate' is not a standard term in this context. The standard responses are Avoid, Reduce, Transfer, Accept, Exploit, Share, Enhance." },
+                { text: "Accept (Taking no action unless the risk occurs).", isCorrect: false, rationale: "Valid T-response." }
+            ],
+            tip: "Tip: The common strategies for threats (TREAT) are Avoid, Reduce, Transfer, Accept.",
+            focus: "Ch 11: Risk Response Strategies."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "In the context of the PAQ, a high score in the 'People' category (e.g., empowered business roles) suggests what about the project's suitability for AgilePM?",
+            options: [
+                { text: "It is unsuitable, as agile requires minimal business involvement.", isCorrect: false, rationale: "Agile requires maximum business involvement." },
+                { text: "It is highly suitable, as agile thrives on empowered business roles and collaboration.", isCorrect: true, rationale: "PAQ results support AgilePM adoption when the project has high scores in People, Process, and Environment categories." },
+                { text: "The project risk is too high and should be cancelled.", isCorrect: false, rationale: "High scores reduce risk." },
+                { text: "The project should use a Waterfall approach instead.", isCorrect: false, rationale: "Waterfall is for low change/stable requirements." }
+            ],
+            tip: "Tip: A high PAQ score = high suitability for AgilePM.",
+            focus: "Ch 11: PAQ Interpretation."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "What is the primary AgilePM risk mitigation technique for dealing with the uncertainty of **changing requirements**?",
+            options: [
+                { text: "Fixing the scope in the Foundations phase.", isCorrect: false, rationale: "Reduces agility." },
+                { text: "Performing detailed documentation of all requirements upfront.", isCorrect: false, rationale: "Wastes effort if requirements change." },
+                { text: "Using **MoSCoW Prioritization** and **Timeboxing** to manage scope flexibility and deliver incrementally.", isCorrect: true, rationale: "MoSCoW manages *which* requirements are delivered (flexibility), and Timeboxing manages *when* they are delivered (fixed deadline), mitigating the risk of scope creep and delay." },
+                { text: "Appointing a specialist Risk Manager.", isCorrect: false, rationale: "PM handles risk." }
+            ],
+            tip: "Tip: MoSCoW is the essential tool for controlling the fixed constraints.",
+            focus: "Ch 11: Risk Mitigation for Scope."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "An **Opportunity** in risk management is defined as a risk with which characteristic?",
+            options: [
+                { text: "High probability and low impact.", isCorrect: false, rationale: "This is a low-level threat." },
+                { text: "Low probability and low impact.", isCorrect: false, rationale: "Insignificant." },
+                { text: "A positive uncertainty that, if it occurs, will have a **beneficial effect** on project objectives.", isCorrect: true, rationale: "Risk includes both negative (threats) and positive (opportunities) uncertainties." },
+                { text: "A certainty that will happen.", isCorrect: false, rationale: "A certainty is an issue, not a risk." }
+            ],
+            tip: "Tip: Risks are uncertainties; opportunities are positive uncertainties.",
+            focus: "Ch 11: Opportunity Definition."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "Who is responsible for the overall financial monitoring and ensuring that the project remains aligned with the Business Case?",
+            options: [
+                { text: "The Team Leader.", isCorrect: false, rationale: "TL manages Timebox costs only." },
+                { text: "The Solution Developer.", isCorrect: false, rationale: "Developer builds." },
+                { text: "The **Business Sponsor**.", isCorrect: true, rationale: "The Sponsor is the ultimate financial and business authority for the project, owning the Business Case and the realization of benefits." },
+                { text: "The Project Manager.", isCorrect: false, rationale: "PM reports cost status to the Sponsor." }
+            ],
+            tip: "Tip: Sponsor = Money and Benefits.",
+            focus: "Ch 11: Financial Control Role."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "When should the initial, high-level **Risk Log** be created?",
+            options: [
+                { text: "Only during the Deployment phase.", isCorrect: false, rationale: "Too late." },
+                { text: "As part of the **Feasibility** phase, along with the Business Case.", isCorrect: true, rationale: "Initial risks must be assessed in Feasibility to determine if the project is worth doing." },
+                { text: "At the beginning of every Timebox.", isCorrect: false, rationale: "Too frequent for the overall log." },
+                { text: "Only when a major crisis occurs.", isCorrect: false, rationale: "Reactive." }
+            ],
+            tip: "Tip: Feasibility determines the viability (Business Case) and initial risks.",
+            focus: "Ch 11: Risk Log Initiation."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "The risk response strategy to address an opportunity by increasing its probability and/or impact is called:",
+            options: [
+                { text: "Avoidance.", isCorrect: false, rationale: "For threats." },
+                { text: "Transfer.", isCorrect: false, rationale: "For threats." },
+                { text: "**Enhance**.", isCorrect: true, rationale: "Enhance means taking proactive steps to increase the likelihood or benefit of a positive risk (opportunity)." },
+                { text: "Acceptance.", isCorrect: false, rationale: "Passive response." }
+            ],
+            tip: "Tip: Enhance is the opposite of Reduce (threat mitigation).",
+            focus: "Ch 11: Opportunity Response: Enhance."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "If a PAQ assessment shows a low score in the 'Environment' category (e.g., inadequate technical tools/infrastructure), what should the Project Manager recommend?",
+            options: [
+                { text: "Proceed with AgilePM development immediately.", isCorrect: false, rationale: "Low scores indicate risk." },
+                { text: "Ignore the low score and focus only on the people factor.", isCorrect: false, rationale: "All factors are critical." },
+                { text: "The project should be shelved as it is too risky.", isCorrect: false, rationale: "Too extreme." },
+                { text: "**Invest time in the Foundations phase** to mitigate the risk, perhaps through prototyping or investing in the required infrastructure/tools.", isCorrect: true, rationale: "The PM must recommend a plan to mitigate identified PAQ weaknesses before proceeding with full evolutionary development." }
+            ],
+            tip: "Good Practice: Foundations is the time to mitigate PAQ risks.",
+            focus: "Ch 11: PAQ Mitigation."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "Who is responsible for ensuring that the technical solution meets the required quality and non-functional standards?",
+            options: [
+                { text: "The Business Ambassador.", isCorrect: false, rationale: "BA handles functional requirements." },
+                { text: "The Project Manager.", isCorrect: false, rationale: "PM manages the process." },
+                { text: "The **Technical Coordinator (TC)**.", isCorrect: true, rationale: "The TC is the technical authority, responsible for the integrity and quality of the solution architecture and adherence to technical standards." },
+                { text: "The Team Leader.", isCorrect: false, rationale: "TL manages the team's daily work." }
+            ],
+            tip: "Tip: Technical Coordinator = Technical Quality Assurance.",
+            focus: "Ch 11: Technical Quality Role."
+        },
+        {
+            chapter: "Risk Management (Ch 11)",
+            question: "The DSDM principle, **'Never Compromise Quality'**, is the primary risk mitigation technique for which type of risk?",
+            options: [
+                { text: "Team conflict.", isCorrect: false, rationale: "People risk." },
+                { text: "Scope creep.", isCorrect: false, rationale: "Managed by MoSCoW." },
+                { text: "Delivering a solution that is technically fragile, unstable, or unsustainable (Technical Debt).", isCorrect: true, rationale: "Fixing quality ensures the built product meets the necessary Non-Functional Requirements (NFRs) and is robust enough for long-term use." },
+                { text: "Loss of the Business Sponsor.", isCorrect: false, rationale: "Governance risk." }
+            ],
+            tip: "Tip: Quality is fixed to avoid technical debt.",
+            focus: "Ch 11: Quality as Risk Mitigation."
+        },
+
+        // --- Chapter 12: Governance, Compliance, and the AgilePM Products (13 Questions) ---
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "The **Business Case (BC)** is a key project product. Who is the primary owner of the Business Case and responsible for its continued viability?",
+            options: [
+                { text: "The Project Manager.", isCorrect: false, rationale: "PM manages the process." },
+                { text: "The Technical Coordinator.", isCorrect: false, rationale: "TC handles technical integrity." },
+                { text: "The **Business Sponsor / Business Visionary**.", isCorrect: true, rationale: "The Sponsor owns the justification and funding; the Visionary maintains the high-level business direction." },
+                { text: "The Business Analyst.", isCorrect: false, rationale: "BA handles requirements detail." }
+            ],
+            tip: "Tip: Business Case = Sponsor/Visionary ownership.",
+            focus: "Ch 12: Business Case Ownership."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "Which AgilePM product is used to maintain a clear record of all requirements, their MoSCoW priority, and their status throughout the project?",
+            options: [
+                { text: "Foundation Summary (FD).", isCorrect: false, rationale: "FD is a summary/plan." },
+                { text: "Deployment Plan.", isCorrect: false, rationale: "Deployment plan is for transition." },
+                { text: "The **Prioritised Requirements List (PRL)**.", isCorrect: true, rationale: "The PRL is the master repository for all requirements, managed by the Business Ambassador/Analyst." },
+                { text: "The Project Review Report (PRR).", isCorrect: false, rationale: "PRR is a progress report." }
+            ],
+            tip: "Tip: PRL = All requirements + MoSCoW status.",
+            focus: "Ch 12: Prioritised Requirements List (PRL)."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "The **Foundation Summary (FD)** is the central project product that contains which three distinct 'views'?",
+            options: [
+                { text: "Financial, Risk, and Quality.", isCorrect: false, rationale: "These are control areas." },
+                { text: "**Business, Technical, and Management**.", isCorrect: true, rationale: "These three views ensure all aspects (scope, architecture, plan, governance) are covered and approved before development begins." },
+                { text: "Pre-Project, Foundations, and Deployment.", isCorrect: false, rationale: "These are phases." },
+                { text: "Timebox Plan, Deployment Plan, and Maintenance Plan.", isCorrect: false, rationale: "These are components of the Management View." }
+            ],
+            tip: "Tip: FD = BT M (Business, Technical, Management).",
+            focus: "Ch 12: Foundation Summary Views."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "What is the primary purpose of the **Solution Increment** product?",
+            options: [
+                { text: "To document the architecture of the final system.", isCorrect: false, rationale: "Architecture definition." },
+                { text: "To provide a detailed log of all project meetings.", isCorrect: false, rationale: "Management product." },
+                { text: "The **working, tested, and accepted product** delivered by a Timebox, providing objective proof of progress.", isCorrect: true, rationale: "The Solution Increment is the actual working software/solution that is the primary deliverable of the project." },
+                { text: "To list all outstanding defects.", isCorrect: false, rationale: "Defect log." }
+            ],
+            tip: "Tip: Solution Increment = The working software.",
+            focus: "Ch 12: Solution Increment."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "The **Project Approach Questionnaire (PAQ)** is classified as which type of project product?",
+            options: [
+                { text: "Solution Product (A part of the final system).", isCorrect: false, rationale: "It's a control document." },
+                { text: "Management/Control Product (A document to facilitate planning and governance).", isCorrect: true, rationale: "The PAQ is a tool used by the Project Manager in the Feasibility phase to control risk and determine the appropriate approach." },
+                { text: "Requirements Product (A list of features).", isCorrect: false, rationale: "Requirements are in the PRL." },
+                { text: "Deployment Product (Used for handover).", isCorrect: false, rationale: "Deployment plan is for handover." }
+            ],
+            tip: "Tip: PAQ is a risk and control tool.",
+            focus: "Ch 12: PAQ Product Type."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "In the context of the **Governance** framework, which role holds the ultimate authority for making key strategic decisions and providing funding?",
+            options: [
+                { text: "The Team Leader.", isCorrect: false, rationale: "TL is Timebox authority." },
+                { text: "The Project Manager.", isCorrect: false, rationale: "PM manages execution." },
+                { text: "The **Business Sponsor**.", isCorrect: true, rationale: "The Sponsor sits at the highest level of governance and is accountable for the project's success and alignment with corporate strategy." },
+                { text: "The Technical Coordinator.", isCorrect: false, rationale: "TC handles technical strategy." }
+            ],
+            tip: "Tip: Sponsor = Final authority & owner of the Business Case.",
+            focus: "Ch 12: Governance Authority Role."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "What is the key purpose of the **Timebox Review Record**?",
+            options: [
+                { text: "To formally accept the requirements for the *next* Timebox.", isCorrect: false, rationale: "Next Kick-off." },
+                { text: "To document the process improvements suggested by the team.", isCorrect: false, rationale: "Retrospective Report." },
+                { text: "To provide an **objective record of what was achieved** and formally confirm the Business Ambassador's acceptance of the delivered Solution Increment.", isCorrect: true, rationale: "It is the audit trail and key progress indicator for the Project Manager." },
+                { text: "To detail the deployment activities.", isCorrect: false, rationale: "Deployment Plan." }
+            ],
+            tip: "Tip: Review Record = Proof of Progress and Acceptance.",
+            focus: "Ch 12: Timebox Review Record."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "The **Auditability** requirement in Governance primarily ensures that:",
+            options: [
+                { text: "The team uses open-source software.", isCorrect: false, rationale: "Licensing." },
+                { text: "All design work is completed before any coding begins.", isCorrect: false, rationale: "Agile approach is incremental." },
+                { text: "There is a **clear, documented trail of decisions, scope changes, and approvals** throughout the project lifecycle.", isCorrect: true, rationale: "Auditability ensures transparency and compliance by demonstrating *why* and *how* decisions were made, particularly regarding scope negotiation." },
+                { text: "The Business Sponsor attends all daily stand-ups.", isCorrect: false, rationale: "Stand-ups are for the team." }
+            ],
+            tip: "Tip: Auditability is critical for compliance and transparency.",
+            focus: "Ch 12: Governance: Auditability."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "Which of the following products is created and owned by the **Project Manager**?",
+            options: [
+                { text: "Prioritised Requirements List (PRL).", isCorrect: false, rationale: "Owned by BA/Ambassador." },
+                { text: "Technical Architecture Definition (TAD).", isCorrect: false, rationale: "Owned by Technical Coordinator." },
+                { text: "The **Project Review Report (PRR)**.", isCorrect: true, rationale: "The PRR is the formal, regular report created by the PM to communicate progress and issues to the Sponsor and other management roles." },
+                { text: "Solution Increment.", isCorrect: false, rationale: "Owned by Development Team." }
+            ],
+            tip: "Tip: The PM is responsible for formal project reporting.",
+            focus: "Ch 12: Project Manager Products."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "The **Benefits Assessment Report** is compared against which product to determine if the project delivered its promised value?",
+            options: [
+                { text: "The Deployment Plan.", isCorrect: false, rationale: "Deployment plan is for transition." },
+                { text: "The Project Review Report (PRR).", isCorrect: false, rationale: "PRR is progress/status." },
+                { text: "The **Business Case**.", isCorrect: true, rationale: "The Business Case contains the predicted benefits; the Benefits Assessment Report (Post-Project) confirms the actual benefits realization." },
+                { text: "The Technical Architecture Definition.", isCorrect: false, rationale: "Technical product." }
+            ],
+            tip: "Tip: BC vs. BAR = Expected vs. Realized Benefits.",
+            focus: "Ch 12: Benefits Assessment Reference."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "When are the detailed **Technical Architecture Definition (TAD)** and **Design/Build documents** finalized?",
+            options: [
+                { text: "All TAD is finalized in Feasibility.", isCorrect: false, rationale: "Too early for detail." },
+                { text: "The high-level TAD in Foundations; the detailed design/build documents are progressively elaborated during **Evolutionary Development**.", isCorrect: true, rationale: "The TAD's high-level view is approved in Foundations, but the detailed technical design is refined just-in-time during the Timebox's Investigate/Refine activities." },
+                { text: "Never, as documentation is minimized in AgilePM.", isCorrect: false, rationale: "Documentation is *just enough*." },
+                { text: "Only in the Post-Project phase.", isCorrect: false, rationale: "Too late." }
+            ],
+            tip: "Tip: Progressive Elaboration applies to technical documents too.",
+            focus: "Ch 12: TAD Elaboration."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "Which product is used by the Technical Coordinator to communicate the proposed technical standards, infrastructure, and development environment?",
+            options: [
+                { text: "The Prioritised Requirements List (PRL).", isCorrect: false, rationale: "Business requirements." },
+                { text: "The **Technical Architecture Definition (TAD)**.", isCorrect: true, rationale: "The TAD is the Technical Coordinator's primary product, setting out the architectural strategy for the solution." },
+                { text: "The MoSCoW List.", isCorrect: false, rationale: "Prioritization tool." },
+                { text: "The Daily Stand-up Notes.", isCorrect: false, rationale: "Internal team communication." }
+            ],
+            tip: "Tip: TAD = Technical Plan/Strategy.",
+            focus: "Ch 12: TAD Purpose."
+        },
+        {
+            chapter: "Governance & Products (Ch 12)",
+            question: "In the context of the **AgilePM Product Structure**, products are grouped into three categories: Foundation Products, Evolutionary Products, and Management Products. The **Risk Log** belongs to which category?",
+            options: [
+                { text: "Foundation Product.", isCorrect: false, rationale: "Foundation products define the project." },
+                { text: "Evolutionary Product.", isCorrect: false, rationale: "Evolutionary products are built during development (e.g., Solution Increment)." },
+                { text: "**Management Product**.", isCorrect: true, rationale: "Management products are used for planning, tracking, and control (e.g., Risk Log, Timebox Review Record, PRR)." },
+                { text: "Requirements Product.", isCorrect: false, rationale: "A type of product, but less precise than Management Product in the overall structure." }
+            ],
+            tip: "Tip: If it helps the PM/Sponsor to manage the project, it's a Management Product.",
+            focus: "Ch 12: Product Categories (Risk Log)."
+        },
+        
+        // --- Remaining 1 Questions (Mixed Focus) ---
+        {
+            chapter: "Planning & Controlling (Ch 10)",
+            question: "If a project is deemed **unsuitable** for AgilePM based on a low score in the PAQ (e.g., the business is unwilling to collaborate), what is the most appropriate action?",
+            options: [
+                { text: "Ignore the PAQ and proceed with agile development.", isCorrect: false, rationale: "High risk." },
+                { text: "Use the low score to argue for an increased budget.", isCorrect: false, rationale: "Not a solution for suitability." },
+                { text: "Re-assess the PAQ factors and **implement mitigation plans** (e.g., team co-location, mandatory business roles) before proceeding, or stop the project.", isCorrect: true, rationale: "The PAQ is a risk filter. A low score requires either a mitigation plan (to increase suitability) or a recommendation to stop the project/use an alternative approach." },
+                { text: "Automatically switch to a traditional Waterfall approach.", isCorrect: false, rationale: "Waterfall may not be the only alternative, and it ignores the root cause (e.g., lack of business engagement)." }
+            ],
+            tip: "Tip: PAQ forces a proactive decision on approach.",
+            focus: "Ch 11: PAQ Suitability Decision."
+        }
+    ];
+
+    // --- Core Quiz Logic (Reused from previous version) ---
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const totalQuestions = questions.length;
+    const passingScore = 0.80; // 80% pass mark (32/40)
+    let isAnswerChecked = false;
+
+    // Object to track correct/total for each Focus Area
+    const focusAreas = {}; 
+    const chapterScores = {
+        "Planning & Controlling (Ch 10)": { correct: 0, total: 0 },
+        "Risk Management (Ch 11)": { correct: 0, total: 0 },
+        "Governance & Products (Ch 12)": { correct: 0, total: 0 }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQuestion();
+        document.getElementById('progress-text').textContent = `1/${totalQuestions}`;
+        document.getElementById('current-score').textContent = `0/${totalQuestions}`;
+    });
+
+    function updateProgress() {
+        const percentage = (currentQuestionIndex / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
+        document.getElementById('progress-bar').setAttribute('aria-valuenow', percentage);
+    }
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= totalQuestions) {
+            showResults();
+            return;
+        }
+        const qData = questions[currentQuestionIndex];
+        const quizArea = document.getElementById('quiz-area');
+        isAnswerChecked = false;
+        document.getElementById('noSelectionAlert').style.display = 'none';
+
+        const optionsHtml = qData.options.map((opt, i) => `
+            <div class="mb-2">
+                <input type="radio" class="btn-check" name="answer" id="option${i}" autocomplete="off" value="${i}">
+                <label class="btn btn-outline-secondary w-100 text-start option-label" for="option${i}">
+                    <i class="fas fa-dot-circle me-3"></i> ${opt.text}
+                </label>
+            </div>
+        `).join('');
+
+        quizArea.innerHTML = `
+            <div class="question-card">
+                <p class="text-secondary mb-1">Chapter: <strong>${qData.chapter}</strong></p>
+                <p class="question-text">${currentQuestionIndex + 1}. ${qData.question}</p>
+                <div id="options-container">
+                    ${optionsHtml}
+                </div>
+                <div id="feedback-${currentQuestionIndex}" class="feedback-area">
+                    </div>
+                <div class="mt-4 text-end">
+                    <button class="btn btn-primary btn-check-answer" onclick="checkAnswer(event)">Check Answer</button>
+                    <button class="btn btn-success btn-next-question" onclick="nextQuestion(event)" style="display: none;">Next Question <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('progress-text').textContent = `${currentQuestionIndex + 1}/${totalQuestions}`;
+        updateProgress();
+    }
+
+    function checkAnswer(event) {
+        if (isAnswerChecked) return;
+
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        const nextButton = event.target.nextElementSibling;
+        const feedbackArea = document.getElementById(`feedback-${currentQuestionIndex}`);
+        const qData = questions[currentQuestionIndex];
+        const optionsContainer = document.getElementById('options-container');
+
+        if (!selectedOption) {
+            document.getElementById('noSelectionAlert').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('noSelectionAlert').style.display = 'none';
+        isAnswerChecked = true;
+        
+        const selectedIndex = parseInt(selectedOption.value);
+        const isCorrect = qData.options[selectedIndex].isCorrect;
+        const correctRationale = qData.options.find(opt => opt.isCorrect).rationale;
+        const correctIndex = qData.options.findIndex(opt => opt.isCorrect);
+
+        // Update Focus Area Score
+        if (!focusAreas[qData.focus]) {
+            focusAreas[qData.focus] = { correct: 0, total: 0 };
+        }
+        focusAreas[qData.focus].total++;
+        chapterScores[qData.chapter].total++;
+
+        // Add feedback message
+        let feedbackContent = '';
+        if (isCorrect) {
+            score++;
+            feedbackArea.classList.add('correct-feedback');
+            feedbackContent = `<p class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i> Correct! </p>`;
+            feedbackArea.classList.remove('incorrect-feedback');
+            focusAreas[qData.focus].correct++;
+            chapterScores[qData.chapter].correct++;
+        } else {
+            feedbackArea.classList.add('incorrect-feedback');
+            feedbackContent = `<p class="fw-bold text-danger"><i class="fas fa-times-circle me-2"></i> Incorrect. </p>`;
+            feedbackArea.classList.remove('correct-feedback');
+            // Show the correct option's rationale
+            feedbackContent += `<p class="rationale-title">Correct Rationale:</p><p class="mb-1">${correctRationale}</p>`;
+        }
+        
+        feedbackContent += `<p class="tip-badge">Tip: ${qData.tip}</p>`;
+        feedbackArea.innerHTML = feedbackContent;
+        feedbackArea.style.display = 'block';
+        
+        // Disable all options and style them
+        const optionLabels = optionsContainer.querySelectorAll('.option-label');
+        optionLabels.forEach((label, i) => {
+            label.style.pointerEvents = 'none';
+            label.classList.remove('btn-outline-secondary');
+            
+            if (i === correctIndex) {
+                label.classList.add('bg-success', 'text-white', 'border-success');
+                label.querySelector('.fa-dot-circle').classList.replace('fa-dot-circle', 'fa-check-circle');
+            } else if (i === selectedIndex && !isCorrect) {
+                label.classList.add('bg-danger', 'text-white', 'border-danger');
+                label.querySelector('.fa-dot-circle').classList.replace('fa-dot-circle', 'fa-times-circle');
+            } else {
+                label.classList.add('bg-light');
+            }
+        });
+
+        // Update score display
+        document.getElementById('current-score').textContent = `${score}/${totalQuestions}`;
+
+        // Show Next button, hide Check button
+        event.target.style.display = 'none';
+        nextButton.style.display = 'inline-block';
+    }
+
+    function nextQuestion(event) {
+        event.target.style.display = 'none'; // Hide Next button for a split second
+        if (currentQuestionIndex < totalQuestions) {
+            currentQuestionIndex++;
+            loadQuestion();
+        } else {
+            // This case is handled by showResults()
+            showResults(); 
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-area').style.display = 'none';
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+
+        const finalPercentage = (score / totalQuestions) * 100;
+        const requiredScore = Math.ceil(totalQuestions * passingScore);
+        const passed = score >= requiredScore; 
+
+        document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+        document.getElementById('final-percentage').textContent = `${finalPercentage.toFixed(1)}%`;
+
+        const messageDiv = document.getElementById('pass-fail-message');
+        const iconDiv = document.getElementById('result-icon');
+        const resultTitle = document.getElementById('result-title');
+        
+        if (passed) {
+            messageDiv.classList.remove('alert-danger');
+            messageDiv.classList.add('alert-success');
+            messageDiv.innerHTML = `<i class="fas fa-trophy me-2"></i> Congratulations! You Passed! (${requiredScore} needed).`;
+            resultTitle.classList.remove('fail-color');
+            resultTitle.classList.add('pass-color');
+            iconDiv.innerHTML = '<i class="far fa-smile pass-color"></i>';
+        } else {
+            messageDiv.classList.remove('alert-success');
+            messageDiv.classList.add('alert-danger');
+            messageDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i> Keep practicing! You need ${requiredScore} to pass.`;
+            resultTitle.classList.remove('pass-color');
+            resultTitle.classList.add('fail-color');
+            iconDiv.innerHTML = '<i class="far fa-frown fail-color"></i>';
+        }
+
+        generateRecommendations(passed);
+    }
+    
+    function generateRecommendations(passed) {
+        const recList = document.getElementById('recommendations-list');
+        recList.innerHTML = '';
+        
+        // 1. Focus on weakest areas (by focus area)
+        let weakestAreas = Object.entries(focusAreas)
+            .filter(([, data]) => data.total > 0 && (data.correct / data.total) < 1.0) // Only show areas with incorrect answers
+            .sort(([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total));
+
+        if (weakestAreas.length > 0) {
+            recList.innerHTML += `<li><strong><i class="fas fa-crosshairs me-1"></i> Priority Focus Areas:</strong>`;
+            weakestAreas.slice(0, 5).forEach(([focus, data]) => { // Show up to 5 weakest
+                const acc = (data.correct / data.total) * 100;
+                recList.innerHTML += `<p class="ms-3 mb-1 text-danger"><i class="fas fa-minus-circle me-1"></i> ${focus}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+            });
+            recList.innerHTML += `</li>`;
+        } else {
+             recList.innerHTML += `<li><strong><i class="fas fa-check-double me-1"></i> Priority Focus Areas:</strong> Excellent work! You answered all questions correctly in this section.</li>`;
+        }
+
+        // 2. Chapter Breakdown
+        recList.innerHTML += `<li><strong><i class="fas fa-book-open me-1"></i> Chapter Breakdown:</strong>`;
+        for (const [chapter, data] of Object.entries(chapterScores)) {
+            const acc = data.total > 0 ? (data.correct / data.total) * 100 : 0;
+            const style = acc < 70 ? 'text-danger' : acc < 90 ? 'text-warning' : 'text-success';
+            recList.innerHTML += `<p class="ms-3 mb-1 ${style}"><i class="fas fa-angle-right me-1"></i> ${chapter}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+        }
+        recList.innerHTML += `</li>`;
+        
+        // 3. Final Recommendation & Next Steps
+        const finalRec = passed 
+            ? "You have a strong understanding of Planning, Control, Risk, and Governance. Review your 'Priority Focus Areas' to eliminate any weak spots before the final exam."
+            : "Based on the results, we strongly recommend re-studying the 'Priority Focus Areas'. Focus on the core control mechanisms (Fixed Time/Flexed Scope), Risk Management strategies (PAQ and Responses), and the ownership/purpose of the key AgilePM Products (FD, PRL, PRR).";
+
+        recList.innerHTML += `<li><strong><i class="fas fa-brain me-1"></i> Next Steps Recommendation:</strong> ${finalRec}</li>`;
+    }
+
+</script>
+</body>
+</html>

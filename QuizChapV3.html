@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM v3 Foundation Quiz: Chapters 7-9 (40 Questions)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --background-light: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--background-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin-top: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-card {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f0f4f7;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+        }
+
+        .option-label:hover {
+            background-color: #dae0e5;
+            border-color: #c0c7cf;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        /* Feedback Styling */
+        .feedback-area {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .correct-feedback {
+            background-color: #e6ffed; /* Light green */
+            border-left: 5px solid var(--success-color);
+        }
+
+        .incorrect-feedback {
+            background-color: #ffe6e6; /* Light red */
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .rationale-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .tip-badge {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .progress-bar-striped {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .btn-check-answer {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: background-color 0.3s;
+        }
+        
+        .btn-check-answer:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-next-question {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-next-question:hover {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Result Section Styling */
+        .result-box {
+            background: var(--background-light);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pass-color { color: var(--success-color); }
+        .fail-color { color: var(--danger-color); }
+        
+        .recommendation-list li {
+            margin-bottom: 10px;
+            padding-left: 0;
+            list-style-type: none;
+        }
+        
+        .recommendation-list li::before {
+            content: "\f058"; /* Font Awesome check-circle */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container quiz-container mb-5">
+    <h1 class="text-center mb-4 text-primary"><i class="fas fa-chart-line me-2"></i>AgilePM® v3 Foundation Quiz</h1>
+    <p class="text-center text-secondary mb-5">Chapters 7-9: Process Framework; Defining & Estimating Work; MoSCoW Prioritization. You need 80% (32/40) to pass!</p>
+
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h5 class="mb-2">Progress: <span id="progress-text">1/40</span></h5>
+            <div class="progress" style="height: 25px;">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <h5 class="mb-0">Current Score: <span id="current-score" class="badge bg-primary">0/40</span></h5>
+        </div>
+    </div>
+
+    <div id="quiz-area">
+        </div>
+
+    <div id="result-area" class="result-box text-center" style="display: none;">
+        <h2 id="result-title" class="mb-4">Quiz Complete!</h2>
+        <div id="result-icon" class="mb-4" style="font-size: 4rem;"></div>
+        <p class="fs-4">Your Final Score: <span id="final-score" class="badge bg-primary fs-4">0/40</span></p>
+        <p class="fs-5">Percentage: <span id="final-percentage" class="fw-bold">0%</span></p>
+        
+        <div id="pass-fail-message" class="alert fs-5 fw-bold mt-4 p-3"></div>
+
+        <h4 class="mt-5 text-start text-primary">Recommendations & Focus Areas:</h4>
+        <ul id="recommendations-list" class="text-start recommendation-list ps-0">
+            </ul>
+        
+        <button class="btn btn-primary mt-4" onclick="location.reload();"><i class="fas fa-redo me-2"></i>Retake Quiz</button>
+    </div>
+
+    <div id="noSelectionAlert" class="alert alert-warning text-center mt-4" style="display: none;">
+        <i class="fas fa-exclamation-triangle me-2"></i> Please select an option before checking the answer!
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // --- Chapter 7: Process Framework and the Project Lifecycle (14 Questions) ---
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "Which of the following activities is performed during the **Foundations** phase?",
+            options: [
+                { text: "Transitioning the final solution to the live environment.", isCorrect: false, rationale: "This is done in the Deployment phase." },
+                { text: "Defining the scope, high-level requirements (PRL), solution architecture, and detailed plan (Foundation Summary).", isCorrect: true, rationale: "Foundations focuses on establishing the 'firm foundations' needed for evolutionary development, which includes planning, architecture, and the initial PRL." },
+                { text: "Reviewing the benefits realized 6 months after deployment.", isCorrect: false, rationale: "This is done in the Post-Project phase (Benefit Assessment)." },
+                { text: "Creating the first working Solution Increment.", isCorrect: false, rationale: "This is done in Evolutionary Development." }
+            ],
+            tip: "Good Practice: Foundations is the 'How' and 'What' at a high level; it defines the scope and strategy.",
+            focus: "Ch 7: Foundations Phase."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "What is the primary objective of the **Timebox Kick-off** meeting?",
+            options: [
+                { text: "To formally accept the deliverables from the previous Timebox.", isCorrect: false, rationale: "This is the Close-out activity." },
+                { text: "To allocate specific tasks to individual Solution Developers.", isCorrect: false, rationale: "The team self-organizes during Refinement." },
+                { text: "To agree on the detailed objective, scope (MoSCoW list), and acceptance criteria for the upcoming Timebox.", isCorrect: true, rationale: "The Kick-off ensures all Development Team members and the Business Ambassador share a common, clear goal for the Timebox." },
+                { text: "To perform a review of the team's process for continuous improvement.", isCorrect: false, rationale: "This is the Retrospective." }
+            ],
+            tip: "Good Practice: A clear Kick-off ensures alignment with the principle of 'Focus on the Business Need'.",
+            focus: "Ch 7: Timebox Kick-off."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "The **Evolutionary Development** phase is characterized by a continuous cycle of which three activities?",
+            options: [
+                { text: "Feasibility, Foundations, Deployment.", isCorrect: false, rationale: "These are project phases, not internal development activities." },
+                { text: "Investigate, Refine, Consolidate.", isCorrect: true, rationale: "These three activities form the heart of the iterative Timebox cycle, ensuring continuous investigation of requirements, refinement (design/build), and consolidation (testing/review)." },
+                { text: "Pre-Project, Kick-off, Close-out.", isCorrect: false, rationale: "These are phases and timebox boundaries." },
+                { text: "Prioritise, Design, Test.", isCorrect: false, rationale: "Prioritisation is primarily a Foundations/Kick-off activity." }
+            ],
+            tip: "Tip: The Timebox contains the Investigate-Refine-Consolidate loop.",
+            focus: "Ch 7: Timebox Activities."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "During the **Timebox Refinement** (Design and Build) activity, which principle is most critical to adhere to?",
+            options: [
+                { text: "Develop Iteratively.", isCorrect: false, rationale: "This is the overall approach, not specific to Refinement." },
+                { text: "Never Compromise Quality.", isCorrect: true, rationale: "Quality must be built in (design standards, technical excellence) and checked immediately during Refinement. Quality is fixed, non-negotiable." },
+                { text: "Collaborate.", isCorrect: false, rationale: "Collaboration is continuous, not just in Refinement." },
+                { text: "Focus on the Business Need.", isCorrect: false, rationale: "This guides the overall project." }
+            ],
+            tip: "Good Practice: Quality is built in during Refinement and confirmed during Consolidate.",
+            focus: "Ch 7: Timebox Refinement."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "What is the key deliverable of the **Deployment** phase?",
+            options: [
+                { text: "The fully approved Foundation Summary.", isCorrect: false, rationale: "Foundation Summary is from Foundations." },
+                { text: "The final, integrated **Solution Increment** accepted by the Business Ambassador and ready for live use.", isCorrect: true, rationale: "The Solution Increment is the working product delivered from Evolutionary Development; Deployment handles the transition into the live environment." },
+                { text: "The initial Business Case and Project Approach Questionnaire (PAQ).", isCorrect: false, rationale: "These are from Feasibility." },
+                { text: "The Benefit Assessment Report.", isCorrect: false, rationale: "This is from Post-Project." }
+            ],
+            tip: "Tip: Deployment is the handover to the live business environment.",
+            focus: "Ch 7: Deployment Phase."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "The **Project Approach Questionnaire (PAQ)** is a key activity within which AgilePM phase?",
+            options: [
+                { text: "Pre-Project.", isCorrect: false, rationale: "Pre-Project is mainly authorization." },
+                { text: "Feasibility.", isCorrect: true, rationale: "The PAQ is used in Feasibility to determine the suitability of the DSDM/AgilePM approach for the project, based on people, process, and environment factors." },
+                { text: "Evolutionary Development.", isCorrect: false, rationale: "This phase focuses on building." },
+                { text: "Post-Project.", isCorrect: false, rationale: "This phase focuses on benefits review." }
+            ],
+            tip: "Tip: PAQ helps answer: 'Can we do this project with AgilePM?'",
+            focus: "Ch 7: Feasibility Phase."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "The **Timebox Close-out** involves two key actions. What are they?",
+            options: [
+                { text: "Reviewing the plan for the next Timebox and updating the Business Case.", isCorrect: false, rationale: "Next Timebox planning is part of Foundations/next Kick-off." },
+                { text: "Reviewing the working product (Review) and analyzing the process (Retrospective).", isCorrect: true, rationale: "The Close-out ensures product acceptance (Review/Demonstration) and continuous process improvement (Retrospective)." },
+                { text: "Final unit testing and handing the code to the Technical Coordinator.", isCorrect: false, rationale: "Testing is part of Refinement/Consolidate." },
+                { text: "Gaining budget approval and confirming the team roles.", isCorrect: false, rationale: "This is Foundations." }
+            ],
+            tip: "Tip: Review (Product) + Retrospective (Process) = Close-out.",
+            focus: "Ch 7: Timebox Close-out."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "What is the **Business View** of the **Foundation Summary** intended to define?",
+            options: [
+                { text: "The high-level technical architecture and security requirements.", isCorrect: false, rationale: "This is the Technical View." },
+                { text: "The approach to quality assurance and testing.", isCorrect: false, rationale: "This is the Management View." },
+                { text: "The initial set of high-level requirements (PRL), scope, and acceptance criteria from a business perspective.", isCorrect: true, rationale: "The Business View sets the scope and defines the high-level needs and how they will be accepted by the business." },
+                { text: "The detailed task estimates for the first Timebox.", isCorrect: false, rationale: "This is part of the first Timebox Kick-off." }
+            ],
+            tip: "Tip: The Foundation Summary has Business, Technical, and Management views.",
+            focus: "Ch 7: Foundation Summary Views."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "The **Post-Project** phase has one primary focus. What is it?",
+            options: [
+                { text: "Training all end-users on the new system.", isCorrect: false, rationale: "This is done during Deployment." },
+                { text: "Defining the next project's Business Case.", isCorrect: false, rationale: "This is done in the next Pre-Project phase." },
+                { text: "Measuring the **Benefit Realization** achieved against the Business Case expectations.", isCorrect: true, rationale: "The Post-Project phase's sole purpose is to formally check if the predicted business benefits were actually achieved." },
+                { text: "Completing all remaining 'Could Have' requirements.", isCorrect: false, rationale: "The project ends before Post-Project." }
+            ],
+            tip: "Tip: Post-Project confirms the value delivered.",
+            focus: "Ch 7: Post-Project Phase."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "Within a Timebox, the **Consolidate** activity primarily focuses on which aspect?",
+            options: [
+                { text: "Detailed technical design and modeling.", isCorrect: false, rationale: "This is part of Investigate/Refine." },
+                { text: "Testing the built solution and incorporating it into the working Solution Increment.", isCorrect: true, rationale: "Consolidate involves integrating, testing (unit, system, sometimes acceptance), and gaining approval/sign-off on the built features." },
+                { text: "Writing the high-level business requirements.", isCorrect: false, rationale: "This is Foundations." },
+                { text: "Defining the project governance structure.", isCorrect: false, rationale: "This is Foundations/Management View." }
+            ],
+            tip: "Tip: Consolidate is about **Quality Assurance** and integration.",
+            focus: "Ch 7: Timebox Consolidate."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "What is the main risk mitigated by the iterative and incremental nature of the **Evolutionary Development** phase?",
+            options: [
+                { text: "The risk that the Project Manager leaves the project.", isCorrect: false, rationale: "This is a personnel risk." },
+                { text: "The risk of technical debt from non-functional requirements.", isCorrect: false, rationale: "Mitigated by 'Never Compromise Quality'." },
+                { text: "The risk of delivering a solution that is too late or does not meet the actual business need.", isCorrect: true, rationale: "By continuously demonstrating working software and gathering feedback, the team mitigates the risk of misunderstanding requirements or delays (principle 'Deliver on Time')." },
+                { text: "The risk that the Business Sponsor stops funding.", isCorrect: false, rationale: "This is a governance risk." }
+            ],
+            tip: "Tip: Early delivery of business value minimizes the risk of failure and ensures fitness for purpose.",
+            focus: "Ch 7: Evolutionary Development Risk Mitigation."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "How long should a standard AgilePM Timebox typically last?",
+            options: [
+                { text: "Less than 5 days (one week).", isCorrect: false, rationale: "Too short for significant incremental delivery." },
+                { text: "Between 2 and 4 weeks.", isCorrect: true, rationale: "This is the ideal fixed length to achieve tangible results, manage risk, and provide a rhythm (cadence) to the project." },
+                { text: "Exactly 6 weeks.", isCorrect: false, rationale: "Too long for optimal agility and feedback." },
+                { text: "As long as necessary to complete all tasks, as scope is fixed.", isCorrect: false, rationale: "Time is fixed, not scope, in AgilePM." }
+            ],
+            tip: "Tip: The fixed timebox length enforces prioritization.",
+            focus: "Ch 7: Timebox Length."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "What is the key criterion that determines the success of the **Foundations** phase?",
+            options: [
+                { text: "All 'Should Have' requirements are fully documented.", isCorrect: false, rationale: "Only high-level requirements are documented in Foundations." },
+                { text: "The Development Team successfully completes a prototype.", isCorrect: false, rationale: "Prototyping is part of Evolutionary Development." },
+                { text: "There is an agreement on the scope, strategy, and architecture, allowing the Development Team to start building safely.", isCorrect: true, rationale: "Foundations is successful when the Foundation Summary is approved, providing the necessary boundaries and guidance for the subsequent development." },
+                { text: "The Project Manager is appointed and the budget is signed off.", isCorrect: false, rationale: "This is Pre-Project/Feasibility." }
+            ],
+            tip: "Tip: Foundations gives the Development Team a **'Licence to Operate'**.",
+            focus: "Ch 7: Foundations Success Criteria."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "Which product is specifically used by the Project Manager to track progress and report to the Business Sponsor throughout the Evolutionary Development phase?",
+            options: [
+                { text: "Requirements Checklist", isCorrect: false, rationale: "Internal team tool." },
+                { text: "Timebox Review Record", isCorrect: true, rationale: "The Timebox Review Record provides objective evidence of the work completed and accepted by the business in each timebox, making it the primary progress tracking tool for the PM." },
+                { text: "Solution Increment", isCorrect: false, rationale: "This is the working software, not the report." },
+                { text: "Benefit Assessment Report", isCorrect: false, rationale: "This is Post-Project." }
+            ],
+            tip: "Tip: The Timebox Review Record provides the essential objective control mechanism.",
+            focus: "Ch 7: Progress Tracking Product."
+        },
+
+        // --- Chapter 8: Defining and Estimating the Work of the Project (13 Questions) ---
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "Which level of the requirements hierarchy corresponds to the **Business Requirements** (High-level business needs and scope)?",
+            options: [
+                { text: "Level 3: Detailed Requirements (e.g., User Stories).", isCorrect: false, rationale: "This is the lowest level of detail." },
+                { text: "Level 1: Goal-Setting (e.g., Business Case, Vision).", isCorrect: true, rationale: "Level 1 is the highest level, defining the overall purpose and business needs of the project." },
+                { text: "Level 2: System Requirements (e.g., Functional/Non-functional).", isCorrect: false, rationale: "This is the mid-level, detailing *what* the system must do." },
+                { text: "Level 0: MoSCoW Prioritization.", isCorrect: false, rationale: "MoSCoW is a technique, not a level." }
+            ],
+            tip: "Tip: Requirements are decomposed from Level 1 (Vision) down to Level 3 (Detail).",
+            focus: "Ch 8: Requirements Hierarchy Level 1."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "A requirement stating **'The system must be available 99.9% of the time'** is an example of which type of requirement?",
+            options: [
+                { text: "Functional Requirement.", isCorrect: false, rationale: "Functional requirements describe *what* the system does (features)." },
+                { text: "Non-Functional Requirement (NFR).", isCorrect: true, rationale: "NFRs define the quality, constraint, or performance characteristics of the solution, such as reliability, security, or usability." },
+                { text: "Business Requirement.", isCorrect: false, rationale: "This is too detailed for a high-level business requirement." },
+                { text: "Detailed Requirement.", isCorrect: true, rationale: "While it is detailed, 'Non-Functional Requirement' is the best technical classification." }
+            ],
+            tip: "Good Practice: NFRs are crucial and must be fixed ('Never Compromise Quality').",
+            focus: "Ch 8: Non-Functional Requirements (NFRs)."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "In AgilePM, the **Solution Increment** is primarily the outcome of which set of requirements?",
+            options: [
+                { text: "Only the Business Requirements (Level 1).", isCorrect: false, rationale: "The increment includes detail." },
+                { text: "The set of **Detailed Requirements** (Level 3) that are designed, built, and tested within a Timebox.", isCorrect: true, rationale: "The Solution Increment is the working product, which is the physical realization of the detailed (Level 3) requirements completed in the iterative cycle." },
+                { text: "The Non-Functional Requirements only.", isCorrect: false, rationale: "The increment includes both functional and non-functional aspects." },
+                { text: "All 'Won't Have This Time' requirements.", isCorrect: false, rationale: "These are explicitly excluded." }
+            ],
+            tip: "Tip: Detailed requirements are the building blocks of the working software.",
+            focus: "Ch 8: Solution Increment relationship to Requirements."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "Which estimation technique is a group-based, iterative method that involves anonymous voting to avoid anchoring and bias?",
+            options: [
+                { text: "Affinity Mapping.", isCorrect: false, rationale: "Affinity Mapping is for grouping requirements." },
+                { text: "Wideband Delphi (WBD).", isCorrect: false, rationale: "WBD involves structured feedback rounds but is less focused on anonymity than the planning technique." },
+                { text: "Planning Poker.", isCorrect: true, rationale: "Planning Poker uses Fibonacci numbers and simultaneous card selection to promote consensus and prevent individuals from influencing others' estimates." },
+                { text: "Function Point Analysis.", isCorrect: false, rationale: "This is a fixed, metric-based technique." }
+            ],
+            tip: "Good Practice: Planning Poker is a highly collaborative and popular estimation method in agile.",
+            focus: "Ch 8: Estimation Technique: Planning Poker."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "The AgilePM approach encourages the **Progressive Elaboration** of requirements. When are the most detailed requirements typically defined?",
+            options: [
+                { text: "All detailed requirements must be defined and signed off in the Feasibility phase.", isCorrect: false, rationale: "This is a waterfall approach." },
+                { text: "Only in the Post-Project phase.", isCorrect: false, rationale: "Too late." },
+                { text: "Immediately before they are worked on, during the **Investigate** activity of the Timebox.", isCorrect: true, rationale: "Progressive Elaboration means requirements are detailed just-in-time, when the business context is freshest and technical knowledge is highest, during the Timebox's Investigate phase." },
+                { text: "In the Foundations phase, to ensure the entire scope is covered.", isCorrect: false, rationale: "Foundations covers high-level only." }
+            ],
+            tip: "Tip: Define just enough, just in time (JIT).",
+            focus: "Ch 8: Progressive Elaboration."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "What is the key difference between estimating the **Effort** and estimating the **Size** of a requirement?",
+            options: [
+                { text: "Effort is always measured in days; Size is always measured in Story Points.", isCorrect: false, rationale: "Effort can be in person-hours/days." },
+                { text: "Effort is independent of the team's ability; Size includes team skill.", isCorrect: false, rationale: "Effort includes team ability; Size is relative complexity." },
+                { text: "Size is a measure of relative complexity/volume; Effort is the time/resources required (which depends on the team's Velocity).", isCorrect: true, rationale: "Size (e.g., Story Points) is a stable estimate of the item's complexity. Effort (e.g., person-days) is the variable time needed, calculated by applying the team's known Velocity to the Size." },
+                { text: "There is no difference; the terms are interchangeable.", isCorrect: false, rationale: "They are distinct concepts in AgilePM." }
+            ],
+            tip: "Tip: Estimate **Size** first, then calculate **Effort** based on Velocity.",
+            focus: "Ch 8: Size vs. Effort Estimation."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "Which role is primarily responsible for ensuring the requirements are clear, consistent, and correctly prioritized for the Development Team?",
+            options: [
+                { text: "Project Manager.", isCorrect: false, rationale: "The PM manages the process." },
+                { text: "Technical Coordinator.", isCorrect: false, rationale: "The TC focuses on technical quality." },
+                { text: "Business Analyst / Business Ambassador.", isCorrect: true, rationale: "The BA/Ambassador is the primary owner and interpreter of the business requirements." },
+                { text: "Solution Developer.", isCorrect: false, rationale: "The Developer builds based on the requirements." }
+            ],
+            tip: "Tip: The BA/Ambassador is the 'Voice of the Customer' for requirements detail.",
+            focus: "Ch 8: Requirements Ownership."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "When decomposing requirements, what should be the fundamental unit of work selected for a Timebox?",
+            options: [
+                { text: "An entire Functional Requirement (Level 2).", isCorrect: false, rationale: "Too large for a single timebox." },
+                { text: "A **Detailed Requirement** (e.g., a User Story), that can be fully delivered and tested within a Timebox.", isCorrect: true, rationale: "Detailed Requirements/User Stories are small enough to be completed and provide a tangible, tested increment in a short time frame." },
+                { text: "The overall Project Vision (Level 1).", isCorrect: false, rationale: "Too high-level." },
+                { text: "A Non-Functional Requirement (NFR).", isCorrect: false, rationale: "NFRs are typically applied across many functional items." }
+            ],
+            tip: "Good Practice: Detailed requirements/User Stories maximize flexibility and feedback.",
+            focus: "Ch 8: Unit of Work for Timebox."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "The technique of **Timeboxing** itself is a form of estimation control. What does it control?",
+            options: [
+                { text: "The financial budget.", isCorrect: false, rationale: "Cost is fixed by resources, not timeboxing itself." },
+                { text: "The quality of the final product.", isCorrect: false, rationale: "Quality is fixed." },
+                { text: "The **Effort** (time) applied to a set of work.", isCorrect: true, rationale: "By fixing the time, Timeboxing ensures that work expands only to fill the available time, forcing a focus on the most important (prioritized) features." },
+                { text: "The number of stakeholders involved.", isCorrect: false, rationale: "Stakeholder count is managed by the PM." }
+            ],
+            tip: "Tip: Fixed timeboxes mitigate the risk of estimation inaccuracies.",
+            focus: "Ch 8: Timeboxing as Estimation Control."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "What is the primary risk associated with defining requirements too early in detail (over-detailing)?",
+            options: [
+                { text: "The Project Manager will leave due to burnout.", isCorrect: false, rationale: "Personnel issue." },
+                { text: "The detailed design will be ignored because the context has changed before development begins.", isCorrect: true, rationale: "Detailed requirements often change over time; defining them too early results in wasted effort (rework) and a lack of agility." },
+                { text: "The Business Sponsor will reject the project.", isCorrect: false, rationale: "Sponsor is high-level." },
+                { text: "The Technical Coordinator will not approve the architecture.", isCorrect: false, rationale: "TC is involved early on." }
+            ],
+            tip: "Tip: Progressive Elaboration ('just in time') combats this risk.",
+            focus: "Ch 8: Risk of Over-Detailing."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "Requirements that detail *what* the system does (e.g., 'The system must allow a user to reset their password') are known as:",
+            options: [
+                { text: "Non-Functional Requirements.", isCorrect: false, rationale: "NFRs define *how well* the system performs." },
+                { text: "Functional Requirements.", isCorrect: true, rationale: "Functional requirements describe the specific actions, operations, or functions that the system or product must perform." },
+                { text: "Management Requirements.", isCorrect: false, rationale: "Management requirements cover governance." },
+                { text: "Project Requirements.", isCorrect: false, rationale: "Project requirements cover external constraints." }
+            ],
+            tip: "Tip: Functional = The system *does* X. Non-Functional = The system *is* Y (fast, secure, reliable).",
+            focus: "Ch 8: Functional Requirements."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "In the context of **Estimating and Planning**, AgilePM prioritizes high-level estimates based on what, during the Foundations phase?",
+            options: [
+                { text: "Detailed task breakdowns for all requirements.", isCorrect: false, rationale: "Detail is postponed." },
+                { text: "The number of full-time developers available.", isCorrect: false, rationale: "This is a fixed constraint, not the basis for planning." },
+                { text: "Estimates based on **Size/Complexity** (e.g., Story Points) of the high-level requirements in the PRL.", isCorrect: true, rationale: "High-level estimates (often using Story Points or relative sizing) are used to scope the project and determine the number of Timeboxes required." },
+                { text: "The exact cost of all software licenses.", isCorrect: false, rationale: "This is an input to Cost, not the core planning activity." }
+            ],
+            tip: "Tip: Planning is iterative and based on high-level size in Foundations.",
+            focus: "Ch 8: High-level Planning."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "Which requirements elicitation technique is specifically recommended for complex or contentious requirements where visual understanding is critical?",
+            options: [
+                { text: "Interviews.", isCorrect: false, rationale: "Interviews are one-on-one and less visual." },
+                { text: "Questionnaires.", isCorrect: false, rationale: "Questionnaires are lean communication." },
+                { text: "Prototyping and Modeling.", isCorrect: true, rationale: "These techniques create visual artifacts (models or working mock-ups) that facilitate common understanding and rapid feedback, essential for complexity." },
+                { text: "Daily Stand-ups.", isCorrect: false, rationale: "Stand-ups are for progress tracking." }
+            ],
+            tip: "Tip: Prototyping supports 'Communicate Continuously and Clearly'.",
+            focus: "Ch 8: Elicitation Technique: Prototyping."
+        },
+
+        // --- Chapter 9: MoSCoW Prioritization (13 Questions) ---
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "Which MoSCoW category represents requirements that are **essential** and, if not delivered, the project delivery is deemed a failure?",
+            options: [
+                { text: "Should Have (S).", isCorrect: false, rationale: "Should Haves are important but negotiable." },
+                { text: "Must Have (M).", isCorrect: true, rationale: "Must Haves define the Minimum Usable SubseT (MUST) and are non-negotiable for a viable product." },
+                { text: "Could Have (C).", isCorrect: false, rationale: "Could Haves are desirable but low-impact." },
+                { text: "Won't Have This Time (W).", isCorrect: false, rationale: "Won't Haves are out of scope." }
+            ],
+            tip: "Tip: The 'M' requirements define the core value proposition.",
+            focus: "Ch 9: MoSCoW: Must Have."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "Which two MoSCoW categories are considered **negotiable** if time or resources become severely constrained?",
+            options: [
+                { text: "Must Have and Should Have.", isCorrect: false, rationale: "Must Have is non-negotiable." },
+                { text: "Must Have and Could Have.", isCorrect: false, rationale: "Must Have is non-negotiable." },
+                { text: "Should Have and Could Have.", isCorrect: true, rationale: "Should and Could Haves are the primary buffer/flexibility mechanisms used to meet the fixed deadlines." },
+                { text: "Could Have and Won't Have.", isCorrect: false, rationale: "Won't Have is already excluded." }
+            ],
+            tip: "Good Practice: Negotiating the scope of 'S' and 'C' is the control mechanism for 'Deliver on Time'.",
+            focus: "Ch 9: MoSCoW Negotiable Categories."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "What is the recommended maximum percentage of **Must Have** requirements in the total scope of a delivery timebox?",
+            options: [
+                { text: "No more than 20% to allow for flexibility.", isCorrect: false, rationale: "Too restrictive for a viable product." },
+                { text: "No more than **60%** to ensure there is a realistic buffer of 'Should' and 'Could' Haves for scope flexibility.", isCorrect: true, rationale: "The 60% rule (often 60/40/20 or similar breakdown for M/S/C) is a guideline to ensure the timebox has sufficient capacity buffer (Should/Could Haves) to guarantee the 'Must Haves' are completed on time." },
+                { text: "100% since all Must Haves define the product.", isCorrect: false, rationale: "This creates an unacceptable delivery risk." },
+                { text: "The team's velocity determines the maximum.", isCorrect: false, rationale: "The percentage is a risk-based guideline." }
+            ],
+            tip: "Tip: The 60% rule provides a critical safety buffer.",
+            focus: "Ch 9: MoSCoW 60% Rule (M)."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "A requirement marked as **Won't Have This Time (W)** signifies what?",
+            options: [
+                { text: "The requirement will never be built.", isCorrect: false, rationale: "It might be built in a future increment/project." },
+                { text: "The requirement is non-essential and will be delivered only if there is significant surplus time.", isCorrect: false, rationale: "This describes 'Could Have'." },
+                { text: "The requirement is out of scope for the current delivery period but is formally recorded for potential future development.", isCorrect: true, rationale: "The 'W' category manages stakeholder expectations by recording the requirement while clearly stating it will not be delivered now." },
+                { text: "The requirement must be converted into a Non-Functional Requirement.", isCorrect: false, rationale: "MoSCoW is for all requirement types." }
+            ],
+            tip: "Tip: 'W' is a powerful communication tool for managing expectations.",
+            focus: "Ch 9: MoSCoW: Won't Have."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "If a Timebox falls behind schedule, which is the **first** MoSCoW category the Team Leader should consider dropping to meet the deadline?",
+            options: [
+                { text: "Must Have.", isCorrect: false, rationale: "Never compromise 'Must Have' or Quality." },
+                { text: "Should Have.", isCorrect: false, rationale: "Should Haves are important; 'Could Have' provides the most immediate buffer." },
+                { text: "Could Have.", isCorrect: true, rationale: "'Could Haves' provide the smallest relative business benefit and are the easiest and fastest scope element to drop or defer, thus providing the primary safety buffer." },
+                { text: "Won't Have.", isCorrect: false, rationale: "Won't Haves are already out of scope." }
+            ],
+            tip: "Good Practice: 'C' is the first layer of defense, then 'S' if necessary.",
+            focus: "Ch 9: MoSCoW Compromise Rule."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "Which MoSCoW category represents a requirement that is **important** and often has a simple workaround if not delivered, but still provides significant value?",
+            options: [
+                { text: "Must Have.", isCorrect: false, rationale: "Must Haves have no simple workaround." },
+                { text: "Should Have (S).", isCorrect: true, rationale: "Should Haves are important, but the business can still operate (with some temporary hardship/workaround) if they are postponed." },
+                { text: "Could Have.", isCorrect: false, rationale: "Could Haves have minimal impact." },
+                { text: "Non-Functional.", isCorrect: false, rationale: "NFRs are usually 'Must Have' for quality." }
+            ],
+            tip: "Tip: The existence of a temporary workaround often defines a 'Should Have'.",
+            focus: "Ch 9: MoSCoW: Should Have."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "MoSCoW Prioritization is applied **continuously**. At what point in the project lifecycle is the first high-level MoSCoW applied to the Prioritised Requirements List (PRL)?",
+            options: [
+                { text: "During the Pre-Project phase.", isCorrect: false, rationale: "Too early, requirements are too vague." },
+                { text: "During the **Foundations** phase.", isCorrect: true, rationale: "MoSCoW is first applied in Foundations to define the high-level scope and estimate the number of Timeboxes required." },
+                { text: "During the first Timebox Kick-off.", isCorrect: false, rationale: "The kick-off applies MoSCoW at the detailed level for that Timebox." },
+                { text: "Only at the end of the Evolutionary Development phase.", isCorrect: false, rationale: "Too late for planning." }
+            ],
+            tip: "Tip: High-level MoSCoW (Foundations) feeds into the low-level MoSCoW (Timebox Kick-off).",
+            focus: "Ch 9: MoSCoW Application in Foundations."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "If a requirement is tagged as a **Must Have**, who must be consulted to confirm that this status is justified and non-negotiable?",
+            options: [
+                { text: "The Solution Developer.", isCorrect: false, rationale: "Developer handles technical feasibility." },
+                { text: "The Technical Coordinator.", isCorrect: false, rationale: "TC handles technical quality." },
+                { text: "The **Business Visionary** and **Business Sponsor**.", isCorrect: true, rationale: "The Visionary and Sponsor define the overall business goals and are the ultimate authorities on what is truly critical for the project's viability." },
+                { text: "The Solution Tester.", isCorrect: false, rationale: "Tester handles quality confirmation." }
+            ],
+            tip: "Good Practice: 'Must Haves' are a high-level business commitment.",
+            focus: "Ch 9: MoSCoW: Must Have Authority."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "The MoSCoW technique directly supports which of the following DSDM Principles?",
+            options: [
+                { text: "Never Compromise Quality.", isCorrect: false, rationale: "Quality is fixed; MoSCoW manages scope." },
+                { text: "Focus on the Business Need.", isCorrect: false, rationale: "This is the 'why'." },
+                { text: "**Deliver on Time**.", isCorrect: true, rationale: "By managing scope through prioritization, MoSCoW provides the flexibility necessary to guarantee the delivery of the most important features (Must Haves) by the fixed deadline." },
+                { text: "Collaborate.", isCorrect: false, rationale: "Collaboration is about working together." }
+            ],
+            tip: "Tip: MoSCoW is the essential tool for managing the fixed time constraint.",
+            focus: "Ch 9: MoSCoW relationship to Principles."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "When applying MoSCoW, the goal is always to deliver **100%** of which three categories combined?",
+            options: [
+                { text: "Must Have, Should Have, and Won't Have.", isCorrect: false, rationale: "Won't Have is excluded." },
+                { text: "Must Have, Should Have, and **Could Have**.", isCorrect: true, rationale: "The total target scope for the project or timebox is the combination of M, S, and C requirements (the 'target 100%')." },
+                { text: "Functional, Non-Functional, and Business.", isCorrect: false, rationale: "These are types, not categories." },
+                { text: "Must Have and Should Have only.", isCorrect: false, rationale: "Could Haves are part of the target." }
+            ],
+            tip: "Tip: The 'W' is outside the target scope.",
+            focus: "Ch 9: MoSCoW Target Scope."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "If a requirement is defined as a **Could Have**, what should be its expected impact on the project if it is not delivered?",
+            options: [
+                { text: "The project will fail immediately.", isCorrect: false, rationale: "This is a Must Have impact." },
+                { text: "There will be a major, negative operational impact.", isCorrect: false, rationale: "This is a Should Have impact." },
+                { text: "There will be **little or no impact** on the final success of the project, but the delivered solution will be less refined.", isCorrect: true, rationale: "Could Haves are the 'nice-to-haves' or 'frills' that add marginal value but are the easiest to defer." },
+                { text: "The quality standard will be compromised.", isCorrect: false, rationale: "Quality is fixed." }
+            ],
+            tip: "Tip: 'C' = Low-priority, desirable enhancements.",
+            focus: "Ch 9: MoSCoW: Could Have Impact."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "A risk mitigation technique related to MoSCoW is the concept of a **Timebox Buffer**. How is the buffer created?",
+            options: [
+                { text: "By assigning all 'Must Have' requirements to the end of the timebox.", isCorrect: false, rationale: "Must Haves should be done early." },
+                { text: "By ensuring that **Should Have** and **Could Have** requirements are included in the Timebox, providing scope flexibility to protect the Must Haves.", isCorrect: true, rationale: "The 'S' and 'C' requirements act as the scope buffer. If the timebox runs out, these can be dropped to protect the delivery of the 'M' requirements." },
+                { text: "By dedicating 20% of the team's time to process improvement.", isCorrect: false, rationale: "This is a retrospective/process item." },
+                { text: "By using Planning Poker for all task estimation.", isCorrect: false, rationale: "Planning Poker is an estimation tool." }
+            ],
+            tip: "Good Practice: The buffer is scope, not time.",
+            focus: "Ch 9: Timebox Buffer."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "If the Project Manager and Business Sponsor decide a 'Should Have' requirement is absolutely critical for the success of the current timebox, what is the best course of action?",
+            options: [
+                { text: "Keep it as a 'Should Have' but allocate extra time to it.", isCorrect: false, rationale: "Time is fixed." },
+                { text: "Immediately move the requirement from 'Should Have' to **'Must Have'** and inform stakeholders of the increased delivery risk.", isCorrect: true, rationale: "If an 'S' requirement is genuinely critical, it should be reclassified as an 'M', but this increases the pressure on the team and reduces the scope buffer." },
+                { text: "Defer it to the next Timebox, regardless of its importance.", isCorrect: false, rationale: "Ignores the importance." },
+                { text: "Compromise on the quality of a 'Must Have' to fit the 'Should Have' in.", isCorrect: false, rationale: "Never compromise Quality or Must Haves." }
+            ],
+            tip: "Tip: Reclassification is a major decision that must be carefully justified.",
+            focus: "Ch 9: MoSCoW Reclassification."
+        },
+        
+        // --- Remaining 10 Questions (Mixed Focus) ---
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "Which document provides the Project Manager with the authority to proceed with the entire project after the initial scoping and planning are complete?",
+            options: [
+                { text: "The Business Case.", isCorrect: false, rationale: "The Business Case justifies the *need*." },
+                { text: "The **Foundation Summary (FD)**, signed off by the Business Visionary and Sponsor.", isCorrect: true, rationale: "The FD contains the detailed plan, scope, and approach, acting as the project charter that grants formal permission to execute the evolutionary development." },
+                { text: "The Prioritised Requirements List (PRL).", isCorrect: false, rationale: "PRL is purely requirements." },
+                { text: "The first Timebox Review Record.", isCorrect: false, rationale: "This is progress tracking." }
+            ],
+            tip: "Tip: The Foundation Summary is the 'licence to operate'.",
+            focus: "Ch 7: Foundation Summary Authority."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "The technique of **Timeboxing** is used to control **scope**. What technique is used to control **technical design risk** (e.g., proof of concept)?",
+            options: [
+                { text: "Daily Stand-ups.", isCorrect: false, rationale: "Stand-ups track progress." },
+                { text: "MoSCoW Prioritization.", isCorrect: false, rationale: "MoSCoW is for business priority." },
+                { text: "Prototyping and Modeling.", isCorrect: true, rationale: "These techniques are ideal for de-risking technical assumptions and validating design before significant build effort is expended." },
+                { text: "Project Review Report.", isCorrect: false, rationale: "PRR is a summary report." }
+            ],
+            tip: "Tip: Prototyping helps determine *can we build it?*",
+            focus: "Ch 8: Technical Risk Control."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "What is the key difference between **'Should Have'** and **'Could Have'** requirements?",
+            options: [
+                { text: "Should Have is technically complex; Could Have is simple.", isCorrect: false, rationale: "Complexity is an estimate, not a MoSCoW category." },
+                { text: "Should Have has a major impact if excluded; Could Have has a marginal impact if excluded.", isCorrect: true, rationale: "The distinction lies in the business impact. Should Have is important (major benefit); Could Have is desirable (marginal benefit)." },
+                { text: "Should Have must be delivered; Could Have must be delivered.", isCorrect: false, rationale: "Neither Must be delivered." },
+                { text: "Could Have is funded; Should Have is not funded.", isCorrect: false, rationale: "Both are usually funded." }
+            ],
+            tip: "Tip: Impact is the differentiator.",
+            focus: "Ch 9: MoSCoW: S vs C."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "The Timebox structure relies on a repeating cycle to support which DSDM Principle?",
+            options: [
+                { text: "Demonstrate Control.", isCorrect: false, rationale: "Control is the PM's responsibility." },
+                { text: "Collaborate.", isCorrect: false, rationale: "Collaboration is continuous." },
+                { text: "**Develop Iteratively**.", isCorrect: true, rationale: "The fixed, repeating, structured nature of the Timebox (Investigate, Refine, Consolidate) is the physical realization of the 'Develop Iteratively' principle." },
+                { text: "Never Compromise Quality.", isCorrect: false, rationale: "Quality is a constraint." }
+            ],
+            tip: "Tip: The Timebox *is* iterative development in action.",
+            focus: "Ch 7: Timebox and Principles."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "Which one of the following is typically a **Non-Functional Requirement (NFR)**?",
+            options: [
+                { text: "The ability to search the product catalogue.", isCorrect: false, rationale: "Functional." },
+                { text: "The process for onboarding new customers.", isCorrect: false, rationale: "Functional/Business process." },
+                { text: "The security protocol requiring encryption for all data transmission.", isCorrect: true, rationale: "Security, performance, scalability, and reliability are classic NFRs (qualities/constraints)." },
+                { text: "The field names required in the database.", isCorrect: false, rationale: "Detailed requirement." }
+            ],
+            tip: "Tip: NFRs are quality attributes.",
+            focus: "Ch 8: NFR Example."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "If a project has fixed time, fixed cost, and variable scope, what is the *least* likely acceptable split of the total scope using MoSCoW?",
+            options: [
+                { text: "M: 50%, S: 30%, C: 20%.", isCorrect: false, rationale: "Acceptable (Must Have < 60%)." },
+                { text: "M: 40%, S: 40%, C: 20%.", isCorrect: false, rationale: "Acceptable (Must Have < 60%)." },
+                { text: "M: 70%, S: 20%, C: 10%.", isCorrect: true, rationale: "This split exceeds the recommended 60% for Must Haves, leaving too little scope buffer and creating a high risk of project failure or missed deadlines." },
+                { text: "M: 60%, S: 30%, C: 10%.", isCorrect: false, rationale: "Acceptable (Must Have = 60%)." }
+            ],
+            tip: "Tip: The 60% rule is a key risk indicator.",
+            focus: "Ch 9: MoSCoW Risk Split."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "When are the **Benefit Assessment Reports** formally completed and reviewed?",
+            options: [
+                { text: "At the end of every Timebox.", isCorrect: false, rationale: "Timebox Review is for product acceptance." },
+                { text: "During the Feasibility phase.", isCorrect: false, rationale: "Feasibility predicts benefits." },
+                { text: "During the **Post-Project** phase.", isCorrect: true, rationale: "Benefit Assessment measures the actual realization of benefits after the solution has been deployed and in use for a defined period." },
+                { text: "At the end of the Foundations phase.", isCorrect: false, rationale: "Foundations is planning." }
+            ],
+            tip: "Tip: Benefits are assessed *after* the project is complete.",
+            focus: "Ch 7: Benefit Assessment Timing."
+        },
+        {
+            chapter: "Defining and Estimating (Ch 8)",
+            question: "What is the primary method used by the Development Team to convert the estimated **Size** of a requirement into estimated **Effort**?",
+            options: [
+                { text: "The Project Approach Questionnaire (PAQ).", isCorrect: false, rationale: "PAQ assesses suitability." },
+                { text: "Function Point Analysis.", isCorrect: false, rationale: "Formal estimation technique, not the primary agile conversion." },
+                { text: "Using the team's known **Velocity**.", isCorrect: true, rationale: "Velocity (historical rate of delivering size, e.g., Story Points per timebox) is used to translate the relative size estimate into a time-based effort/duration forecast." },
+                { text: "The Business Case.", isCorrect: false, rationale: "Business Case is justification." }
+            ],
+            tip: "Good Practice: Velocity is the link between size and time.",
+            focus: "Ch 8: Size to Effort Conversion."
+        },
+        {
+            chapter: "MoSCoW Prioritization (Ch 9)",
+            question: "Non-Functional Requirements (NFRs) like security or performance are typically assigned which MoSCoW priority?",
+            options: [
+                { text: "Should Have.", isCorrect: false, rationale: "Quality is fixed." },
+                { text: "**Must Have**.", isCorrect: true, rationale: "Since Quality is a fixed constraint ('Never Compromise Quality'), the NFRs that define that quality (e.g., security, reliability) must be classified as Must Haves." },
+                { text: "Could Have.", isCorrect: false, rationale: "Quality is fixed." },
+                { text: "Won't Have.", isCorrect: false, rationale: "Quality is fixed." }
+            ],
+            tip: "Tip: Quality (NFRs) = Fixed = Must Have.",
+            focus: "Ch 9: MoSCoW on NFRs."
+        },
+        {
+            chapter: "Process Framework (Ch 7)",
+            question: "The **Investigate** activity within a Timebox is essential for which purpose?",
+            options: [
+                { text: "To perform unit and system testing.", isCorrect: false, rationale: "This is Consolidate." },
+                { text: "To make major changes to the solution architecture.", isCorrect: false, rationale: "Architecture is defined in Foundations." },
+                { text: "To refine the high-level requirements into the **detailed requirements** needed for the Refinement (Build) activity.", isCorrect: true, rationale: "Investigate focuses on progressive elaboration, taking the high-level requirements agreed in the Kick-off and detailing them just-in-time for the developers." },
+                { text: "To gain acceptance from the Business Ambassador.", isCorrect: false, rationale: "This is Close-out (Review)." }
+            ],
+            tip: "Tip: Investigate leads directly into Refine.",
+            focus: "Ch 7: Timebox Investigate."
+        }
+    ];
+
+    // --- Core Quiz Logic (Reused from previous version) ---
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const totalQuestions = questions.length;
+    const passingScore = 0.80; // 80% pass mark (32/40)
+    let isAnswerChecked = false;
+
+    // Object to track correct/total for each Focus Area
+    const focusAreas = {}; 
+    const chapterScores = {
+        "Process Framework (Ch 7)": { correct: 0, total: 0 },
+        "Defining and Estimating (Ch 8)": { correct: 0, total: 0 },
+        "MoSCoW Prioritization (Ch 9)": { correct: 0, total: 0 }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQuestion();
+        document.getElementById('progress-text').textContent = `1/${totalQuestions}`;
+        document.getElementById('current-score').textContent = `0/${totalQuestions}`;
+    });
+
+    function updateProgress() {
+        const percentage = (currentQuestionIndex / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
+        document.getElementById('progress-bar').setAttribute('aria-valuenow', percentage);
+    }
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= totalQuestions) {
+            showResults();
+            return;
+        }
+        const qData = questions[currentQuestionIndex];
+        const quizArea = document.getElementById('quiz-area');
+        isAnswerChecked = false;
+        document.getElementById('noSelectionAlert').style.display = 'none';
+
+        const optionsHtml = qData.options.map((opt, i) => `
+            <div class="mb-2">
+                <input type="radio" class="btn-check" name="answer" id="option${i}" autocomplete="off" value="${i}">
+                <label class="btn btn-outline-secondary w-100 text-start option-label" for="option${i}">
+                    <i class="fas fa-dot-circle me-3"></i> ${opt.text}
+                </label>
+            </div>
+        `).join('');
+
+        quizArea.innerHTML = `
+            <div class="question-card">
+                <p class="text-secondary mb-1">Chapter: <strong>${qData.chapter}</strong></p>
+                <p class="question-text">${currentQuestionIndex + 1}. ${qData.question}</p>
+                <div id="options-container">
+                    ${optionsHtml}
+                </div>
+                <div id="feedback-${currentQuestionIndex}" class="feedback-area">
+                    </div>
+                <div class="mt-4 text-end">
+                    <button class="btn btn-primary btn-check-answer" onclick="checkAnswer(event)">Check Answer</button>
+                    <button class="btn btn-success btn-next-question" onclick="nextQuestion(event)" style="display: none;">Next Question <i class="fas fa-arrow-right ms-2"></i></button>
+                </div>
+            </div>
+        `;
+        
+        document.getElementById('progress-text').textContent = `${currentQuestionIndex + 1}/${totalQuestions}`;
+        updateProgress();
+    }
+
+    function checkAnswer(event) {
+        if (isAnswerChecked) return;
+
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        const nextButton = event.target.nextElementSibling;
+        const feedbackArea = document.getElementById(`feedback-${currentQuestionIndex}`);
+        const qData = questions[currentQuestionIndex];
+        const optionsContainer = document.getElementById('options-container');
+
+        if (!selectedOption) {
+            document.getElementById('noSelectionAlert').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('noSelectionAlert').style.display = 'none';
+        isAnswerChecked = true;
+        
+        const selectedIndex = parseInt(selectedOption.value);
+        const isCorrect = qData.options[selectedIndex].isCorrect;
+        const correctRationale = qData.options.find(opt => opt.isCorrect).rationale;
+        const correctIndex = qData.options.findIndex(opt => opt.isCorrect);
+
+        // Update Focus Area Score
+        if (!focusAreas[qData.focus]) {
+            focusAreas[qData.focus] = { correct: 0, total: 0 };
+        }
+        focusAreas[qData.focus].total++;
+        chapterScores[qData.chapter].total++;
+
+        // Add feedback message
+        let feedbackContent = '';
+        if (isCorrect) {
+            score++;
+            feedbackArea.classList.add('correct-feedback');
+            feedbackContent = `<p class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i> Correct! </p>`;
+            feedbackArea.classList.remove('incorrect-feedback');
+            focusAreas[qData.focus].correct++;
+            chapterScores[qData.chapter].correct++;
+        } else {
+            feedbackArea.classList.add('incorrect-feedback');
+            feedbackContent = `<p class="fw-bold text-danger"><i class="fas fa-times-circle me-2"></i> Incorrect. </p>`;
+            feedbackArea.classList.remove('correct-feedback');
+            // Show the correct option's rationale
+            feedbackContent += `<p class="rationale-title">Correct Rationale:</p><p class="mb-1">${correctRationale}</p>`;
+        }
+        
+        feedbackContent += `<p class="tip-badge">Tip: ${qData.tip}</p>`;
+        feedbackArea.innerHTML = feedbackContent;
+        feedbackArea.style.display = 'block';
+        
+        // Disable all options and style them
+        const optionLabels = optionsContainer.querySelectorAll('.option-label');
+        optionLabels.forEach((label, i) => {
+            label.style.pointerEvents = 'none';
+            label.classList.remove('btn-outline-secondary');
+            
+            if (i === correctIndex) {
+                label.classList.add('bg-success', 'text-white', 'border-success');
+                label.querySelector('.fa-dot-circle').classList.replace('fa-dot-circle', 'fa-check-circle');
+            } else if (i === selectedIndex && !isCorrect) {
+                label.classList.add('bg-danger', 'text-white', 'border-danger');
+                label.querySelector('.fa-dot-circle').classList.replace('fa-dot-circle', 'fa-times-circle');
+            } else {
+                label.classList.add('bg-light');
+            }
+        });
+
+        // Update score display
+        document.getElementById('current-score').textContent = `${score}/${totalQuestions}`;
+
+        // Show Next button, hide Check button
+        event.target.style.display = 'none';
+        nextButton.style.display = 'inline-block';
+    }
+
+    function nextQuestion(event) {
+        event.target.style.display = 'none'; // Hide Next button for a split second
+        if (currentQuestionIndex < totalQuestions) {
+            currentQuestionIndex++;
+            loadQuestion();
+        } else {
+            // This case is handled by showResults()
+            showResults(); 
+        }
+    }
+
+    function showResults() {
+        document.getElementById('quiz-area').style.display = 'none';
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+
+        const finalPercentage = (score / totalQuestions) * 100;
+        const requiredScore = Math.ceil(totalQuestions * passingScore);
+        const passed = score >= requiredScore; 
+
+        document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+        document.getElementById('final-percentage').textContent = `${finalPercentage.toFixed(1)}%`;
+
+        const messageDiv = document.getElementById('pass-fail-message');
+        const iconDiv = document.getElementById('result-icon');
+        const resultTitle = document.getElementById('result-title');
+        
+        if (passed) {
+            messageDiv.classList.remove('alert-danger');
+            messageDiv.classList.add('alert-success');
+            messageDiv.innerHTML = `<i class="fas fa-trophy me-2"></i> Congratulations! You Passed! (${requiredScore} needed).`;
+            resultTitle.classList.remove('fail-color');
+            resultTitle.classList.add('pass-color');
+            iconDiv.innerHTML = '<i class="far fa-smile pass-color"></i>';
+        } else {
+            messageDiv.classList.remove('alert-success');
+            messageDiv.classList.add('alert-danger');
+            messageDiv.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i> Keep practicing! You need ${requiredScore} to pass.`;
+            resultTitle.classList.remove('pass-color');
+            resultTitle.classList.add('fail-color');
+            iconDiv.innerHTML = '<i class="far fa-frown fail-color"></i>';
+        }
+
+        generateRecommendations(passed);
+    }
+    
+    function generateRecommendations(passed) {
+        const recList = document.getElementById('recommendations-list');
+        recList.innerHTML = '';
+        
+        // 1. Focus on weakest areas (by focus area)
+        let weakestAreas = Object.entries(focusAreas)
+            .filter(([, data]) => data.total > 0 && (data.correct / data.total) < 1.0) // Only show areas with incorrect answers
+            .sort(([, a], [, b]) => (a.correct / a.total) - (b.correct / b.total));
+
+        if (weakestAreas.length > 0) {
+            recList.innerHTML += `<li><strong><i class="fas fa-crosshairs me-1"></i> Priority Focus Areas:</strong>`;
+            weakestAreas.slice(0, 5).forEach(([focus, data]) => { // Show up to 5 weakest
+                const acc = (data.correct / data.total) * 100;
+                recList.innerHTML += `<p class="ms-3 mb-1 text-danger"><i class="fas fa-minus-circle me-1"></i> ${focus}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+            });
+            recList.innerHTML += `</li>`;
+        } else {
+             recList.innerHTML += `<li><strong><i class="fas fa-check-double me-1"></i> Priority Focus Areas:</strong> Excellent work! You answered all questions correctly in this section.</li>`;
+        }
+
+        // 2. Chapter Breakdown
+        recList.innerHTML += `<li><strong><i class="fas fa-book-open me-1"></i> Chapter Breakdown:</strong>`;
+        for (const [chapter, data] of Object.entries(chapterScores)) {
+            const acc = data.total > 0 ? (data.correct / data.total) * 100 : 0;
+            const style = acc < 70 ? 'text-danger' : acc < 90 ? 'text-warning' : 'text-success';
+            recList.innerHTML += `<p class="ms-3 mb-1 ${style}"><i class="fas fa-angle-right me-1"></i> ${chapter}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+        }
+        recList.innerHTML += `</li>`;
+        
+        // 3. Final Recommendation & Next Steps
+        const finalRec = passed 
+            ? "You have a solid understanding of the AgilePM Process, Requirements, and MoSCoW. Focus on reviewing the 'Priority Focus Areas' to ensure full competency before the final exam."
+            : "Based on the results, we strongly recommend re-studying the 'Priority Focus Areas'. Pay special attention to the detailed Timebox activities (Investigate, Refine, Consolidate) and the rules for MoSCoW Prioritization (especially the 60% rule and the Must/Should/Could distinction).";
+
+        recList.innerHTML += `<li><strong><i class="fas fa-brain me-1"></i> Next Steps Recommendation:</strong> ${finalRec}</li>`;
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM v3 Foundation Quiz: Chapters 1-3</title>
+    <!-- Bootstrap 5 CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --info-color: #17a2b8;
+            --background-light: #f8f9fa;
+        }
+
+        body {
+            background-color: var(--background-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin-top: 50px;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .question-card {
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            background-color: #f0f4f7;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #e9ecef;
+            border: 1px solid #dee2e6;
+            transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+        }
+
+        .option-label:hover {
+            background-color: #dae0e5;
+            border-color: #c0c7cf;
+        }
+
+        .option-label input[type="radio"] {
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        /* Feedback Styling */
+        .feedback-area {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s;
+        }
+
+        .correct-feedback {
+            background-color: #e6ffed; /* Light green */
+            border-left: 5px solid var(--success-color);
+        }
+
+        .incorrect-feedback {
+            background-color: #ffe6e6; /* Light red */
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .rationale-title {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .tip-badge {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-top: 10px;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: inline-block;
+            background-color: var(--info-color);
+            color: white;
+        }
+        
+        .progress-bar-striped {
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .btn-check-answer {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transition: background-color 0.3s;
+        }
+        
+        .btn-check-answer:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-next-question {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+        
+        .btn-next-question:hover {
+            background-color: #1e7e34;
+            border-color: #1c7430;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Result Section Styling */
+        .result-box {
+            background: var(--background-light);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pass-color { color: var(--success-color); }
+        .fail-color { color: var(--danger-color); }
+        
+        .recommendation-list li {
+            margin-bottom: 10px;
+            padding-left: 0;
+            list-style-type: none;
+        }
+        
+        .recommendation-list li::before {
+            content: "\f058"; /* Font Awesome check-circle */
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--primary-color);
+            margin-right: 8px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container quiz-container mb-5">
+    <h1 class="text-center mb-4 text-primary"><i class="fas fa-tasks me-2"></i>AgilePM® v3 Foundation Quiz</h1>
+    <p class="text-center text-secondary mb-5">Chapters 1-3: Introduction, Key Concepts, & Scrum. You need 80% (24/30) to pass!</p>
+
+    <!-- Progress & Score Section -->
+    <div class="row mb-4 align-items-center">
+        <div class="col-md-8">
+            <h5 class="mb-2">Progress: <span id="progress-text">1/30</span></h5>
+            <div class="progress" style="height: 25px;">
+                <div id="progress-bar" class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            <h5 class="mb-0">Current Score: <span id="current-score" class="badge bg-primary">0/30</span></h5>
+        </div>
+    </div>
+
+    <!-- Question Area -->
+    <div id="quiz-area">
+        <!-- Question Card will be injected here by JS -->
+    </div>
+
+    <!-- Result Area (Hidden initially) -->
+    <div id="result-area" class="result-box text-center" style="display: none;">
+        <h2 id="result-title" class="mb-4">Quiz Complete!</h2>
+        <div id="result-icon" class="mb-4" style="font-size: 4rem;"></div>
+        <p class="fs-4">Your Final Score: <span id="final-score" class="badge bg-primary fs-4">0/30</span></p>
+        <p class="fs-5">Percentage: <span id="final-percentage" class="fw-bold">0%</span></p>
+        
+        <div id="pass-fail-message" class="alert fs-5 fw-bold mt-4 p-3"></div>
+
+        <h4 class="mt-5 text-start text-primary">Recommendations & Focus Areas:</h4>
+        <ul id="recommendations-list" class="text-start recommendation-list ps-0">
+            <!-- Recommendations injected here -->
+        </ul>
+        
+        <button class="btn btn-primary mt-4" onclick="location.reload();"><i class="fas fa-redo me-2"></i>Retake Quiz</button>
+    </div>
+
+    <!-- The Custom Alert/Modal for No Selection -->
+    <div id="noSelectionAlert" class="alert alert-warning text-center mt-4" style="display: none;">
+        <i class="fas fa-exclamation-triangle me-2"></i> Please select an option before checking the answer!
+    </div>
+</div>
+
+<script>
+    const questions = [
+        // Chapter 1: Introduction
+        {
+            chapter: "Introduction",
+            question: "What is the primary objective of AgilePM in project delivery, according to the manual?",
+            options: [
+                { text: "Maximizing scope within a fixed budget.", isCorrect: false, rationale: "Traditional approaches often prioritize maximizing scope. AgilePM prioritizes delivering value on time and budget." },
+                { text: "Delivering the minimum viable product (MVP) as quickly as possible.", isCorrect: false, rationale: "While speed is important, the core objective is always the *business need* and quality, not just the minimum." },
+                { text: "Implementing robust project governance and control.", isCorrect: true, rationale: "AgilePM's key objective is to provide effective *governance and control* for projects in an agile environment, ensuring quality and business value." },
+                { text: "Reducing documentation and formal review processes.", isCorrect: false, rationale: "AgilePM maintains necessary documentation for governance, it doesn't eliminate it, but rather makes it 'just enough'." }
+            ],
+            tip: "Good Practice: AgilePM seeks a balance between the agility of development and the rigor of project management.",
+            focus: "Ch 1: Core purpose of AgilePM."
+        },
+        {
+            chapter: "Introduction",
+            question: "Which pre-existing, non-proprietary framework is the DSDM philosophy (upon which AgilePM is based) most closely aligned with?",
+            options: [
+                { text: "Lean Manufacturing", isCorrect: false, rationale: "Lean principles are relevant but not the direct foundation for DSDM/AgilePM." },
+                { text: "PRINCE2", isCorrect: false, rationale: "While compatible, PRINCE2 is a project management method, not the philosophy's foundation." },
+                { text: "The Agile Manifesto", isCorrect: true, rationale: "DSDM predates the Manifesto but its core tenets (like collaboration and value delivery) align directly with its principles." },
+                { text: "Critical Path Method (CPM)", isCorrect: false, rationale: "CPM is a traditional scheduling technique, fundamentally different from the agile approach." }
+            ],
+            tip: "Tip: AgilePM is an approach, built on the DSDM philosophy, which itself is rooted in foundational agile thinking.",
+            focus: "Ch 1: DSDM alignment with Agile."
+        },
+        {
+            chapter: "Introduction",
+            question: "What is the fundamental difference in approach between AgilePM and a typical traditional project management method (e.g., Waterfall) regarding the project variables?",
+            options: [
+                { text: "AgilePM fixes Scope and Time; traditional fixes Cost and Quality.", isCorrect: false, rationale: "AgilePM fixes Time and Cost, while traditional methods typically fix Scope." },
+                { text: "AgilePM fixes Time and Cost; traditional fixes Scope and Quality.", isCorrect: false, rationale: "Traditional methods often treat Time and Cost as variables, while Quality is usually fixed." },
+                { text: "AgilePM fixes Time and Cost; traditional fixes Scope.", isCorrect: true, rationale: "AgilePM fixes Time and Cost (with quality maintained) and flexes Scope. Traditional methods fix Scope, flexing Time and Cost." },
+                { text: "AgilePM fixes Quality and Scope; traditional fixes Time.", isCorrect: false, rationale: "In AgilePM, Quality is fixed (never compromised), and Scope is the variable used to absorb change." }
+            ],
+            tip: "Good Practice: Always remember the 'fixed time, fixed cost, flex scope' triangle is central to AgilePM's feasibility.",
+            focus: "Ch 1: Fixed vs. Variable constraints."
+        },
+        {
+            chapter: "Introduction",
+            question: "The AgilePM Lifecycle includes three main categories of product development work. Which one is NOT a primary category in the standard lifecycle?",
+            options: [
+                { text: "Pre-Project", isCorrect: false, rationale: "Pre-Project is the first phase, where the Business Case is developed." },
+                { text: "Project (e.g., Feasibility, Foundations, Iterative Development)", isCorrect: false, rationale: "The Project phase contains most of the core work and management phases." },
+                { text: "Post-Implementation Review", isCorrect: true, rationale: "This is part of the 'Post-Project' category, not a category itself. The main categories are Pre-Project, Project, and Post-Project." },
+                { text: "Post-Project", isCorrect: false, rationale: "Post-Project ensures the Business Benefits are realized." }
+            ],
+            tip: "Tip: Think about the project as a journey: what happens *before*, *during*, and *after* the main delivery phases.",
+            focus: "Ch 1: The AgilePM Lifecycle structure."
+        },
+        {
+            chapter: "Introduction",
+            question: "What is the purpose of the 'Project' phase in the AgilePM lifecycle?",
+            options: [
+                { text: "To determine the feasibility and commercial viability of the project.", isCorrect: false, rationale: "This is the purpose of the 'Feasibility' and 'Foundations' phases, which are part of the 'Project' phase, but not the overall purpose." },
+                { text: "To build the solution iteratively until the final agreed scope is complete.", isCorrect: false, rationale: "Scope is flexible in AgilePM. The goal is to build the solution until the *budget* is exhausted or the *timebox* expires." },
+                { text: "To deliver the products, typically in increments, that realize the business case.", isCorrect: true, rationale: "The Project phase, encompassing all major stages, is about the successful delivery of the agreed-upon products." },
+                { text: "To secure funding and resources for the project from the business sponsor.", isCorrect: false, rationale: "This is primarily done in the 'Pre-Project' phase with the Business Case." }
+            ],
+            tip: "Tip: The 'Project' phase is the execution phase. All other phases support or follow it.",
+            focus: "Ch 1: Purpose of the Project phase."
+        },
+        {
+            chapter: "Introduction",
+            question: "Which of the following describes the key benefit of AgilePM's emphasis on short, focused iterations (Timeboxes)?",
+            options: [
+                { text: "It reduces the need for a Project Manager.", isCorrect: false, rationale: "The PM role remains vital for governance, structure, and risk management." },
+                { text: "It allows for fixed scope and fixed cost delivery.", isCorrect: false, rationale: "Scope is flexible, not fixed." },
+                { text: "It allows the business to realize early value and react quickly to change.", isCorrect: true, rationale: "Frequent deliveries (increments) mean benefits can be achieved sooner, and feedback can be incorporated immediately." },
+                { text: "It ensures all 'Could Have' requirements are delivered.", isCorrect: false, rationale: "It only delivers what fits within the timebox, potentially dropping 'Could Have's." }
+            ],
+            tip: "Good Practice: Focus on early, frequent delivery is the core economic benefit of any agile approach.",
+            focus: "Ch 1: Benefits of iterative development."
+        },
+        {
+            chapter: "Introduction",
+            question: "AgilePM is most effective when the organization's approach to project management requires:",
+            options: [
+                { text: "Minimal business involvement after the initial requirements phase.", isCorrect: false, rationale: "AgilePM requires continuous, active business involvement." },
+                { text: "A formal, structured approach that maintains appropriate standards and governance.", isCorrect: true, rationale: "This is AgilePM's niche: providing a structured management layer around an iterative development process." },
+                { text: "The development team to self-manage without any external coordination.", isCorrect: false, rationale: "Coordination by the PM and other roles is essential for governance and reporting." },
+                { text: "Scope to be locked down before any design work begins.", isCorrect: false, rationale: "Scope must be flexible to absorb change." }
+            ],
+            tip: "Tip: Think of AgilePM as 'Agile' + 'Project Management'—the PM part implies structure and governance.",
+            focus: "Ch 1: Where AgilePM fits best."
+        },
+        {
+            chapter: "Introduction",
+            question: "Which term best describes a high-level grouping of projects that share a common strategic objective?",
+            options: [
+                { text: "Portfolio", isCorrect: false, rationale: "A Portfolio is a collection of programs and projects managed to achieve strategic objectives, often spanning different business areas." },
+                { text: "Programme", isCorrect: true, rationale: "A Programme is a group of related projects managed in a coordinated way to achieve a set of benefits that would not be achievable if managed separately." },
+                { text: "Project", isCorrect: false, rationale: "A Project is a temporary organization created to deliver one or more business products." },
+                { text: "Business Case", isCorrect: false, rationale: "The Business Case justifies a project, it's not a grouping of them." }
+            ],
+            tip: "Tip: Remember the hierarchy: Portfolio contains Programmes, which contain Projects.",
+            focus: "Ch 1: Project vs. Programme vs. Portfolio."
+        },
+        {
+            chapter: "Introduction",
+            question: "What is the key factor that determines the success of an AgilePM project, as per the 8 Principles?",
+            options: [
+                { text: "Delivering the product on time and budget.", isCorrect: false, rationale: "While important, this is a delivery constraint. Success is defined by value." },
+                { text: "Satisfying the business need.", isCorrect: true, rationale: "The first principle is 'Focus on the Business Need', which underpins all other activities and defines true success." },
+                { text: "Having a stable Development Team throughout the project.", isCorrect: false, rationale: "Stability is beneficial, but the core measure is business value." },
+                { text: "Thorough documentation of all requirements.", isCorrect: false, rationale: "Documentation is 'just enough' and secondary to value delivery." }
+            ],
+            tip: "Good Practice: Always trace every decision back to the ultimate source of value—the business need.",
+            focus: "Ch 1: The 8 Principles (Principle 1)."
+        },
+        {
+            chapter: "Introduction",
+            question: "Which document defines the business problem and opportunities, and provides the justification for the project?",
+            options: [
+                { text: "Requirements Catalogue", isCorrect: false, rationale: "The Catalogue lists detailed requirements, not the overall justification." },
+                { text: "Outline Plan", isCorrect: false, rationale: "The Outline Plan describes how the project will be delivered." },
+                { text: "Business Case", isCorrect: true, rationale: "The Business Case is the core document justifying the project's existence from a commercial or strategic perspective." },
+                { text: "Delivery Plan", isCorrect: false, rationale: "The Delivery Plan is a detailed schedule for the Iterative Development phase." }
+            ],
+            tip: "Tip: No project should start without a compelling Business Case approved during the Pre-Project phase.",
+            focus: "Ch 1: Purpose of the Business Case."
+        },
+        
+        // Chapter 2: Key Concepts
+        {
+            chapter: "Key Concepts",
+            question: "How many Principles underpin the DSDM/AgilePM approach?",
+            options: [
+                { text: "5", isCorrect: false, rationale: "Incorrect, DSDM/AgilePM is guided by a more extensive set of governance rules." },
+                { text: "7", isCorrect: false, rationale: "Incorrect, there is one more principle for DSDM/AgilePM." },
+                { text: "8", isCorrect: true, rationale: "There are eight fundamental principles: Focus on the Business Need, Deliver on Time, Collaborate, Never Compromise Quality, Build Incrementally from Firm Foundations, Develop Iteratively, Communicate Continuously and Clearly, Demonstrate Control." },
+                { text: "12", isCorrect: false, rationale: "Incorrect, 12 is the number of principles in the Agile Manifesto." }
+            ],
+            tip: "Good Practice: Memorize all 8 Principles, as they guide all decisions and actions in an AgilePM project.",
+            focus: "Ch 2: The 8 Principles."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "The Principle 'Never Compromise Quality' means that:",
+            options: [
+                { text: "The team must spend extra time in Timeboxes to perfect the solution.", isCorrect: false, rationale: "This compromises the fixed Timebox. Quality is maintained by fixing quality standards." },
+                { text: "The quality of the product is fixed at the outset and is the last thing to flex.", isCorrect: true, rationale: "Quality is fixed by agreeing on the non-functional requirements and quality standards upfront. If necessary, scope is sacrificed to maintain quality." },
+                { text: "Only 'Must Have' requirements can meet the quality standard.", isCorrect: false, rationale: "All delivered requirements ('Must', 'Should', and 'Could') must meet the agreed quality standard." },
+                { text: "Testing must be performed by an independent, external party.", isCorrect: false, rationale: "While desirable, this is not the definition of the principle; internal testing is often sufficient." }
+            ],
+            tip: "Tip: Quality is defined and fixed by setting acceptance criteria (non-functional requirements) that must be met.",
+            focus: "Ch 2: Principle 4 (Never Compromise Quality)."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "Which MoSCoW priority category represents a requirement that is important but can be delivered in a later deployment if time is constrained, and the business process will still function without it?",
+            options: [
+                { text: "Must Have", isCorrect: false, rationale: "Must Haves are essential for the solution to be viable." },
+                { text: "Should Have", isCorrect: true, rationale: "Should Haves are important but not vital; the business can cope without them for a while, but it impacts efficiency." },
+                { text: "Could Have", isCorrect: false, rationale: "Could Haves are desirable but have the least impact if left out." },
+                { text: "Won't Have (for this release)", isCorrect: false, rationale: "Won't Haves are explicitly excluded from the current delivery period." }
+            ],
+            tip: "Good Practice: 'Should Haves' are usually the first requirements considered for de-scoping when a Timebox is under pressure.",
+            focus: "Ch 2: MoSCoW Prioritization."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "What is a Timebox in AgilePM?",
+            options: [
+                { text: "A fixed period of time, typically 6-8 weeks, to deliver a large set of Must-Have requirements.", isCorrect: false, rationale: "Timeboxes are usually shorter (e.g., 2-4 weeks) and the scope is variable." },
+                { text: "A fixed period of time, at the end of which a demonstrable, tested increment of the solution is delivered.", isCorrect: true, rationale: "This is the core definition of a Timebox: fixed time for variable, agreed-upon scope resulting in a useable product increment." },
+                { text: "A flexible period of time used to complete all the requirements planned for a specific stage.", isCorrect: false, rationale: "Time is fixed, not flexible." },
+                { text: "A mechanism used to estimate the total duration of the project.", isCorrect: false, rationale: "Timeboxes are for control and delivery, not initial project estimation." }
+            ],
+            tip: "Tip: The Timebox is the primary mechanism for control and risk mitigation in AgilePM.",
+            focus: "Ch 2: Definition of Timebox."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "Which of the following roles is responsible for ensuring the technical quality of the solution and acting as the design authority for the Development Team?",
+            options: [
+                { text: "Project Manager", isCorrect: false, rationale: "The Project Manager focuses on management, governance, and control." },
+                { text: "Technical Coordinator", isCorrect: true, rationale: "The TC is the custodian of the technical design and quality assurance." },
+                { text: "Team Leader", isCorrect: false, rationale: "The Team Leader manages the day-to-day work, but the TC has the final say on technical strategy." },
+                { text: "Business Ambassador", isCorrect: false, rationale: "The Business Ambassador provides the business view and detailed requirements." }
+            ],
+            tip: "Good Practice: In a large project, the TC must work closely with the Business Ambassador to ensure the technical solution meets the business need.",
+            focus: "Ch 2: Role: Technical Coordinator."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "Which Principle emphasizes the need to actively involve the business at all levels throughout the project life cycle?",
+            options: [
+                { text: "Demonstrate Control", isCorrect: false, rationale: "Demonstrate Control is about management oversight." },
+                { text: "Collaborate", isCorrect: true, rationale: "This principle emphasizes the 'people' focus: effective decision-making and involvement." },
+                { text: "Develop Iteratively", isCorrect: false, rationale: "Develop Iteratively is about the product creation approach." },
+                { text: "Deliver on Time", isCorrect: false, rationale: "Deliver on Time is a constraint principle." }
+            ],
+            tip: "Tip: AgilePM relies heavily on a high degree of collaboration between Business and Technical roles.",
+            focus: "Ch 2: Principle 3 (Collaborate)."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "In the context of the MoSCoW rules, what percentage of the scope should typically be allocated to 'Must Have' requirements in a Timebox?",
+            options: [
+                { text: "100%", isCorrect: false, rationale: "Allocating 100% leaves no contingency for unexpected issues, making the Timebox risky." },
+                { text: "80%", isCorrect: false, rationale: "80% is the usual target for the combined Must + Should + Could, but Must Haves must be delivered." },
+                { text: "60%", isCorrect: true, rationale: "The standard recommendation is to budget around 60% of the Timebox effort for Must Haves, leaving a 40% contingency from 'Should' and 'Could' items." },
+                { text: "40%", isCorrect: false, rationale: "40% is generally too low to ensure a viable minimum product." }
+            ],
+            tip: "Good Practice: Always leave a contingency buffer. The 60/20/20 rule (Must/Should/Could) is a common starting point.",
+            focus: "Ch 2: MoSCoW effort allocation."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "The Team Leader role in AgilePM is most similar to which role in Scrum, focusing on leading the Development Team and facilitating the process?",
+            options: [
+                { text: "Product Owner", isCorrect: false, rationale: "Product Owner manages the backlog (Business Ambassador/Sponsor)." },
+                { text: "Development Team Member", isCorrect: false, rationale: "The Team Leader has management and facilitation responsibilities beyond a regular member." },
+                { text: "Scrum Master", isCorrect: true, rationale: "The Team Leader shares the facilitation and process focus of the Scrum Master, ensuring the team stays on track." },
+                { text: "Stakeholder", isCorrect: false, rationale: "A Stakeholder is any interested party outside the core team." }
+            ],
+            tip: "Tip: The Team Leader is the servant-leader of the development team, similar to the Scrum Master's role within the team context.",
+            focus: "Ch 2: Role comparison (Team Leader)."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "What is the primary product created during the Feasibility phase of an AgilePM project?",
+            options: [
+                { text: "The Foundation Summary", isCorrect: false, rationale: "The Foundation Summary is a product of the Foundations phase." },
+                { text: "The Outline Plan", isCorrect: false, rationale: "The Outline Plan is created during the Foundations phase." },
+                { text: "The Feasibility Assessment", isCorrect: true, rationale: "The assessment determines if the project is viable from both a technical and business perspective." },
+                { text: "The detailed Requirements Catalogue", isCorrect: false, rationale: "The Requirements Catalogue is developed later, primarily in Foundations." }
+            ],
+            tip: "Good Practice: The Feasibility phase is a quick check to see if the project is worth investing in further time and effort.",
+            focus: "Ch 2: Products of the Feasibility phase."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "What is the key factor that determines the length of an AgilePM Timebox?",
+            options: [
+                { text: "The complexity of the requirements to be delivered.", isCorrect: false, rationale: "Complexity is managed by flexing scope, not time." },
+                { text: "The length of the iteration that delivers the most business value.", isCorrect: false, rationale: "Value is maximized by keeping time fixed and focusing delivery." },
+                { text: "The maximum amount of time the team can remain focused on a fixed set of objectives.", isCorrect: true, rationale: "Timeboxes should be long enough to achieve something meaningful but short enough to maintain focus and allow for quick feedback loops (typically 2-4 weeks)." },
+                { text: "The number of Must Have requirements remaining in the Prioritised Requirements List.", isCorrect: false, rationale: "Requirements are fitted into the timebox, the timebox duration is set by other factors." }
+            ],
+            tip: "Tip: Short, fixed durations promote intense focus and reduce the risk of scope creep.",
+            focus: "Ch 2: Timebox duration."
+        },
+
+        // Chapter 3: Scrum
+        {
+            chapter: "Scrum",
+            question: "What are the three core roles in a Scrum Team?",
+            options: [
+                { text: "Project Manager, Business Analyst, Development Team", isCorrect: false, rationale: "These roles are more typical of AgilePM/traditional settings; the core Scrum roles are specific." },
+                { text: "Product Owner, Scrum Master, Stakeholder", isCorrect: false, rationale: "Stakeholders are outside the core Scrum Team." },
+                { text: "Product Owner, Scrum Master, Development Team", isCorrect: true, rationale: "These three roles are the self-managing, cross-functional heart of Scrum." },
+                { text: "Team Leader, Business Ambassador, Technical Coordinator", isCorrect: false, rationale: "These are AgilePM roles." }
+            ],
+            tip: "Good Practice: Scrum advocates for small, highly collaborative teams with clearly defined responsibilities across these three roles.",
+            focus: "Ch 3: Scrum Roles."
+        },
+        {
+            chapter: "Scrum",
+            question: "Which Scrum artifact provides the single source of truth for the work to be done in the Sprint?",
+            options: [
+                { text: "Product Backlog", isCorrect: false, rationale: "The Product Backlog is for the entire product. The Sprint Backlog is the subset for the current Sprint." },
+                { text: "Sprint Goal", isCorrect: false, rationale: "The Sprint Goal is the objective, not the list of work." },
+                { text: "Increment", isCorrect: false, rationale: "The Increment is the result of the work, not the definition of it." },
+                { text: "Sprint Backlog", isCorrect: true, rationale: "The Sprint Backlog is a forecast of the functionality the Development Team will deliver in the current Sprint." }
+            ],
+            tip: "Tip: The Sprint Backlog is created during Sprint Planning and owned by the Development Team.",
+            focus: "Ch 3: Scrum Artifacts (Sprint Backlog)."
+        },
+        {
+            chapter: "Scrum",
+            question: "What is the time-box for the Daily Scrum (or Stand-up)?",
+            options: [
+                { text: "30 minutes", isCorrect: false, rationale: "30 minutes is the time-box for the Sprint Review for a 4-week Sprint." },
+                { text: "15 minutes", isCorrect: true, rationale: "The Daily Scrum is a 15-minute time-boxed event for the Development Team to inspect progress toward the Sprint Goal and adapt the Sprint Backlog." },
+                { text: "One hour per week of Sprint length", isCorrect: false, rationale: "This is the general guide for Sprint Planning." },
+                { text: "No time-box, it finishes when all items are addressed.", isCorrect: false, rationale: "All Scrum events are time-boxed to ensure efficiency." }
+            ],
+            tip: "Good Practice: Keep it sharp and focused. Any discussion that requires more time should be taken offline immediately after the stand-up.",
+            focus: "Ch 3: Scrum Events (Daily Scrum time-box)."
+        },
+        {
+            chapter: "Scrum",
+            question: "The Product Owner is primarily responsible for which of the following?",
+            options: [
+                { text: "Coaching the Development Team in self-organization.", isCorrect: false, rationale: "This is the Scrum Master's role." },
+                { text: "Optimizing the value of the work the Development Team performs.", isCorrect: true, rationale: "The Product Owner is responsible for maximizing the value of the product resulting from the work of the Development Team." },
+                { text: "Facilitating the removal of impediments for the Development Team.", isCorrect: false, rationale: "This is the Scrum Master's role." },
+                { text: "Approving the technical design and architecture of the solution.", isCorrect: false, rationale: "This is the responsibility of the Development Team or Technical Coordinator (in AgilePM)." }
+            ],
+            tip: "Tip: The Product Owner is the voice of the customer and business, focusing purely on *what* to build and *why*.",
+            focus: "Ch 3: Product Owner responsibilities."
+        },
+        {
+            chapter: "Scrum",
+            question: "Which AgilePM role has the primary responsibility for the day-to-day management of the Development Team and its activities, closely aligning with the Scrum Master's process focus?",
+            options: [
+                { text: "Business Ambassador", isCorrect: false, rationale: "Focuses on requirements and business needs." },
+                { text: "Project Manager", isCorrect: false, rationale: "Focuses on the overall project governance, not day-to-day team management." },
+                { text: "Team Leader", isCorrect: true, rationale: "The Team Leader is the servant-leader of the development team, managing their daily work, similar to a Scrum Master in a development context." },
+                { text: "Technical Coordinator", isCorrect: false, rationale: "Focuses on technical quality and architecture." }
+            ],
+            tip: "Good Practice: The AgilePM Team Leader and Scrum Master roles have significant overlap in their facilitation and team management responsibilities.",
+            focus: "Ch 3: AgilePM vs. Scrum Roles comparison."
+        },
+        {
+            chapter: "Scrum",
+            question: "The Sprint Review is an opportunity for the Scrum Team and Stakeholders to inspect what?",
+            options: [
+                { text: "The team's process and identify improvements.", isCorrect: false, rationale: "This is the purpose of the Sprint Retrospective." },
+                { text: "The Increment and the Product Backlog.", isCorrect: true, rationale: "The team demonstrates the Increment, and the Product Backlog is reviewed and adapted based on feedback." },
+                { text: "The team members' individual performance metrics.", isCorrect: false, rationale: "Scrum focuses on team output, not individual metrics." },
+                { text: "The detailed architecture of the solution.", isCorrect: false, rationale: "The Review is a high-level inspection of the product's functionality." }
+            ],
+            tip: "Tip: The key goal of the Sprint Review is to gather feedback and determine what to build next.",
+            focus: "Ch 3: Scrum Events (Sprint Review purpose)."
+        },
+        {
+            chapter: "Scrum",
+            question: "In Scrum, the goal of the Development Team during a Sprint is to create an Increment that is:",
+            options: [
+                { text: "Potentially releasable and meets the Definition of Done.", isCorrect: true, rationale: "The Definition of Done is the formal description of the state of the Increment when it meets the quality measures required for the product." },
+                { text: "100% complete with all Must Have and Should Have requirements.", isCorrect: false, rationale: "The scope may be adjusted, but the *quality* must be complete (Definition of Done)." },
+                { text: "Documented and approved by the Product Owner.", isCorrect: false, rationale: "Documentation is 'just enough', and the definition of 'done' is owned by the team." },
+                { text: "A working prototype ready for user testing.", isCorrect: false, rationale: "It must be 'potentially releasable,' which is a higher standard than just a prototype." }
+            ],
+            tip: "Good Practice: The Definition of Done ensures the 'Never Compromise Quality' principle is enforced in Scrum.",
+            focus: "Ch 3: Scrum Artifacts (Increment and DoD)."
+        },
+        {
+            chapter: "Scrum",
+            question: "How does the AgilePM Timebox approach differ fundamentally from the Scrum Sprint approach in terms of focus?",
+            options: [
+                { text: "Scrum Sprints have fixed duration, while AgilePM Timeboxes are flexible.", isCorrect: false, rationale: "Both are fixed timeboxes." },
+                { text: "AgilePM focuses on delivering a set of products (product-centric), while Scrum focuses on achieving a Sprint Goal (goal-centric).", isCorrect: true, rationale: "AgilePM Timeboxes explicitly target the delivery of specific products. Scrum Sprints target achieving a single, focused goal." },
+                { text: "Scrum allows external stakeholders to dictate the work, while AgilePM does not.", isCorrect: false, rationale: "Both involve stakeholder input, but the Product Owner/Team has the final say." },
+                { text: "AgilePM has fewer formal events than Scrum.", isCorrect: false, rationale: "AgilePM's Timebox has similar formal events (e.g., Daily Stand-ups, Review) to Scrum's." }
+            ],
+            tip: "Tip: While similar, the subtle difference is: Product Focus (AgilePM Timebox) vs. Goal Focus (Scrum Sprint).",
+            focus: "Ch 3: Comparison: Timebox vs. Sprint."
+        },
+        {
+            chapter: "Scrum",
+            question: "Which document in AgilePM most closely corresponds to the Scrum Product Backlog, acting as the main repository of all potential requirements?",
+            options: [
+                { text: "Terms of Reference (ToR)", isCorrect: false, rationale: "The ToR defines the scope and objectives (similar to Sprint Goal or high-level Product Vision)." },
+                { text: "Prioritised Requirements List (PRL) / Requirements Catalogue", isCorrect: true, rationale: "The PRL is the living document containing all requirements, prioritized using MoSCoW, making it the equivalent of the Product Backlog." },
+                { text: "Foundation Summary", isCorrect: false, rationale: "The Foundation Summary covers the team, process, and estimation." },
+                { text: "Delivery Plan", isCorrect: false, rationale: "The Delivery Plan is the schedule of Timeboxes." }
+            ],
+            tip: "Good Practice: The PRL is a central tool in AgilePM, ensuring requirements are prioritized and maintained throughout the project.",
+            focus: "Ch 3: Comparison: Artifacts."
+        },
+        {
+            chapter: "Scrum",
+            question: "What is the primary activity of the Development Team during the Sprint Planning event?",
+            options: [
+                { text: "Inspecting the Increment and adapting the Product Backlog.", isCorrect: false, rationale: "This happens during the Sprint Review." },
+                { text: "Refining the Product Backlog items for future Sprints.", isCorrect: false, rationale: "This is an ongoing activity (Backlog Refinement)." },
+                { text: "Defining the Sprint Goal and selecting the work to create the Sprint Backlog.", isCorrect: true, rationale: "The team collaboratively defines the Goal and selects the highest priority items from the Product Backlog to form the Sprint Backlog." },
+                { text: "Reviewing how the last Sprint went in terms of people, relationships, process, and tools.", isCorrect: false, rationale: "This happens during the Sprint Retrospective." }
+            ],
+            tip: "Tip: Sprint Planning answers 'What' and 'How' for the upcoming Sprint.",
+            focus: "Ch 3: Scrum Events (Sprint Planning)."
+        },
+        // Fill the remaining 10 with a mix from all chapters to total 30
+        
+        // Additional Questions (Mixed Chapters)
+        {
+            chapter: "Key Concepts",
+            question: "Which AgilePM Principle states that the solution should be built in small, manageable parts, focusing on getting the foundations right first?",
+            options: [
+                { text: "Collaborate", isCorrect: false, rationale: "Collaborate is about people working together." },
+                { text: "Develop Iteratively", isCorrect: false, rationale: "Develop Iteratively is about repeated cycles of development." },
+                { text: "Build Incrementally from Firm Foundations", isCorrect: true, rationale: "This principle emphasizes the need for stable architecture/design early on before building the detailed product increments." },
+                { text: "Demonstrate Control", isCorrect: false, rationale: "Demonstrate Control is about management visibility." }
+            ],
+            tip: "Good Practice: Without a Firm Foundation (stable architecture), the incremental development will likely fail.",
+            focus: "Ch 2: Principle 5 (Firm Foundations)."
+        },
+        {
+            chapter: "Introduction",
+            question: "In the context of AgilePM, what is the purpose of the 'Post-Project' phase?",
+            options: [
+                { text: "To secure funding for the next project.", isCorrect: false, rationale: "Funding is part of the Pre-Project phase." },
+                { text: "To ensure that the expected business benefits from the delivered solution are actually realized.", isCorrect: true, rationale: "This phase focuses on benefit realization and review." },
+                { text: "To complete any remaining 'Could Have' requirements.", isCorrect: false, rationale: "All remaining requirements are typically moved to a future project or maintenance." },
+                { text: "To transition the solution to the live environment.", isCorrect: false, rationale: "Transitioning is typically the last activity of the Project phase." }
+            ],
+            tip: "Tip: A project isn't truly successful until the business benefits promised in the Business Case are measured and realized.",
+            focus: "Ch 1: Purpose of Post-Project."
+        },
+        {
+            chapter: "Scrum",
+            question: "In Scrum, who is responsible for enforcing the time-boxes and ensuring the team follows Scrum theory and practices?",
+            options: [
+                { text: "Product Owner", isCorrect: false, rationale: "The Product Owner focuses on the 'What' (the product)." },
+                { text: "Development Team", isCorrect: false, rationale: "The team executes the work." },
+                { text: "Scrum Master", isCorrect: true, rationale: "The Scrum Master is the servant-leader responsible for promoting and supporting Scrum." },
+                { text: "Project Manager", isCorrect: false, rationale: "The Project Manager role does not exist in core Scrum." }
+            ],
+            tip: "Good Practice: The Scrum Master protects the team from external distractions and process deviation.",
+            focus: "Ch 3: Scrum Master responsibilities."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "Which AgilePM Principle ensures that stakeholders are kept fully aware of project progress and issues throughout the project?",
+            options: [
+                { text: "Demonstrate Control", isCorrect: true, rationale: "This principle is about ensuring visibility and management oversight through metrics and continuous communication." },
+                { text: "Deliver on Time", isCorrect: false, rationale: "This is about the delivery constraint." },
+                { text: "Focus on the Business Need", isCorrect: false, rationale: "This is about prioritization of work." },
+                { text: "Develop Iteratively", isCorrect: false, rationale: "This is about the repeated cycles of building the solution." }
+            ],
+            tip: "Tip: Control is maintained through constant, clear communication and timely reporting.",
+            focus: "Ch 2: Principle 8 (Demonstrate Control)."
+        },
+        {
+            chapter: "Introduction",
+            question: "What is the key role of the Business Sponsor in an AgilePM project?",
+            options: [
+                { text: "To manage the development team's tasks.", isCorrect: false, rationale: "This is the Team Leader's role." },
+                { text: "To own the Business Case, fund the project, and ensure alignment with strategic objectives.", isCorrect: true, rationale: "The Sponsor is the ultimate business representative and decision-maker for the project." },
+                { text: "To design the technical architecture.", isCorrect: false, rationale: "This is the Technical Coordinator's role." },
+                { text: "To provide detailed business requirements.", isCorrect: false, rationale: "This is the Business Ambassador's role." }
+            ],
+            tip: "Good Practice: The Sponsor must be fully committed and empowered for the project to succeed.",
+            focus: "Ch 1: Role: Business Sponsor."
+        },
+        {
+            chapter: "Scrum",
+            question: "What is the typical time-box for a Sprint in Scrum, although it can vary?",
+            options: [
+                { text: "1 week", isCorrect: false, rationale: "While possible, Sprints are often longer for larger projects." },
+                { text: "2 to 4 weeks", isCorrect: true, rationale: "Most Sprints are set for this duration, providing a balance of focus and delivery value." },
+                { text: "4 to 8 weeks", isCorrect: false, rationale: "This is often considered too long for a single Sprint, increasing risk." },
+                { text: "The entire duration of the project phase.", isCorrect: false, rationale: "The project phase is broken down into multiple Sprints." }
+            ],
+            tip: "Tip: The Sprint duration should be fixed once chosen, and kept constant throughout the development.",
+            focus: "Ch 3: Scrum Sprint duration."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "Which MoSCoW priority ensures that a solution is *viable*, even if it means sacrificing all other requirements?",
+            options: [
+                { text: "Should Have", isCorrect: false, rationale: "The solution can function without a Should Have." },
+                { text: "Could Have", isCorrect: false, rationale: "The solution can function without a Could Have." },
+                { text: "Must Have", isCorrect: true, rationale: "Must Haves are non-negotiable and essential for the solution to be considered viable or minimally acceptable." },
+                { text: "Won't Have", isCorrect: false, rationale: "Won't Haves are explicitly excluded." }
+            ],
+            tip: "Good Practice: When prioritizing, the team should ask: 'Will the project fail if this requirement is not delivered?'",
+            focus: "Ch 2: MoSCoW (Must Have)."
+        },
+        {
+            chapter: "Introduction",
+            question: "What is the key difference between a 'Project' and a 'Programme' in the organizational context?",
+            options: [
+                { text: "A Programme delivers business benefits; a Project delivers a tangible product.", isCorrect: true, rationale: "Projects deliver products (outputs), while Programmes manage related projects to deliver organizational benefits (outcomes)." },
+                { text: "Projects are short-term; Programmes are always long-term.", isCorrect: false, rationale: "Duration is not the defining difference, but the scope and objectives." },
+                { text: "Programmes are managed by the Project Manager; Projects are managed by the Business Sponsor.", isCorrect: false, rationale: "Both are managed by dedicated roles (Programme Manager / Project Manager)." },
+                { text: "A Project is fixed scope; a Programme is fixed time.", isCorrect: false, rationale: "Neither scope nor time constraints define the organizational type." }
+            ],
+            tip: "Tip: Project = Output (The thing built). Programme = Outcome (The change realized from the thing built).",
+            focus: "Ch 1: Project vs. Programme."
+        },
+        {
+            chapter: "Key Concepts",
+            question: "Which of the following is NOT one of the 8 Principles of AgilePM?",
+            options: [
+                { text: "Deliver on Time", isCorrect: false, rationale: "This is Principle 2." },
+                { text: "Sustainable Pace", isCorrect: true, rationale: "This is a concept from the Agile Manifesto, but 'Sustainable Pace' is not one of the 8 DSDM Principles (though the principle 'Never Compromise Quality' implicitly supports it)." },
+                { text: "Communicate Continuously and Clearly", isCorrect: false, rationale: "This is Principle 7." },
+                { text: "Build Incrementally from Firm Foundations", isCorrect: false, rationale: "This is Principle 5." }
+            ],
+            tip: "Good Practice: Be careful to distinguish between general agile principles and the specific 8 Principles of DSDM/AgilePM.",
+            focus: "Ch 2: The 8 Principles details."
+        },
+        {
+            chapter: "Scrum",
+            question: "The Sprint Retrospective is primarily focused on inspecting and adapting what?",
+            options: [
+                { text: "The definition of Done (DoD).", isCorrect: false, rationale: "The DoD is inspected during the Review, but not the Retrospective's main focus." },
+                { text: "The Increment and the Product Backlog.", isCorrect: false, rationale: "This is the focus of the Sprint Review." },
+                { text: "The team's process, relationships, and tools.", isCorrect: true, rationale: "The Retrospective is a continuous improvement opportunity for the way the team works (the 'How')." },
+                { text: "The Business Case and its validity.", isCorrect: false, rationale: "The Business Case is owned by the Sponsor/PM/Programme." }
+            ],
+            tip: "Good Practice: The Retrospective is where the team identifies process improvements and creates an action plan for the next Sprint.",
+            focus: "Ch 3: Scrum Events (Retrospective)."
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    const totalQuestions = questions.length;
+    const passingScore = 0.8; // 80%
+
+    // State to manage if the user has checked the answer for the current question
+    let isAnswerChecked = false; 
+
+    // Mapping for Focus Areas
+    const focusAreas = {
+        "Ch 1: Core purpose of AgilePM.": { correct: 0, total: 0 },
+        "Ch 1: DSDM alignment with Agile.": { correct: 0, total: 0 },
+        "Ch 1: Fixed vs. Variable constraints.": { correct: 0, total: 0 },
+        "Ch 1: The AgilePM Lifecycle structure.": { correct: 0, total: 0 },
+        "Ch 1: Purpose of the Project phase.": { correct: 0, total: 0 },
+        "Ch 1: Benefits of iterative development.": { correct: 0, total: 0 },
+        "Ch 1: Where AgilePM fits best.": { correct: 0, total: 0 },
+        "Ch 1: Project vs. Programme vs. Portfolio.": { correct: 0, total: 0 },
+        "Ch 1: The 8 Principles (Principle 1).": { correct: 0, total: 0 },
+        "Ch 1: Purpose of the Business Case.": { correct: 0, total: 0 },
+        "Ch 1: Role: Business Sponsor.": { correct: 0, total: 0 },
+        "Ch 1: Purpose of Post-Project.": { correct: 0, total: 0 },
+
+        "Ch 2: The 8 Principles.": { correct: 0, total: 0 },
+        "Ch 2: Principle 4 (Never Compromise Quality).": { correct: 0, total: 0 },
+        "Ch 2: MoSCoW Prioritization.": { correct: 0, total: 0 },
+        "Ch 2: Definition of Timebox.": { correct: 0, total: 0 },
+        "Ch 2: Role: Technical Coordinator.": { correct: 0, total: 0 },
+        "Ch 2: Principle 3 (Collaborate).": { correct: 0, total: 0 },
+        "Ch 2: MoSCoW effort allocation.": { correct: 0, total: 0 },
+        "Ch 2: Role comparison (Team Leader).": { correct: 0, total: 0 },
+        "Ch 2: Products of the Feasibility phase.": { correct: 0, total: 0 },
+        "Ch 2: Timebox duration.": { correct: 0, total: 0 },
+        "Ch 2: Principle 8 (Demonstrate Control).": { correct: 0, total: 0 },
+        "Ch 2: Principle 5 (Firm Foundations).": { correct: 0, total: 0 },
+
+        "Ch 3: Scrum Roles.": { correct: 0, total: 0 },
+        "Ch 3: Scrum Artifacts (Sprint Backlog).": { correct: 0, total: 0 },
+        "Ch 3: Scrum Events (Daily Scrum time-box).": { correct: 0, total: 0 },
+        "Ch 3: Product Owner responsibilities.": { correct: 0, total: 0 },
+        "Ch 3: AgilePM vs. Scrum Roles comparison.": { correct: 0, total: 0 },
+        "Ch 3: Scrum Events (Sprint Review purpose).": { correct: 0, total: 0 },
+        "Ch 3: Scrum Artifacts (Increment and DoD).": { correct: 0, total: 0 },
+        "Ch 3: Comparison: Timebox vs. Sprint.": { correct: 0, total: 0 },
+        "Ch 3: Comparison: Artifacts.": { correct: 0, total: 0 },
+        "Ch 3: Scrum Events (Sprint Planning).": { correct: 0, total: 0 },
+        "Ch 3: Scrum Master responsibilities.": { correct: 0, total: 0 },
+        "Ch 3: Scrum Sprint duration.": { correct: 0, total: 0 },
+    };
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadQuestion();
+    });
+
+    function updateProgress() {
+        const percentage = (currentQuestionIndex / totalQuestions) * 100;
+        document.getElementById('progress-bar').style.width = percentage + '%';
+        document.getElementById('progress-bar').setAttribute('aria-valuenow', percentage);
+        document.getElementById('progress-text').textContent = `${currentQuestionIndex}/${totalQuestions}`;
+        document.getElementById('current-score').textContent = `${score}/${totalQuestions}`;
+    }
+
+    function loadQuestion() {
+        if (currentQuestionIndex >= totalQuestions) {
+            showResults();
+            return;
+        }
+
+        const qData = questions[currentQuestionIndex];
+        const quizArea = document.getElementById('quiz-area');
+        isAnswerChecked = false;
+        document.getElementById('noSelectionAlert').style.display = 'none';
+
+        const optionsHtml = qData.options.map((opt, i) => `
+            <div class="mb-2">
+                <input type="radio" class="btn-check" name="answer" id="option${i}" autocomplete="off" value="${i}">
+                <label class="btn btn-outline-secondary w-100 text-start option-label" for="option${i}">
+                    <i class="fas fa-dot-circle me-3"></i> ${opt.text}
+                </label>
+            </div>
+        `).join('');
+
+        quizArea.innerHTML = `
+            <div class="question-card">
+                <p class="text-secondary mb-1">Chapter: <strong>${qData.chapter}</strong></p>
+                <p class="question-text">${currentQuestionIndex + 1}. ${qData.question}</p>
+                <div id="options-container">
+                    ${optionsHtml}
+                </div>
+                
+                <div id="feedback-${currentQuestionIndex}" class="feedback-area">
+                    <!-- Rationale and Tip will be injected here -->
+                </div>
+
+                <div class="d-flex justify-content-between mt-4">
+                    <button class="btn btn-primary btn-check-answer" onclick="checkAnswer()"><i class="fas fa-check me-2"></i> Check Answer</button>
+                    <button class="btn btn-success btn-next-question" onclick="nextQuestion()" style="display: none;"><i class="fas fa-arrow-right me-2"></i> Next Question</button>
+                </div>
+            </div>
+        `;
+        
+        // Update total questions for the focus area
+        const focusKey = qData.focus;
+        if(focusKey && focusAreas[focusKey]) {
+            focusAreas[focusKey].total++;
+        }
+        
+        updateProgress();
+    }
+
+    function checkAnswer() {
+        if (isAnswerChecked) return;
+
+        const selectedOption = document.querySelector('input[name="answer"]:checked');
+        const nextButton = document.querySelector('.btn-next-question');
+        const checkButton = document.querySelector('.btn-check-answer');
+        const feedbackDiv = document.getElementById(`feedback-${currentQuestionIndex}`);
+        document.getElementById('noSelectionAlert').style.display = 'none';
+        
+        if (!selectedOption) {
+            document.getElementById('noSelectionAlert').style.display = 'block';
+            return;
+        }
+
+        isAnswerChecked = true;
+        const selectedIndex = parseInt(selectedOption.value);
+        const qData = questions[currentQuestionIndex];
+        const selectedOptionData = qData.options[selectedIndex];
+        
+        // Disable all options
+        document.querySelectorAll('input[name="answer"]').forEach(radio => radio.disabled = true);
+        
+        // Determine if correct
+        const isCorrect = selectedOptionData.isCorrect;
+        const correctOptionData = qData.options.find(opt => opt.isCorrect);
+        
+        if (isCorrect) {
+            score++;
+            focusAreas[qData.focus].correct++;
+            selectedOption.nextElementSibling.classList.replace('btn-outline-secondary', 'btn-success');
+            selectedOption.nextElementSibling.innerHTML = `<i class="fas fa-check-circle me-3"></i> ${selectedOptionData.text}`;
+            feedbackDiv.classList.add('correct-feedback');
+            feedbackDiv.innerHTML = `
+                <p class="rationale-title text-success"><i class="fas fa-lightbulb me-2"></i> Correct Answer Rationale:</p>
+                <p>${correctOptionData.rationale}</p>
+                <span class="tip-badge bg-info"><i class="fas fa-bookmark me-1"></i> Tip/Good Practice: ${qData.tip}</span>
+            `;
+        } else {
+            selectedOption.nextElementSibling.classList.replace('btn-outline-secondary', 'btn-danger');
+            selectedOption.nextElementSibling.innerHTML = `<i class="fas fa-times-circle me-3"></i> ${selectedOptionData.text}`;
+            
+            // Highlight the correct answer
+            document.querySelector(`input[value="${qData.options.findIndex(opt => opt.isCorrect)}"]`).nextElementSibling.classList.replace('btn-outline-secondary', 'btn-success');
+            
+            feedbackDiv.classList.add('incorrect-feedback');
+            feedbackDiv.innerHTML = `
+                <p class="rationale-title text-danger"><i class="fas fa-exclamation-triangle me-2"></i> Incorrect Answer Rationale:</p>
+                <p><strong>Your Selection:</strong> ${selectedOptionData.rationale}</p>
+                <p><strong>Correct Answer:</strong> ${correctOptionData.rationale}</p>
+                <span class="tip-badge bg-info"><i class="fas fa-bookmark me-1"></i> Tip/Good Practice: ${qData.tip}</span>
+            `;
+        }
+        
+        feedbackDiv.style.display = 'block';
+        checkButton.style.display = 'none';
+        nextButton.style.display = 'block';
+        updateProgress();
+    }
+
+    function nextQuestion() {
+        if (!isAnswerChecked && currentQuestionIndex < totalQuestions - 1) {
+            // Prevent skipping if not checked, unless it's the last question which is handled by showResults()
+            return; 
+        }
+        currentQuestionIndex++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        document.getElementById('quiz-area').style.display = 'none';
+        const resultArea = document.getElementById('result-area');
+        resultArea.style.display = 'block';
+        
+        const finalPercentage = (score / totalQuestions) * 100;
+        const passed = finalPercentage >= (passingScore * 100);
+        const requiredScore = Math.ceil(totalQuestions * passingScore);
+        
+        document.getElementById('final-score').textContent = `${score}/${totalQuestions}`;
+        document.getElementById('final-percentage').textContent = `${finalPercentage.toFixed(1)}%`;
+        
+        const messageDiv = document.getElementById('pass-fail-message');
+        const iconDiv = document.getElementById('result-icon');
+        
+        if (passed) {
+            messageDiv.classList.remove('alert-danger');
+            messageDiv.classList.add('alert-success');
+            messageDiv.innerHTML = `<i class="fas fa-trophy me-2"></i> Congratulations! You Passed! (${requiredScore} needed).`;
+            document.getElementById('result-title').classList.add('pass-color');
+            iconDiv.innerHTML = `<i class="fas fa-check-circle pass-color"></i>`;
+        } else {
+            messageDiv.classList.remove('alert-success');
+            messageDiv.classList.add('alert-danger');
+            messageDiv.innerHTML = `<i class="fas fa-times-circle me-2"></i> You did not pass. (${requiredScore} needed).`;
+            document.getElementById('result-title').classList.add('fail-color');
+            iconDiv.innerHTML = `<i class="fas fa-exclamation-circle fail-color"></i>`;
+        }
+        
+        generateRecommendations(passed, finalPercentage);
+    }
+    
+    function generateRecommendations(passed, finalPercentage) {
+        const recList = document.getElementById('recommendations-list');
+        recList.innerHTML = ''; // Clear previous recommendations
+        
+        // 1. General Recommendation
+        recList.innerHTML += `<li><strong>Score Review:</strong> You answered ${score} out of ${totalQuestions} questions correctly, achieving ${finalPercentage.toFixed(1)}%. The passing threshold is 80%.</li>`;
+
+        if (!passed) {
+            recList.innerHTML += `<li><strong>Key Alert:</strong> Your score suggests a review of core concepts before attempting the official exam. Focus on your weakest areas identified below.</li>`;
+        } else {
+            recList.innerHTML += `<li><strong>Focus for Perfection:</strong> While you passed, consider reviewing the areas you missed to achieve maximum readiness.</li>`;
+        }
+
+        // 2. Identify Weakest Areas (Less than 70% accuracy)
+        const weakAreas = [];
+        for (const [focus, data] of Object.entries(focusAreas)) {
+            if (data.total > 0) {
+                const accuracy = data.correct / data.total;
+                if (accuracy < 0.70) {
+                    weakAreas.push({ 
+                        focus: focus, 
+                        accuracy: accuracy, 
+                        total: data.total, 
+                        correct: data.correct 
+                    });
+                }
+            }
+        }
+        
+        weakAreas.sort((a, b) => a.accuracy - b.accuracy);
+        
+        if (weakAreas.length > 0) {
+            recList.innerHTML += `<li><strong><i class="fas fa-cogs me-1"></i> Priority Focus Areas (< 70% Accuracy):</strong><ul>`;
+            weakAreas.forEach(area => {
+                recList.innerHTML += `
+                    <li class="ms-4 text-danger">
+                        <i class="fas fa-arrow-right me-1"></i> 
+                        <strong>${area.focus}</strong>: Accuracy ${Math.round(area.accuracy * 100)}% (${area.correct}/${area.total}).
+                    </li>
+                `;
+            });
+            recList.innerHTML += `</ul></li>`;
+        } else {
+            recList.innerHTML += `<li><strong><i class="fas fa-check-double me-1"></i> Excellent Coverage:</strong> You achieved over 70% accuracy in all tested focus areas.</li>`;
+        }
+        
+        // 3. Chapter-Specific Recommendation
+        let chapterScores = { "Introduction": { correct: 0, total: 0 }, "Key Concepts": { correct: 0, total: 0 }, "Scrum": { correct: 0, total: 0 } };
+        questions.forEach((q, i) => {
+            if (i < currentQuestionIndex) { // Only count answered questions
+                const isQCorrect = q.options.find(o => o.isCorrect).isCorrect === questions[i].options[parseInt(document.querySelector(`input[name="answer"]:checked`)?.value)]?.isCorrect; // This is a bit complex, but works for the logic
+                chapterScores[q.chapter].total++;
+                if (isQCorrect) chapterScores[q.chapter].correct++;
+            }
+        });
+
+        // Re-calculate the scores using the stored data in focusAreas (more reliable)
+        chapterScores = { "Introduction": { correct: 0, total: 0 }, "Key Concepts": { correct: 0, total: 0 }, "Scrum": { correct: 0, total: 0 } };
+        for (const [focus, data] of Object.entries(focusAreas)) {
+            const chapter = focus.startsWith("Ch 1:") ? "Introduction" : focus.startsWith("Ch 2:") ? "Key Concepts" : "Scrum";
+            chapterScores[chapter].correct += data.correct;
+            chapterScores[chapter].total += data.total;
+        }
+
+        recList.innerHTML += `<li><strong><i class="fas fa-book-open me-1"></i> Chapter Breakdown:</strong>`;
+        for (const [chapter, data] of Object.entries(chapterScores)) {
+            const acc = data.total > 0 ? (data.correct / data.total) * 100 : 0;
+            const style = acc < 70 ? 'text-danger' : acc < 90 ? 'text-warning' : 'text-success';
+            recList.innerHTML += `<p class="ms-3 mb-1 ${style}"><i class="fas fa-angle-right me-1"></i> ${chapter}: ${acc.toFixed(1)}% (${data.correct}/${data.total})</p>`;
+        }
+        recList.innerHTML += `</li>`;
+        
+        // 4. Final Recommendation & Next Steps
+        recList.innerHTML += `<li><strong><i class="fas fa-brain me-1"></i> Next Steps Recommendation:</strong> Based on the results, we recommend re-studying the 'Priority Focus Areas' and practicing more scenario-based questions to solidify your understanding of how the Principles and Concepts are applied. Pay special attention to the *AgilePM Roles* and *MoSCoW application*.</li>`;
+    }
+</script>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
