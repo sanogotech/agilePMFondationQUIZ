@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM Foundation v3 Quiz</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --agile-purple: #8e44ad;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--agile-purple);
+            background-color: #f8f5ff;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+        
+        .exam-info {
+            background-color: #e8f4fd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-tasks" style="color:var(--agile-purple);"></i> AgilePM Foundation v3 Quiz</h1>
+                <p>Test your knowledge of Agile Project Management Foundation v3 concepts and prepare for certification.</p>
+            </div>
+            
+            <div class="exam-info">
+                <h5><i class="fas fa-info-circle"></i> Exam Information</h5>
+                <p class="mb-1"><strong>Format:</strong> 50 multiple-choice questions</p>
+                <p class="mb-1"><strong>Passing Score:</strong> 30/50 (60%)</p>
+                <p class="mb-0"><strong>Time Limit:</strong> 40 minutes</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 50</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 2%;" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <h2 id="question-text">Loading question...</h2>
+                    <div id="options-container">
+                        <!-- Option buttons will be inserted here by JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="next-btn" class="btn btn-primary nav-btn">Next <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none">Finish & View Results</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Quiz Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Your final score is:</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> out of 
+                        <span id="final-score-total">0</span> correct answers
+                    </p>
+                    <div id="pass-fail-message" class="mt-3"></div>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Restart Quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const quizData = {
+            questions: [
+                // AgilePM Principles
+                {
+                    question: "Which of the following demonstrates an Agile leadership approach?",
+                    options: [
+                        "Maintaining a focus on delivery by restricting time spent thinking creatively",
+                        "Quickly and efficiently validating all decisions made by members of the project team",
+                        "Inspiring passion and drive for personal and professional development",
+                        "Focusing on the system and tools available when considering the best way to lead"
+                    ],
+                    correctAnswer: "Inspiring passion and drive for personal and professional development",
+                    explanation: "Agile leadership focuses on empowering teams, fostering growth, and creating an environment where people can excel. It's about inspiring passion rather than controlling processes."
+                },
+                {
+                    question: "At a Product Increment level, what provides the first level of contingency if problems occur?",
+                    options: [
+                        "Should Have requirements",
+                        "Could Have requirements",
+                        "Management reserve",
+                        "Tolerance budget"
+                    ],
+                    correctAnswer: "Should Have requirements",
+                    explanation: "In AgilePM, Should Have requirements provide the first level of contingency. These are important but not critical requirements that can be dropped if needed to maintain schedule."
+                },
+                {
+                    question: "Which of the following does NOT reflect appropriate application of the planning concept 'Planning to sensible horizons'?",
+                    options: [
+                        "Plans for specialist involvement in specific Sprints are agreed during Foundations",
+                        "Business drivers for deployment of the solution are part of planning during Feasibility",
+                        "The detail of who is intended to carry out what tasks is part of Sprint Planning",
+                        "Vacation plans for Developers should be considered during the Daily Scrum"
+                    ],
+                    correctAnswer: "Vacation plans for Developers should be considered during the Daily Scrum",
+                    explanation: "The Daily Scrum is for synchronizing activities and planning the next 24 hours, not for long-term planning like vacation schedules. This violates the principle of planning to sensible horizons."
+                },
+                {
+                    question: "During which of the project lifecycle phases should the scope of the project deliverables be clearly documented?",
+                    options: [
+                        "Feasibility phase",
+                        "Foundations phase",
+                        "Delivery phase",
+                        "Deployment phase"
+                    ],
+                    correctAnswer: "Foundations phase",
+                    explanation: "The Foundations phase is where the project scope, objectives, and high-level requirements are clearly defined and documented to provide a solid base for the delivery phases."
+                },
+                {
+                    question: "Which of the 9 Principles of Agile leadership is demonstrated by an active and visible leader who creates a vision for change and lends it credibility?",
+                    options: [
+                        "Actions speak louder than words",
+                        "Improved quality of thinking leads to improved outcomes",
+                        "Organizations improve through effective feedback",
+                        "Emotion is a foundation for enhanced creativity and innovation"
+                    ],
+                    correctAnswer: "Actions speak louder than words",
+                    explanation: "This principle emphasizes that leaders must be actively involved and visible, demonstrating commitment through their actions rather than just words."
+                },
+                {
+                    question: "Which of the following are inputs for Sprint Planning?",
+                    options: [
+                        "Product Backlog, Sprint Backlog, Last product Increment",
+                        "Product Backlog, Sprint Backlog, Past performance of the Scrum Team",
+                        "Product Backlog, Last product Increment, Past performance of the Scrum Team",
+                        "Sprint Backlog, Last product Increment, Past performance of the Scrum Team"
+                    ],
+                    correctAnswer: "Product Backlog, Last product Increment, Past performance of the Scrum Team",
+                    explanation: "Sprint Planning uses the Product Backlog, the latest product Increment, and the team's past performance (velocity) to plan the upcoming Sprint. The Sprint Backlog is an output of Sprint Planning."
+                },
+                {
+                    question: "Identify the missing word(s) in the following sentence. AgilePM recommends giving [?], not single figures.",
+                    options: [
+                        "ranges",
+                        "written values",
+                        "financial terms",
+                        "assumptions"
+                    ],
+                    correctAnswer: "ranges",
+                    explanation: "AgilePM recommends providing estimates as ranges rather than single figures to acknowledge uncertainty and manage expectations more effectively."
+                },
+                {
+                    question: "Which of the following are likely to influence interactions between individuals and groups?",
+                    options: [
+                        "Personal objectives",
+                        "Regularity of occurrence",
+                        "Willingness to collaborate",
+                        "All of the above"
+                    ],
+                    correctAnswer: "All of the above",
+                    explanation: "All these factors - personal objectives, frequency of interactions, and willingness to collaborate - can significantly influence how individuals and groups interact in an Agile environment."
+                },
+                {
+                    question: "A diverse agile delivery team, with many specialists from different backgrounds, are finding it difficult to communicate. Which of the following would help to improve the effectiveness of their communication?",
+                    options: [
+                        "A glossary of terms",
+                        "An informal online blog",
+                        "Regular email updates",
+                        "Technical training"
+                    ],
+                    correctAnswer: "A glossary of terms",
+                    explanation: "A glossary of terms helps establish a common vocabulary, which is particularly important for diverse teams with specialists from different backgrounds who may use different terminology."
+                },
+                {
+                    question: "Which of the following is NOT a MoSCoW priority?",
+                    options: [
+                        "Must Have",
+                        "Should Have",
+                        "Could Have",
+                        "Would Have"
+                    ],
+                    correctAnswer: "Would Have",
+                    explanation: "The MoSCoW priorities are Must Have, Should Have, Could Have, and Won't Have (this time). 'Would Have' is not part of the standard MoSCoW prioritization technique."
+                },
+                {
+                    question: "What is recommended to mitigate the risk to contingency presented by inflexible requirements?",
+                    options: [
+                        "MoSCoW prioritization",
+                        "Commitment-based planning",
+                        "Outcome-based measurement",
+                        "Transparency of process and progress"
+                    ],
+                    correctAnswer: "MoSCoW prioritization",
+                    explanation: "MoSCoW prioritization helps manage inflexible requirements by clearly distinguishing between what is essential (Must Have) and what can be adjusted if needed (Should Have, Could Have)."
+                },
+                {
+                    question: "What should be done if disagreements with statements in the PAQ are identified during the project?",
+                    options: [
+                        "The project should be immediately halted until all disagreements are resolved",
+                        "The disagreements should be ignored if they are minor, as AgilePM will still be effective without addressing them",
+                        "Temporary tailoring adjustments of the AgilePM approach should be considered, and mitigating strategies should be adopted to address the identified risks",
+                        "Only the Project Manager should review the PAQ responses, as team involvement is unnecessary"
+                    ],
+                    correctAnswer: "Temporary tailoring adjustments of the AgilePM approach should be considered, and mitigating strategies should be adopted to address the identified risks",
+                    explanation: "AgilePM is a flexible framework that can be tailored. When disagreements with PAQ statements arise, the approach should be adjusted temporarily with appropriate risk mitigation strategies."
+                },
+                {
+                    question: "Identify the missing words in the following sentence. Benefit estimates should be based on delivering [?] requirements.",
+                    options: [
+                        "the Minimum Usable Subset",
+                        "all Must have and Should Have",
+                        "all Should Have",
+                        "all Should Have and Could Have"
+                    ],
+                    correctAnswer: "the Minimum Usable Subset",
+                    explanation: "Benefit estimates should be based on delivering the Minimum Usable Subset (MUS) of requirements, which represents the smallest set of features that delivers recognizable business value."
+                },
+                {
+                    question: "How does the Scrum Master serve the project?",
+                    options: [
+                        "Instructing the Project Manager to remove barriers that hinder progress",
+                        "Facilitating cross-team planning, refinement and review events",
+                        "Providing effective direction and leadership",
+                        "Telling the team which solution to develop, based on own knowledge and experience"
+                    ],
+                    correctAnswer: "Facilitating cross-team planning, refinement and review events",
+                    explanation: "The Scrum Master serves the project by facilitating events, removing impediments, and ensuring the team follows Agile practices effectively."
+                },
+                {
+                    question: "Which of the following statements, about the role of the Scrum Master, are true?",
+                    options: [
+                        "The Scrum Master manages and directs the Scrum Team",
+                        "The Scrum Master is accountable for establishing Scrum",
+                        "Only 1 is true",
+                        "Only 2 is true",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Only 2 is true",
+                    explanation: "The Scrum Master is accountable for establishing Scrum, but does not manage or direct the team. The Scrum Master is a servant-leader who facilitates and coaches rather than manages."
+                },
+                {
+                    question: "What is the primary purpose of the Feasibility phase in AgilePM?",
+                    options: [
+                        "To create a detailed project plan",
+                        "To determine if the project is viable and worth pursuing",
+                        "To develop the initial product increment",
+                        "To establish the development team"
+                    ],
+                    correctAnswer: "To determine if the project is viable and worth pursuing",
+                    explanation: "The Feasibility phase focuses on assessing whether the project is technically feasible and business-viable before committing significant resources."
+                },
+                {
+                    question: "In AgilePM, what is the main purpose of Timeboxing?",
+                    options: [
+                        "To track individual team member productivity",
+                        "To create fixed deadlines that cannot be changed",
+                        "To focus effort and deliver value incrementally within fixed time periods",
+                        "To measure the quality of deliverables"
+                    ],
+                    correctAnswer: "To focus effort and deliver value incrementally within fixed time periods",
+                    explanation: "Timeboxing creates fixed time periods (timeboxes) within which specific deliverables must be completed, helping to focus effort and deliver value incrementally."
+                },
+                {
+                    question: "Which role is responsible for defining and prioritizing requirements in AgilePM?",
+                    options: [
+                        "Business Analyst",
+                        "Project Manager",
+                        "Business Visionary",
+                        "Solution Developer"
+                    ],
+                    correctAnswer: "Business Visionary",
+                    explanation: "The Business Visionary is responsible for the business vision and for defining and prioritizing requirements in collaboration with the Business Ambassador."
+                },
+                {
+                    question: "What is the purpose of the Management Approach Definition in AgilePM?",
+                    options: [
+                        "To define how the solution will be developed",
+                        "To describe how the project will be managed and controlled",
+                        "To outline the business benefits expected from the project",
+                        "To specify the technical architecture of the solution"
+                    ],
+                    correctAnswer: "To describe how the project will be managed and controlled",
+                    explanation: "The Management Approach Definition outlines how the project will be managed, including roles, responsibilities, reporting, and control mechanisms."
+                },
+                {
+                    question: "Which AgilePM principle emphasizes the importance of delivering on commitments?",
+                    options: [
+                        "Focus on the business need",
+                        "Deliver on time",
+                        "Collaborate",
+                        "Demonstrate control"
+                    ],
+                    correctAnswer: "Deliver on time",
+                    explanation: "The 'Deliver on time' principle emphasizes meeting commitments and deadlines, which builds trust and demonstrates control over the project."
+                },
+                {
+                    question: "In AgilePM, what is the main purpose of the Prioritized Requirements List (PRL)?",
+                    options: [
+                        "To track team velocity",
+                        "To document all project risks",
+                        "To provide a single prioritized list of requirements",
+                        "To record timebox plans"
+                    ],
+                    correctAnswer: "To provide a single prioritized list of requirements",
+                    explanation: "The PRL contains all requirements prioritized using MoSCoW, providing a clear view of what needs to be delivered and in what order."
+                },
+                {
+                    question: "Which phase comes immediately after the Foundations phase in the AgilePM lifecycle?",
+                    options: [
+                        "Feasibility",
+                        "Exploration",
+                        "Engineering",
+                        "Deployment"
+                    ],
+                    correctAnswer: "Exploration",
+                    explanation: "After Foundations, the project moves into the Exploration phase where requirements are elaborated and the solution is developed iteratively."
+                },
+                {
+                    question: "What is the primary focus of the Post-project phase?",
+                    options: [
+                        "Developing the final product increment",
+                        "Conducting a benefits review and capturing lessons learned",
+                        "Planning the next project",
+                        "Training end users"
+                    ],
+                    correctAnswer: "Conducting a benefits review and capturing lessons learned",
+                    explanation: "The Post-project phase focuses on reviewing the benefits achieved and capturing lessons learned for future projects."
+                },
+                {
+                    question: "Which role represents the business interests within the development team?",
+                    options: [
+                        "Business Sponsor",
+                        "Business Visionary",
+                        "Business Ambassador",
+                        "Business Analyst"
+                    ],
+                    correctAnswer: "Business Ambassador",
+                    explanation: "The Business Ambassador works within the development team, representing business interests and providing domain expertise."
+                },
+                {
+                    question: "What is the purpose of the Solution Architecture Definition?",
+                    options: [
+                        "To define the business processes",
+                        "To outline the technical architecture of the solution",
+                        "To describe the project management approach",
+                        "To document user requirements"
+                    ],
+                    correctAnswer: "To outline the technical architecture of the solution",
+                    explanation: "The Solution Architecture Definition describes the technical architecture and design approach for the solution."
+                },
+                {
+                    question: "In AgilePM, what does the term 'Timebox' refer to?",
+                    options: [
+                        "A fixed period for planning the entire project",
+                        "A fixed period for developing a specific set of deliverables",
+                        "The time allocated for daily stand-ups",
+                        "The deadline for project completion"
+                    ],
+                    correctAnswer: "A fixed period for developing a specific set of deliverables",
+                    explanation: "A Timebox is a fixed period (typically 2-4 weeks) during which a specific set of deliverables is developed."
+                },
+                {
+                    question: "Which of the following is NOT a key principle of AgilePM?",
+                    options: [
+                        "Focus on the business need",
+                        "Deliver on time",
+                        "Build incrementally from firm foundations",
+                        "Document everything thoroughly"
+                    ],
+                    correctAnswer: "Document everything thoroughly",
+                    explanation: "While documentation is important in AgilePM, the principle is to focus on delivering working solutions rather than comprehensive documentation."
+                },
+                {
+                    question: "What is the main purpose of facilitated workshops in AgilePM?",
+                    options: [
+                        "To provide training to team members",
+                        "To resolve conflicts between team members",
+                        "To collaboratively explore requirements and solutions",
+                        "To demonstrate completed work to stakeholders"
+                    ],
+                    correctAnswer: "To collaboratively explore requirements and solutions",
+                    explanation: "Facilitated workshops bring stakeholders together to collaboratively explore requirements, design solutions, and make decisions."
+                },
+                {
+                    question: "In AgilePM, who is responsible for ensuring the project remains aligned with business objectives?",
+                    options: [
+                        "Project Manager",
+                        "Business Visionary",
+                        "Technical Coordinator",
+                        "Team Leader"
+                    ],
+                    correctAnswer: "Business Visionary",
+                    explanation: "The Business Visionary is responsible for the business vision and ensuring the project remains aligned with business objectives."
+                },
+                {
+                    question: "What is the primary purpose of the Deployment Plan?",
+                    options: [
+                        "To plan the development activities",
+                        "To outline how the solution will be deployed to users",
+                        "To document the testing strategy",
+                        "To track project progress"
+                    ],
+                    correctAnswer: "To outline how the solution will be deployed to users",
+                    explanation: "The Deployment Plan describes how the solution will be transitioned into live operation and made available to users."
+                },
+                {
+                    question: "Which AgilePM principle emphasizes the importance of continuous communication?",
+                    options: [
+                        "Focus on the business need",
+                        "Collaborate",
+                        "Communicate continuously and clearly",
+                        "Demonstrate control"
+                    ],
+                    correctAnswer: "Communicate continuously and clearly",
+                    explanation: "This principle highlights the importance of ongoing, clear communication among all stakeholders throughout the project."
+                },
+                {
+                    question: "What is the main purpose of the Quality Management Approach in AgilePM?",
+                    options: [
+                        "To define quality standards and how they will be achieved",
+                        "To track defects found during testing",
+                        "To measure team productivity",
+                        "To document user acceptance criteria"
+                    ],
+                    correctAnswer: "To define quality standards and how they will be achieved",
+                    explanation: "The Quality Management Approach defines the quality standards for the project and describes how they will be achieved and measured."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Benefits Assessment?",
+                    options: [
+                        "To evaluate team performance",
+                        "To assess the expected business benefits of the project",
+                        "To measure project costs",
+                        "To review stakeholder satisfaction"
+                    ],
+                    correctAnswer: "To assess the expected business benefits of the project",
+                    explanation: "The Benefits Assessment documents the expected business benefits and how they will be measured and realized."
+                },
+                {
+                    question: "Which role is responsible for coordinating technical aspects of the solution?",
+                    options: [
+                        "Business Analyst",
+                        "Technical Coordinator",
+                        "Solution Developer",
+                        "Team Leader"
+                    ],
+                    correctAnswer: "Technical Coordinator",
+                    explanation: "The Technical Coordinator is responsible for coordinating technical aspects and ensuring technical consistency across the solution."
+                },
+                {
+                    question: "What is the primary focus of the Engineering phase in AgilePM?",
+                    options: [
+                        "Defining business requirements",
+                        "Developing and testing the solution",
+                        "Deploying the solution to users",
+                        "Planning the project approach"
+                    ],
+                    correctAnswer: "Developing and testing the solution",
+                    explanation: "The Engineering phase focuses on developing, testing, and refining the solution based on feedback from previous increments."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Project Review Report?",
+                    options: [
+                        "To document daily progress",
+                        "To summarize project performance and lessons learned",
+                        "To track timebox completion",
+                        "To outline the testing strategy"
+                    ],
+                    correctAnswer: "To summarize project performance and lessons learned",
+                    explanation: "The Project Review Report summarizes project performance, achievements, and lessons learned, typically at the end of a phase or the project."
+                },
+                {
+                    question: "Which AgilePM principle emphasizes building the solution in small, manageable pieces?",
+                    options: [
+                        "Focus on the business need",
+                        "Build incrementally from firm foundations",
+                        "Develop iteratively",
+                        "Never compromise quality"
+                    ],
+                    correctAnswer: "Build incrementally from firm foundations",
+                    explanation: "This principle emphasizes building the solution in small, manageable increments based on a solid foundation established during the Foundations phase."
+                },
+                {
+                    question: "What is the main purpose of risk management in AgilePM?",
+                    options: [
+                        "To eliminate all project risks",
+                        "To identify, assess, and control risks throughout the project",
+                        "To document risks for audit purposes",
+                        "To assign blame when things go wrong"
+                    ],
+                    correctAnswer: "To identify, assess, and control risks throughout the project",
+                    explanation: "Risk management in AgilePM is an ongoing process of identifying, assessing, and controlling risks to minimize their impact on the project."
+                },
+                {
+                    question: "In AgilePM, who is responsible for facilitating workshops?",
+                    options: [
+                        "Business Visionary",
+                        "Workshop Facilitator",
+                        "Project Manager",
+                        "Business Ambassador"
+                    ],
+                    correctAnswer: "Workshop Facilitator",
+                    explanation: "The Workshop Facilitator is specifically responsible for planning and facilitating workshops to ensure they are productive and achieve their objectives."
+                },
+                {
+                    question: "What is the primary purpose of the Delivery Plan in AgilePM?",
+                    options: [
+                        "To outline the overall approach to delivering the project",
+                        "To track daily tasks",
+                        "To document technical specifications",
+                        "To plan team vacations"
+                    ],
+                    correctAnswer: "To outline the overall approach to delivering the project",
+                    explanation: "The Delivery Plan describes the overall approach to delivering the project, including phases, timeboxes, and key milestones."
+                },
+                {
+                    question: "Which of the following is a key benefit of using AgilePM?",
+                    options: [
+                        "Comprehensive documentation is always produced",
+                        "Projects are always delivered on time and within budget",
+                        "It provides flexibility to adapt to changing requirements",
+                        "It eliminates the need for project management"
+                    ],
+                    correctAnswer: "It provides flexibility to adapt to changing requirements",
+                    explanation: "A key benefit of AgilePM is its flexibility to adapt to changing requirements while still maintaining control and delivering value."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Development Approach Definition?",
+                    options: [
+                        "To define how the solution will be developed technically",
+                        "To document business processes",
+                        "To outline the project management approach",
+                        "To describe the testing strategy"
+                    ],
+                    correctAnswer: "To define how the solution will be developed technically",
+                    explanation: "The Development Approach Definition describes the technical approach to developing the solution, including methods, tools, and standards."
+                },
+                {
+                    question: "Which role is responsible for the day-to-day management of the development team?",
+                    options: [
+                        "Project Manager",
+                        "Team Leader",
+                        "Technical Coordinator",
+                        "Business Visionary"
+                    ],
+                    correctAnswer: "Team Leader",
+                    explanation: "The Team Leader is responsible for the day-to-day management and coordination of the development team's activities."
+                },
+                {
+                    question: "What is the primary focus of the Exploration phase in AgilePM?",
+                    options: [
+                        "Defining high-level requirements",
+                        "Developing the initial solution increment",
+                        "Planning the deployment",
+                        "Reviewing project benefits"
+                    ],
+                    correctAnswer: "Developing the initial solution increment",
+                    explanation: "The Exploration phase focuses on developing the initial solution increment through iterative development and refinement."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of Timebox Review Records?",
+                    options: [
+                        "To document what was achieved in each timebox",
+                        "To track individual team member performance",
+                        "To record meeting minutes",
+                        "To document technical specifications"
+                    ],
+                    correctAnswer: "To document what was achieved in each timebox",
+                    explanation: "Timebox Review Records document the outcomes of each timebox, including what was delivered, lessons learned, and any adjustments needed."
+                },
+                {
+                    question: "Which AgilePM principle emphasizes the importance of not sacrificing quality?",
+                    options: [
+                        "Focus on the business need",
+                        "Deliver on time",
+                        "Never compromise quality",
+                        "Build incrementally from firm foundations"
+                    ],
+                    correctAnswer: "Never compromise quality",
+                    explanation: "This principle emphasizes that quality should never be sacrificed to meet deadlines or reduce costs."
+                },
+                {
+                    question: "What is the main purpose of configuration management in AgilePM?",
+                    options: [
+                        "To manage project documentation",
+                        "To control changes to project deliverables",
+                        "To configure development tools",
+                        "To manage team composition"
+                    ],
+                    correctAnswer: "To control changes to project deliverables",
+                    explanation: "Configuration management ensures that changes to project deliverables are properly controlled, tracked, and documented."
+                },
+                {
+                    question: "In AgilePM, who is ultimately responsible for the project's success?",
+                    options: [
+                        "Project Manager",
+                        "Business Sponsor",
+                        "Business Visionary",
+                        "The entire project team"
+                    ],
+                    correctAnswer: "Business Sponsor",
+                    explanation: "The Business Sponsor is ultimately responsible for the project's success, as they provide funding and champion the project within the organization."
+                },
+                {
+                    question: "What is the primary purpose of the Foundations phase in AgilePM?",
+                    options: [
+                        "To develop the initial solution",
+                        "To establish a firm foundation for the project",
+                        "To deploy the solution to users",
+                        "To review project benefits"
+                    ],
+                    correctAnswer: "To establish a firm foundation for the project",
+                    explanation: "The Foundations phase establishes a solid foundation for the project by defining scope, objectives, and high-level plans."
+                },
+                {
+                    question: "Which of the following best describes the AgilePM approach to requirements?",
+                    options: [
+                        "All requirements must be fully defined before development begins",
+                        "Requirements emerge and evolve throughout the project",
+                        "Requirements are fixed and cannot be changed once agreed",
+                        "Requirements are solely determined by the technical team"
+                    ],
+                    correctAnswer: "Requirements emerge and evolve throughout the project",
+                    explanation: "AgilePM recognizes that requirements emerge and evolve as understanding improves, allowing for flexibility and adaptation."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Business Case?",
+                    options: [
+                        "To document technical specifications",
+                        "To justify the project in business terms",
+                        "To track project progress",
+                        "To define quality standards"
+                    ],
+                    correctAnswer: "To justify the project in business terms",
+                    explanation: "The Business Case justifies the project by describing the business need, expected benefits, costs, and risks."
+                }
+            ]
+        };
+
+        // DOM Elements
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const passFailMessageEl = document.getElementById('pass-fail-message');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            questions = shuffleArray([...quizData.questions]);
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.textContent = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            if(isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Correct!";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explanation:";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showFinalResults() {
+            const percentage = (score / questions.length) * 100;
+            const passed = percentage >= 60;
+            let scoreColor;
+            let recommendationsHtml;
+            let passFailHtml;
+
+            if (passed) {
+                scoreColor = 'var(--success-color)';
+                passFailHtml = '<div class="alert alert-success"><i class="fas fa-check-circle"></i> <strong>Congratulations!</strong> You passed the exam.</div>';
+                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellent!</h5><p>You have a solid understanding of AgilePM Foundation v3 concepts. You\'re well prepared for the certification exam!</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                passFailHtml = '<div class="alert alert-danger"><i class="fas fa-times-circle"></i> <strong>Not quite there yet.</strong> You need 60% to pass.</div>';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> Keep Studying!</h5><p>Review the AgilePM Foundation v3 syllabus, focusing on the areas where you struggled. Pay special attention to the principles, lifecycle phases, and roles.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            passFailMessageEl.innerHTML = passFailHtml;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            resultsModal.show();
+        }
+
+        // Event Listeners
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', () => {
+            resultsModal.hide();
+            // A short delay to allow modal to close before restarting
+            setTimeout(startQuiz, 500);
+        });
+        
+        // Initial call
+        document.addEventListener('DOMContentLoaded', startQuiz);
+    </script>
+</body>
+</html>

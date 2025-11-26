@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz AgilePM® Foundation v3</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --agile-blue: #4d8af0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+            --agile-gradient: linear-gradient(135deg, #4d8af0 0%, #3498db 100%);
+            --card-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><path d="M0 0L100 100M100 0L0 100" stroke="%23e9ecef" stroke-width="0.5"/></svg>');
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--agile-gradient);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--agile-blue);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        #question-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--agile-gradient);
+            opacity: 0.1;
+            transition: left 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--agile-blue);
+            background-color: #f0f7ff;
+        }
+
+        .option-btn:hover:not([disabled])::before {
+            left: 0;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.2);
+            transition: left 0.3s ease;
+        }
+
+        .nav-btn:hover::before {
+            left: 0;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background: var(--agile-gradient);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+
+        .chapter-badge {
+            display: inline-block;
+            background: var(--agile-gradient);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .chapter-info {
+            font-size: 0.9rem;
+            color: var(--grey-text);
+            margin-bottom: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-rocket" style="color:var(--agile-blue);"></i> Quiz AgilePM® Foundation v3</h1>
+                <p>Testez vos connaissances et préparez-vous pour l'examen officiel.</p>
+            </div>
+
+            <div class="progress-container">
+                 <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span id="question-counter">Question 1 / 50</span>
+                    <span id="current-score">Score: 0</span>
+                 </div>
+                <div class="progress" style="height: 10px;">
+                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 2%; background: var(--agile-gradient);" aria-valuenow="2" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
+
+            <div id="question-card" class="card">
+                <div class="card-body">
+                    <div id="chapter-badge" class="chapter-badge"></div>
+                    <div id="chapter-info" class="chapter-info"></div>
+                    <h2 id="question-text">Chargement de la question...</h2>
+                    <div id="options-container">
+                        <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                    </div>
+                    <div id="explanation-box" class="d-none">
+                        <h5 id="explanation-title"></h5>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quiz-navigation">
+                <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                <button id="next-btn" class="btn btn-primary nav-btn" style="background: var(--agile-gradient); border: none;">Suivant <i class="fas fa-arrow-right"></i></button>
+                <button id="finish-btn" class="btn btn-success nav-btn d-none">Terminer & Voir les Résultats</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Résultats du Quiz AgilePM®</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Votre score final est :</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> sur 
+                        <span id="final-score-total">0</span> bonnes réponses
+                    </p>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn" style="background: var(--agile-gradient); border: none;"><i class="fas fa-redo"></i> Recommencer le quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const quizData = {
+            questions: [
+                // Section 1: Introduction à l'agilité & Business Agility (3 questions)
+                {
+                    question: "Qu'est-ce que le contexte VUCA dans le cadre de l'agilité ?",
+                    options: [
+                        "Un framework de gestion de projet traditionnel",
+                        "Un acronyme pour Volatility, Uncertainty, Complexity, Ambiguity",
+                        "Une méthode de priorisation des exigences",
+                        "Un outil de suivi de la vélocité d'équipe"
+                    ],
+                    correctAnswer: "Un acronyme pour Volatility, Uncertainty, Complexity, Ambiguity",
+                    explanation: "VUCA décrit un environnement volatile, incertain, complexe et ambigu, caractéristique des marchés actuels pour lesquels l'agilité est particulièrement adaptée.",
+                    chapter: "Introduction à l'agilité & Business Agility",
+                    chapterInfo: "Comprendre l'agilité, Business Agility, contexte VUCA"
+                },
+                {
+                    question: "Quelle est la définition de 'Business Agility' ?",
+                    options: [
+                        "La capacité d'une organisation à répondre rapidement aux changements du marché",
+                        "La vitesse à laquelle une équipe de développement livre du code",
+                        "L'utilisation exclusive de Scrum dans toutes les équipes",
+                        "L'automatisation complète des processus métier"
+                    ],
+                    correctAnswer: "La capacité d'une organisation à répondre rapidement aux changements du marché",
+                    explanation: "La Business Agility est la capacité d'une organisation à s'adapter rapidement aux changements internes et externes tout en maintenant une stabilité opérationnelle.",
+                    chapter: "Introduction à l'agilité & Business Agility",
+                    chapterInfo: "Comprendre l'agilité, Business Agility, contexte VUCA"
+                },
+                {
+                    question: "Quel est l'objectif principal de l'adoption de l'agilité dans une organisation ?",
+                    options: [
+                        "Réduire les coûts de développement",
+                        "Livrer plus rapidement de la valeur au client",
+                        "Éliminer complètement la documentation",
+                        "Remplacer tous les managers par des Scrum Masters"
+                    ],
+                    correctAnswer: "Livrer plus rapidement de la valeur au client",
+                    explanation: "L'objectif principal de l'agilité est de livrer de la valeur au client plus rapidement et de manière plus adaptative face aux changements.",
+                    chapter: "Introduction à l'agilité & Business Agility",
+                    chapterInfo: "Comprendre l'agilité, Business Agility, contexte VUCA"
+                },
+
+                // Section 2: Principes fondamentaux AgilePM® v3 (5 questions)
+                {
+                    question: "Combien de principes fondamentaux DSDM compose AgilePM® v3 ?",
+                    options: ["5", "6", "8", "10"],
+                    correctAnswer: "8",
+                    explanation: "AgilePM® v3 est basé sur 8 principes fondamentaux DSDM qui guident toutes les activités du projet.",
+                    chapter: "Principes fondamentaux AgilePM® v3",
+                    chapterInfo: "8 principes DSDM, valeur métier, communication, adaptation"
+                },
+                {
+                    question: "Lequel de ces énoncés représente l'un des 8 principes DSDM ?",
+                    options: [
+                        "La documentation exhaustive prime sur le logiciel opérationnel",
+                        "Respecter les délais est optionnel si la qualité est compromise",
+                        "Se concentrer sur la valeur métier",
+                        "Éviter la collaboration avec les utilisateurs finaux"
+                    ],
+                    correctAnswer: "Se concentrer sur la valeur métier",
+                    explanation: "L'un des 8 principes DSDM est 'Focus on the Business Need' (Se concentrer sur le besoin métier), qui met l'accent sur la livraison de valeur métier.",
+                    chapter: "Principes fondamentaux AgilePM® v3",
+                    chapterInfo: "8 principes DSDM, valeur métier, communication, adaptation"
+                },
+                {
+                    question: "Quel principe DSDM insiste sur la nécessité de construire de manière incrémentale ?",
+                    options: [
+                        "Collaborer activement",
+                        "Développer de manière itérative",
+                        "Livrer à temps",
+                        "Ne jamais compromettre la qualité"
+                    ],
+                    correctAnswer: "Développer de manière itérative",
+                    explanation: "Le principe 'Develop Iteratively' (Développer de manière itérative) encourage la construction par petits incréments pour permettre des retours fréquents et une adaptation.",
+                    chapter: "Principes fondamentaux AgilePM® v3",
+                    chapterInfo: "8 principes DSDM, valeur métier, communication, adaptation"
+                },
+                {
+                    question: "Lequel de ces éléments n'est PAS l'un des 8 principes DSDM ?",
+                    options: [
+                        "Ne jamais compromettre la qualité",
+                        "Démontrer un contrôle",
+                        "Communiquer continuellement et clairement",
+                        "Planifier minutieusement tous les détails à l'avance"
+                    ],
+                    correctAnswer: "Planifier minutieusement tous les détails à l'avance",
+                    explanation: "AgilePM® privilégie une planification adaptative et progressive plutôt qu'une planification détaillée exhaustive en amont.",
+                    chapter: "Principes fondamentaux AgilePM® v3",
+                    chapterInfo: "8 principes DSDM, valeur métier, communication, adaptation"
+                },
+                {
+                    question: "Quel principe DSDM met l'accent sur l'autonomie de l'équipe ?",
+                    options: [
+                        "Collaborer",
+                        "S'adapter continuellement",
+                        "Construire de manière incrémentale",
+                        "Démontrer un contrôle"
+                    ],
+                    correctAnswer: "Collaborer",
+                    explanation: "Le principe 'Collaborate' (Collaborer) encourage l'autonomie des équipes et une collaboration étroite entre toutes les parties prenantes.",
+                    chapter: "Principes fondamentaux AgilePM® v3",
+                    chapterInfo: "8 principes DSDM, valeur métier, communication, adaptation"
+                },
+
+                // Section 3: AgilePM® Framework & cycle de vie (5 questions)
+                {
+                    question: "Combien de phases comprend le cycle de vie AgilePM® ?",
+                    options: ["4", "5", "6", "7"],
+                    correctAnswer: "6",
+                    explanation: "Le cycle de vie AgilePM® comprend 6 phases : Pré-projet, Faisabilité, Foundations, Exploration, Ingénierie, Déploiement.",
+                    chapter: "AgilePM® Framework & cycle de vie",
+                    chapterInfo: "Phases du projet, configurations alternatives"
+                },
+                {
+                    question: "Quelle est la première phase du cycle de vie AgilePM® ?",
+                    options: [
+                        "Faisabilité",
+                        "Pré-projet",
+                        "Foundations",
+                        "Exploration"
+                    ],
+                    correctAnswer: "Pré-projet",
+                    explanation: "La phase Pré-projet est la première étape où l'on définit les objectifs généraux et la portée du projet.",
+                    chapter: "AgilePM® Framework & cycle de vie",
+                    chapterInfo: "Phases du projet, configurations alternatives"
+                },
+                {
+                    question: "Dans quelle phase du cycle de vie AgilePM® définit-on principalement la solution technique ?",
+                    options: [
+                        "Faisabilité",
+                        "Foundations",
+                        "Exploration",
+                        "Ingénierie"
+                    ],
+                    correctAnswer: "Foundations",
+                    explanation: "La phase Foundations est celle où l'on établit les bases solides du projet, y compris l'architecture technique.",
+                    chapter: "AgilePM® Framework & cycle de vie",
+                    chapterInfo: "Phases du projet, configurations alternatives"
+                },
+                {
+                    question: "Quelle phase AgilePM® se concentre sur la livraison des incréments de produit ?",
+                    options: [
+                        "Faisabilité",
+                        "Foundations",
+                        "Exploration",
+                        "Ingénierie"
+                    ],
+                    correctAnswer: "Ingénierie",
+                    explanation: "La phase Ingénierie (Engineering) est dédiée à la construction et à la livraison des incréments de produit.",
+                    chapter: "AgilePM® Framework & cycle de vie",
+                    chapterInfo: "Phases du projet, configurations alternatives"
+                },
+                {
+                    question: "Quelle est la dernière phase du cycle de vie AgilePM® ?",
+                    options: [
+                        "Ingénierie",
+                        "Déploiement",
+                        "Post-projet",
+                        "Évaluation"
+                    ],
+                    correctAnswer: "Déploiement",
+                    explanation: "La phase Déploiement est la dernière étape où le produit est mis en production et livré aux utilisateurs finaux.",
+                    chapter: "AgilePM® Framework & cycle de vie",
+                    chapterInfo: "Phases du projet, configurations alternatives"
+                },
+
+                // Section 4: Rôles clés dans AgilePM® (3 questions)
+                {
+                    question: "Combien de rôles clés sont définis dans AgilePM® ?",
+                    options: ["7", "8", "9", "10"],
+                    correctAnswer: "9",
+                    explanation: "AgilePM® définit 9 rôles clés répartis entre les parties prenantes métier, techniques et de gestion.",
+                    chapter: "Rôles clés dans AgilePM®",
+                    chapterInfo: "9 rôles et responsabilités"
+                },
+                {
+                    question: "Quel rôle est responsable de la vision du produit dans AgilePM® ?",
+                    options: [
+                        "Business Ambassador",
+                        "Project Manager",
+                        "Business Visionary",
+                        "Technical Coordinator"
+                    ],
+                    correctAnswer: "Business Visionary",
+                    explanation: "Le Business Visionary est responsable de la vision globale du produit et s'assure qu'elle répond aux besoins stratégiques de l'organisation.",
+                    chapter: "Rôles clés dans AgilePM®",
+                    chapterInfo: "9 rôles et responsabilités"
+                },
+                {
+                    question: "Quel rôle représente les utilisateurs finaux dans AgilePM® ?",
+                    options: [
+                        "Business Ambassador",
+                        "Business Analyst",
+                        "Technical Coordinator",
+                        "Project Manager"
+                    ],
+                    correctAnswer: "Business Ambassador",
+                    explanation: "Le Business Ambassador représente les utilisateurs finaux et les parties prenantes métier au sein de l'équipe projet.",
+                    chapter: "Rôles clés dans AgilePM®",
+                    chapterInfo: "9 rôles et responsabilités"
+                },
+
+                // Section 5: Project Requirements List (PRL) (4 questions)
+                {
+                    question: "Qu'est-ce que la PRL dans AgilePM® ?",
+                    options: [
+                        "Project Resource List",
+                        "Project Requirements List",
+                        "Product Release List",
+                        "Project Risk Log"
+                    ],
+                    correctAnswer: "Project Requirements List",
+                    explanation: "La PRL (Project Requirements List) est l'artefact principal qui capture toutes les exigences du projet dans AgilePM®.",
+                    chapter: "Project Requirements List (PRL)",
+                    chapterInfo: "Définition, user stories, critères d'acceptation"
+                },
+                {
+                    question: "Quel est le principal objectif de la PRL ?",
+                    options: [
+                        "Suivre les heures travaillées par l'équipe",
+                        "Capturer et prioriser toutes les exigences du projet",
+                        "Documenter l'architecture technique",
+                        "Planifier les ressources humaines"
+                    ],
+                    correctAnswer: "Capturer et prioriser toutes les exigences du projet",
+                    explanation: "La PRL a pour objectif de capturer, organiser et prioriser toutes les exigences du projet pour guider le développement.",
+                    chapter: "Project Requirements List (PRL)",
+                    chapterInfo: "Définition, user stories, critères d'acceptation"
+                },
+                {
+                    question: "Quel format est couramment utilisé pour décrire les exigences dans la PRL ?",
+                    options: [
+                        "User Stories",
+                        "Cas d'utilisation UML",
+                        "Diagrammes de flux",
+                        "Spécifications techniques détaillées"
+                    ],
+                    correctAnswer: "User Stories",
+                    explanation: "Les User Stories sont couramment utilisées dans AgilePM® pour décrire les exigences du point de vue de l'utilisateur.",
+                    chapter: "Project Requirements List (PRL)",
+                    chapterInfo: "Définition, user stories, critères d'acceptation"
+                },
+                {
+                    question: "Que doivent inclure les éléments de la PRL pour être considérés comme prêts pour le développement ?",
+                    options: [
+                        "Des critères d'acceptation clairs",
+                        "Une estimation détaillée en heures",
+                        "L'assignation à un développeur spécifique",
+                        "Une documentation complète de conception"
+                    ],
+                    correctAnswer: "Des critères d'acceptation clairs",
+                    explanation: "Les critères d'acceptation sont essentiels pour définir quand une exigence est considérée comme terminée et satisfaisante.",
+                    chapter: "Project Requirements List (PRL)",
+                    chapterInfo: "Définition, user stories, critères d'acceptation"
+                },
+
+                // Section 6: Priorisation MoSCoW (4 questions)
+                {
+                    question: "Que signifie l'acronyme MoSCoW ?",
+                    options: [
+                        "Must, Should, Could, Won't",
+                        "Mandatory, Secondary, Conditional, Won't",
+                        "Major, Secondary, Could, Won't",
+                        "Must, Should, Can, Won't"
+                    ],
+                    correctAnswer: "Must, Should, Could, Won't",
+                    explanation: "MoSCoW est une technique de priorisation qui classe les exigences en quatre catégories : Must have, Should have, Could have, et Won't have.",
+                    chapter: "Priorisation MoSCoW",
+                    chapterInfo: "Priorisation Must/Should/Could/Won't"
+                },
+                {
+                    question: "Quelle catégorie MoSCoW décrit les fonctionnalités essentielles sans lesquelles le projet échouerait ?",
+                    options: ["Must have", "Should have", "Could have", "Won't have"],
+                    correctAnswer: "Must have",
+                    explanation: "Les 'Must have' sont les exigences critiques sans lesquelles le projet serait considéré comme un échec.",
+                    chapter: "Priorisation MoSCoW",
+                    chapterInfo: "Priorisation Must/Should/Could/Won't"
+                },
+                {
+                    question: "Quelle catégorie MoSCoW contient les fonctionnalités qui seraient utiles mais pas essentielles ?",
+                    options: ["Must have", "Should have", "Could have", "Won't have"],
+                    correctAnswer: "Could have",
+                    explanation: "Les 'Could have' sont des fonctionnalités souhaitables mais non essentielles, qui seront implémentées si le temps le permet.",
+                    chapter: "Priorisation MoSCoW",
+                    chapterInfo: "Priorisation Must/Should/Could/Won't"
+                },
+                {
+                    question: "Quelle est la principale caractéristique de la catégorie 'Won't have' dans MoSCoW ?",
+                    options: [
+                        "Ces fonctionnalités seront implémentées dans la prochaine version",
+                        "Ces fonctionnalités ne seront pas implémentées dans le projet actuel",
+                        "Ces fonctionnalités sont en attente de validation",
+                        "Ces fonctionnalités sont techniquement impossibles à réaliser"
+                    ],
+                    correctAnswer: "Ces fonctionnalités ne seront pas implémentées dans le projet actuel",
+                    explanation: "La catégorie 'Won't have' contient les fonctionnalités qui ont été consciemment exclues du périmètre du projet actuel.",
+                    chapter: "Priorisation MoSCoW",
+                    chapterInfo: "Priorisation Must/Should/Could/Won't"
+                },
+
+                // Section 7: Découpage en increments & timeboxes (3 questions)
+                {
+                    question: "Qu'est-ce qu'un 'incrément' dans AgilePM® ?",
+                    options: [
+                        "Une version complète et finale du produit",
+                        "Une partie du produit qui apporte de la valeur et qui est potentiellement livrable",
+                        "Une tâche technique individuelle",
+                        "Une réunion de planification"
+                    ],
+                    correctAnswer: "Une partie du produit qui apporte de la valeur et qui est potentiellement livrable",
+                    explanation: "Un incrément est une portion du produit qui apporte de la valeur métier et qui est potentiellement livrable aux utilisateurs.",
+                    chapter: "Découpage en increments & timeboxes",
+                    chapterInfo: "Concepts d'increment, timeboxes, découpage du backlog"
+                },
+                {
+                    question: "Quelle est la durée typique d'une timebox dans AgilePM® ?",
+                    options: [
+                        "1 à 2 jours",
+                        "1 à 4 semaines",
+                        "2 à 6 mois",
+                        "Variable selon la complexité"
+                    ],
+                    correctAnswer: "1 à 4 semaines",
+                    explanation: "Les timeboxes dans AgilePM® durent généralement entre 1 et 4 semaines, permettant une livraison fréquente de valeur.",
+                    chapter: "Découpage en increments & timeboxes",
+                    chapterInfo: "Concepts d'increment, timeboxes, découpage du backlog"
+                },
+                {
+                    question: "Quel est l'avantage principal du découpage en incréments ?",
+                    options: [
+                        "Réduire la documentation nécessaire",
+                        "Livrer de la valeur plus tôt et obtenir des retours fréquents",
+                        "Éliminer le besoin de tests",
+                        "Simplifier la gestion des ressources"
+                    ],
+                    correctAnswer: "Livrer de la valeur plus tôt et obtenir des retours fréquents",
+                    explanation: "Le découpage en incréments permet de livrer de la valeur métier plus tôt et d'obtenir des retours fréquents pour adapter le développement.",
+                    chapter: "Découpage en increments & timeboxes",
+                    chapterInfo: "Concepts d'increment, timeboxes, découpage du backlog"
+                },
+
+                // Section 8: Planification de releases & sprints (3 questions)
+                {
+                    question: "Quelle est la différence entre Release Planning et Timebox Planning dans AgilePM® ?",
+                    options: [
+                        "Le Release Planning concerne la planification à long terme, le Timebox Planning à court terme",
+                        "Il n'y a pas de différence, ce sont des termes synonymes",
+                        "Le Release Planning est technique, le Timebox Planning est métier",
+                        "Le Release Planning se fait en début de projet, le Timebox Planning à la fin"
+                    ],
+                    correctAnswer: "Le Release Planning concerne la planisation à long terme, le Timebox Planning à court terme",
+                    explanation: "Le Release Planning définit les objectifs à moyen/long terme (plusieurs timeboxes), tandis que le Timebox Planning détaille le travail pour la timebox en cours.",
+                    chapter: "Planification de releases & sprints",
+                    chapterInfo: "Release Planning, Timebox Planning, multi-équipes"
+                },
+                {
+                    question: "Qui participe principalement au Timebox Planning dans AgilePM® ?",
+                    options: [
+                        "Seulement le Project Manager",
+                        "Toute l'équipe projet",
+                        "Seulement les développeurs",
+                        "Seulement le Business Visionary"
+                    ],
+                    correctAnswer: "Toute l'équipe projet",
+                    explanation: "Le Timebox Planning est une activité collaborative impliquant tous les membres de l'équipe projet.",
+                    chapter: "Planification de releases & sprints",
+                    chapterInfo: "Release Planning, Timebox Planning, multi-équipes"
+                },
+                {
+                    question: "Quel est l'objectif principal du Release Planning ?",
+                    options: [
+                        "Définir la vision stratégique du produit",
+                        "Planifier le travail détaillé pour les 2 prochaines semaines",
+                        "Établir un calendrier de livraison pour les incréments majeurs",
+                        "Assigner des tâches individuelles aux membres de l'équipe"
+                    ],
+                    correctAnswer: "Établir un calendrier de livraison pour les incréments majeurs",
+                    explanation: "Le Release Planning établit un calendrier pour les livraisons majeures (releases) du produit, alignant les attentes des parties prenantes.",
+                    chapter: "Planification de releases & sprints",
+                    chapterInfo: "Release Planning, Timebox Planning, multi-équipes"
+                },
+
+                // Section 9: Techniques d'estimation (2 questions)
+                {
+                    question: "Quelle technique d'estimation est couramment utilisée dans AgilePM® pour évaluer l'effort relatif ?",
+                    options: [
+                        "Les story points",
+                        "L'estimation en heures précises",
+                        "L'analyse de la valeur acquise",
+                        "Le diagramme de Gantt"
+                    ],
+                    correctAnswer: "Les story points",
+                    explanation: "Les story points sont une unité de mesure relative utilisée pour estimer l'effort requis pour développer une fonctionnalité.",
+                    chapter: "Techniques d'estimation",
+                    chapterInfo: "Story points, estimation relative"
+                },
+                {
+                    question: "Quel est l'avantage principal de l'estimation relative par rapport à l'estimation absolue ?",
+                    options: [
+                        "Elle est plus précise",
+                        "Elle est plus rapide et moins sujette aux biais cognitifs",
+                        "Elle nécessite moins d'expertise technique",
+                        "Elle produit des estimations en heures"
+                    ],
+                    correctAnswer: "Elle est plus rapide et moins sujette aux biais cognitifs",
+                    explanation: "L'estimation relative (comparaison entre items) est généralement plus rapide et évite certains biais comme l'ancrage qui affectent les estimations absolues.",
+                    chapter: "Techniques d'estimation",
+                    chapterInfo: "Story points, estimation relative"
+                },
+
+                // Section 10: Collaboration et transparence (2 questions)
+                {
+                    question: "Quel est le principal avantage des tableaux Kanban dans AgilePM® ?",
+                    options: [
+                        "Ils automatisent le déploiement",
+                        "Ils visualisent le flux de travail et améliorent la transparence",
+                        "Ils génèrent automatiquement des rapports pour la direction",
+                        "Ils remplacent les réunions d'équipe"
+                    ],
+                    correctAnswer: "Ils visualisent le flux de travail et améliorent la transparence",
+                    explanation: "Les tableaux Kanban offrent une visualisation claire de l'état d'avancement du travail, favorisant la transparence et la collaboration.",
+                    chapter: "Collaboration et transparence",
+                    chapterInfo: "Techniques de collaboration, suivi d'avancement"
+                },
+                {
+                    question: "Quelle pratique Agile favorise le plus la collaboration au sein de l'équipe ?",
+                    options: [
+                        "La documentation exhaustive",
+                        "Les réunions quotidiennes de synchronisation",
+                        "L'assignation individuelle des tâches",
+                        "Les rapports hiérarchiques hebdomadaires"
+                    ],
+                    correctAnswer: "Les réunions quotidiennes de synchronisation",
+                    explanation: "Les réunions quotidiennes (comme le Daily Stand-up) permettent une synchronisation régulière et favorisent la collaboration entre les membres de l'équipe.",
+                    chapter: "Collaboration et transparence",
+                    chapterInfo: "Techniques de collaboration, suivi d'avancement"
+                },
+
+                // Section 11: Communication et feedback (2 questions)
+                {
+                    question: "Quel est le principe fondamental de la communication dans AgilePM® ?",
+                    options: [
+                        "La communication formelle écrite est préférée",
+                        "La communication en face à face est la plus efficace",
+                        "Seul le Project Manager communique avec les parties prenantes",
+                        "La communication doit être minimisée pour éviter les interruptions"
+                    ],
+                    correctAnswer: "La communication en face à face est la plus efficace",
+                    explanation: "AgilePM® privilégie la communication directe et en face à face comme moyen le plus efficace de transmettre l'information.",
+                    chapter: "Communication et feedback",
+                    chapterInfo: "Feedback continu, communication efficace"
+                },
+                {
+                    question: "Quelle pratique permet d'obtenir un feedback régulier des utilisateurs dans AgilePM® ?",
+                    options: [
+                        "Les démonstrations fréquentes du produit",
+                        "Les enquêtes de satisfaction annuelles",
+                        "Les tests utilisateurs en fin de projet",
+                        "Les rapports de progression hebdomadaires"
+                    ],
+                    correctAnswer: "Les démonstrations fréquentes du produit",
+                    explanation: "Les démonstrations régulières (showcases) permettent d'obtenir un feedback direct des utilisateurs tout au long du projet.",
+                    chapter: "Communication et feedback",
+                    chapterInfo: "Feedback continu, communication efficace"
+                },
+
+                // Section 12: Gestion des risques et qualité (3 questions)
+                {
+                    question: "Comment AgilePM® aborde-t-il la gestion des risques ?",
+                    options: [
+                        "En identifiant tous les risques en début de projet",
+                        "Par une gestion proactive et continue des risques",
+                        "En externalisant la gestion des risques à une équipe spécialisée",
+                        "En considérant que l'agilité élimine tous les risques"
+                    ],
+                    correctAnswer: "Par une gestion proactive et continue des risques",
+                    explanation: "AgilePM® encourage une gestion proactive et continue des risques tout au long du projet, plutôt qu'une identification unique en début de projet.",
+                    chapter: "Gestion des risques et qualité",
+                    chapterInfo: "Gestion proactive des risques, qualité intégrée"
+                },
+                {
+                    question: "Comment la qualité est-elle assurée dans AgilePM® ?",
+                    options: [
+                        "Par des tests exhaustifs en fin de projet",
+                        "Par l'intégration continue et les tests automatisés",
+                        "En externalisant l'assurance qualité",
+                        "En réduisant les exigences de qualité pour accélérer la livraison"
+                    ],
+                    correctAnswer: "Par l'intégration continue et les tests automatisés",
+                    explanation: "AgilePM® privilégie une qualité intégrée grâce à des pratiques comme l'intégration continue, les tests automatisés et les revues fréquentes.",
+                    chapter: "Gestion des risques et qualité",
+                    chapterInfo: "Gestion proactive des risques, qualité intégrée"
+                },
+                {
+                    question: "Quel est l'avantage de la détection précoce des défauts dans AgilePM® ?",
+                    options: [
+                        "Elle réduit considérablement le coût de correction",
+                        "Elle élimine le besoin de tests manuels",
+                        "Elle permet de livrer plus de fonctionnalités",
+                        "Elle simplifie la documentation"
+                    ],
+                    correctAnswer: "Elle réduit considérablement le coût de correction",
+                    explanation: "Détecter et corriger les défauts tôt dans le cycle de développement réduit significativement le coût et l'effort de correction.",
+                    chapter: "Gestion des risques et qualité",
+                    chapterInfo: "Gestion proactive des risques, qualité intégrée"
+                },
+
+                // Section 13: Adaptation et amélioration continue (2 questions)
+                {
+                    question: "Quelle pratique permet l'amélioration continue dans AgilePM® ?",
+                    options: [
+                        "Les rétrospectives régulières",
+                        "Les audits de conformité trimestriels",
+                        "Les évaluations de performance individuelles",
+                        "Les benchmarks concurrentiels"
+                    ],
+                    correctAnswer: "Les rétrospectives régulières",
+                    explanation: "Les rétrospectives permettent à l'équipe de réfléchir régulièrement sur son fonctionnement et d'identifier des améliorations.",
+                    chapter: "Adaptation et amélioration continue",
+                    chapterInfo: "Rétrospectives, adaptation au changement"
+                },
+                {
+                    question: "Quel est le principal objectif des rétrospectives dans AgilePM® ?",
+                    options: [
+                        "Évaluer la performance individuelle des membres de l'équipe",
+                        "Identifier ce qui a bien fonctionné et ce qui peut être amélioré",
+                        "Présenter les résultats aux parties prenantes",
+                        "Planifier le travail pour la prochaine timebox"
+                    ],
+                    correctAnswer: "Identifier ce qui a bien fonctionné et ce qui peut être amélioré",
+                    explanation: "Les rétrospectives visent à identifier les pratiques efficaces à conserver et les domaines d'amélioration pour les timeboxes futures.",
+                    chapter: "Adaptation et amélioration continue",
+                    chapterInfo: "Rétrospectives, adaptation au changement"
+                },
+
+                // Section 14: Préparation à l'examen (3 questions)
+                {
+                    question: "Combien de questions comporte l'examen AgilePM® Foundation ?",
+                    options: ["40", "50", "60", "70"],
+                    correctAnswer: "50",
+                    explanation: "L'examen AgilePM® Foundation comporte 50 questions à choix multiples.",
+                    chapter: "Préparation à l'examen",
+                    chapterInfo: "Structure de l'examen, types de questions, conseils"
+                },
+                {
+                    question: "Quel est le taux de réussite minimum pour l'examen AgilePM® Foundation ?",
+                    options: ["50%", "60%", "70%", "80%"],
+                    correctAnswer: "50%",
+                    explanation: "Le taux de réussite minimum pour l'examen AgilePM® Foundation est de 50% (25 bonnes réponses sur 50).",
+                    chapter: "Préparation à l'examen",
+                    chapterInfo: "Structure de l'examen, types de questions, conseils"
+                },
+                {
+                    question: "Combien de temps dure l'examen AgilePM® Foundation ?",
+                    options: [
+                        "40 minutes",
+                        "60 minutes",
+                        "90 minutes",
+                        "120 minutes"
+                    ],
+                    correctAnswer: "40 minutes",
+                    explanation: "L'examen AgilePM® Foundation dure 40 minutes, avec un temps supplémentaire pour les non-anglophones.",
+                    chapter: "Préparation à l'examen",
+                    chapterInfo: "Structure de l'examen, types de questions, conseils"
+                }
+            ],
+            currentQuestionIndex: 0,
+            score: 0,
+            userAnswers: []
+        };
+
+        // DOM Elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const currentScore = document.getElementById('current-score');
+        const explanationBox = document.getElementById('explanation-box');
+        const explanationTitle = document.getElementById('explanation-title');
+        const explanationText = document.getElementById('explanation-text');
+        const chapterBadge = document.getElementById('chapter-badge');
+        const chapterInfo = document.getElementById('chapter-info');
+
+        // Initialize the quiz
+        function initQuiz() {
+            quizData.currentQuestionIndex = 0;
+            quizData.score = 0;
+            quizData.userAnswers = [];
+            updateQuestionCounter();
+            updateProgressBar();
+            updateScore();
+            loadQuestion();
+            updateNavigationButtons();
+        }
+
+        // Load the current question
+        function loadQuestion() {
+            const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
+            
+            // Update question text
+            questionText.textContent = currentQuestion.question;
+            
+            // Update chapter information
+            chapterBadge.textContent = currentQuestion.chapter;
+            chapterInfo.textContent = currentQuestion.chapterInfo;
+            
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+            
+            // Create option buttons
+            currentQuestion.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.dataset.index = index;
+                
+                // Check if this option was previously selected
+                const userAnswer = quizData.userAnswers[quizData.currentQuestionIndex];
+                if (userAnswer !== undefined && userAnswer.selectedOption === option) {
+                    if (userAnswer.isCorrect) {
+                        button.classList.add('correct');
+                    } else {
+                        button.classList.add('incorrect');
+                    }
+                    button.disabled = true;
+                }
+                
+                button.addEventListener('click', () => selectOption(option, button));
+                optionsContainer.appendChild(button);
+            });
+            
+            // Show explanation if the question was already answered
+            const userAnswer = quizData.userAnswers[quizData.currentQuestionIndex];
+            if (userAnswer !== undefined) {
+                showExplanation(userAnswer.isCorrect, currentQuestion.explanation);
+            } else {
+                hideExplanation();
+            }
+        }
+
+        // Handle option selection
+        function selectOption(selectedOption, button) {
+            const currentQuestion = quizData.questions[quizData.currentQuestionIndex];
+            const isCorrect = selectedOption === currentQuestion.correctAnswer;
+            
+            // Disable all option buttons
+            const allButtons = optionsContainer.querySelectorAll('.option-btn');
+            allButtons.forEach(btn => {
+                btn.disabled = true;
+                // Highlight correct answer
+                if (btn.textContent === currentQuestion.correctAnswer) {
+                    btn.classList.add('correct');
+                }
+            });
+            
+            // Mark selected option
+            if (isCorrect) {
+                button.classList.add('correct');
+                quizData.score++;
+            } else {
+                button.classList.add('incorrect');
+            }
+            
+            // Store user answer
+            quizData.userAnswers[quizData.currentQuestionIndex] = {
+                selectedOption: selectedOption,
+                isCorrect: isCorrect
+            };
+            
+            // Show explanation
+            showExplanation(isCorrect, currentQuestion.explanation);
+            
+            // Update score and progress
+            updateScore();
+            updateProgressBar();
+            updateNavigationButtons();
+        }
+
+        // Show explanation for the current question
+        function showExplanation(isCorrect, explanation) {
+            explanationBox.classList.remove('d-none');
+            explanationBox.classList.remove('explanation-correct', 'explanation-incorrect');
+            
+            if (isCorrect) {
+                explanationBox.classList.add('explanation-correct');
+                explanationTitle.textContent = 'Bonne réponse !';
+                explanationTitle.innerHTML = '<i class="fas fa-check-circle"></i> Bonne réponse !';
+            } else {
+                explanationBox.classList.add('explanation-incorrect');
+                explanationTitle.textContent = 'Mauvaise réponse';
+                explanationTitle.innerHTML = '<i class="fas fa-times-circle"></i> Mauvaise réponse';
+            }
+            
+            explanationText.textContent = explanation;
+        }
+
+        // Hide explanation
+        function hideExplanation() {
+            explanationBox.classList.add('d-none');
+        }
+
+        // Update question counter
+        function updateQuestionCounter() {
+            questionCounter.textContent = `Question ${quizData.currentQuestionIndex + 1} / ${quizData.questions.length}`;
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = ((quizData.currentQuestionIndex + 1) / quizData.questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressBar.setAttribute('aria-valuenow', progress);
+        }
+
+        // Update score display
+        function updateScore() {
+            currentScore.textContent = `Score: ${quizData.score}`;
+        }
+
+        // Update navigation buttons state
+        function updateNavigationButtons() {
+            // Previous button
+            prevBtn.disabled = quizData.currentQuestionIndex === 0;
+            
+            // Next button
+            const isQuestionAnswered = quizData.userAnswers[quizData.currentQuestionIndex] !== undefined;
+            nextBtn.disabled = !isQuestionAnswered;
+            
+            // Show finish button on last question
+            if (quizData.currentQuestionIndex === quizData.questions.length - 1 && isQuestionAnswered) {
+                nextBtn.classList.add('d-none');
+                finishBtn.classList.remove('d-none');
+            } else {
+                nextBtn.classList.remove('d-none');
+                finishBtn.classList.add('d-none');
+            }
+        }
+
+        // Navigate to next question
+        function nextQuestion() {
+            if (quizData.currentQuestionIndex < quizData.questions.length - 1) {
+                quizData.currentQuestionIndex++;
+                updateQuestionCounter();
+                updateProgressBar();
+                loadQuestion();
+                updateNavigationButtons();
+            }
+        }
+
+        // Navigate to previous question
+        function previousQuestion() {
+            if (quizData.currentQuestionIndex > 0) {
+                quizData.currentQuestionIndex--;
+                updateQuestionCounter();
+                updateProgressBar();
+                loadQuestion();
+                updateNavigationButtons();
+            }
+        }
+
+        // Show results modal
+        function showResults() {
+            const percentage = Math.round((quizData.score / quizData.questions.length) * 100);
+            
+            document.getElementById('final-score-percentage').textContent = `${percentage}%`;
+            document.getElementById('final-score-correct').textContent = quizData.score;
+            document.getElementById('final-score-total').textContent = quizData.questions.length;
+            
+            // Add recommendations based on score
+            const recommendations = document.getElementById('final-recommendations');
+            if (percentage >= 80) {
+                recommendations.innerHTML = `
+                    <div class="alert alert-success">
+                        <h5><i class="fas fa-trophy"></i> Excellent travail !</h5>
+                        <p>Vous maîtrisez bien les concepts AgilePM® Foundation. Vous êtes prêt pour l'examen officiel !</p>
+                    </div>
+                `;
+            } else if (percentage >= 60) {
+                recommendations.innerHTML = `
+                    <div class="alert alert-warning">
+                        <h5><i class="fas fa-check-circle"></i> Bon résultat !</h5>
+                        <p>Vous avez une bonne compréhension d'AgilePM®, mais quelques révisions supplémentaires vous aideraient à réussir l'examen.</p>
+                    </div>
+                `;
+            } else {
+                recommendations.innerHTML = `
+                    <div class="alert alert-danger">
+                        <h5><i class="fas fa-exclamation-triangle"></i> Continuez à pratiquer</h5>
+                        <p>Nous vous recommandons de revoir les concepts AgilePM® avant de passer l'examen officiel.</p>
+                    </div>
+                `;
+            }
+            
+            // Show modal
+            const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+            resultsModal.show();
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', previousQuestion);
+        finishBtn.addEventListener('click', showResults);
+        
+        // Restart quiz button
+        document.getElementById('restart-quiz-btn').addEventListener('click', () => {
+            initQuiz();
+            const resultsModal = bootstrap.Modal.getInstance(document.getElementById('resultsModal'));
+            resultsModal.hide();
+        });
+
+        // Initialize the quiz when the page loads
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

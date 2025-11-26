@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz AgilePM v3</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --scrum-orange: #ff7f2a;
+            --agile-blue: #4d8af0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--scrum-orange);
+            background-color: #fff9f5;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+        
+        .question-number-badge {
+            background-color: var(--agile-blue);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .tip-box {
+            background-color: #e8f4fd;
+            border-left: 5px solid var(--agile-blue);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+        
+        .tip-box h6 {
+            color: var(--agile-blue);
+            font-weight: 600;
+        }
+        
+        .settings-panel {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-brain" style="color:var(--scrum-orange);"></i> Quiz AgilePM v3</h1>
+                <p>Testez vos connaissances sur Agile Project Management et maîtrisez les concepts fondamentaux.</p>
+            </div>
+            
+            <div id="settings-panel" class="settings-panel">
+                <h4><i class="fas fa-cog"></i> Configuration du quiz</h4>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="question-count" class="form-label">Nombre de questions :</label>
+                        <select id="question-count" class="form-select">
+                            <option value="10">10 questions</option>
+                            <option value="20">20 questions</option>
+                            <option value="30">30 questions</option>
+                            <option value="50">50 questions</option>
+                            <option value="60">60 questions</option>
+                            <option value="70">70 questions</option>
+                            <option value="80" selected>80 questions (complet)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button id="start-quiz-btn" class="btn btn-primary w-100">Commencer le quiz</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-content" class="d-none">
+                <div class="progress-container">
+                     <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span id="question-counter">Question 1 / 80</span>
+                        <span id="current-score">Score: 0</span>
+                     </div>
+                    <div class="progress" style="height: 10px;">
+                        <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 1.25%;" aria-valuenow="1.25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <div id="question-card" class="card">
+                    <div class="card-body">
+                        <h2 id="question-text">Chargement de la question...</h2>
+                        <div id="options-container">
+                            <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                        </div>
+                        <div id="explanation-box" class="d-none">
+                            <h5 id="explanation-title"></h5>
+                            <p id="explanation-text"></p>
+                            <div id="tip-box" class="tip-box d-none">
+                                <h6><i class="fas fa-lightbulb"></i> Conseil AgilePM</h6>
+                                <p id="tip-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-navigation">
+                    <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                    <button id="next-btn" class="btn btn-primary nav-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+                    <button id="finish-btn" class="btn btn-success nav-btn d-none">Terminer & Voir les Résultats</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Résultats du Quiz</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Votre score final est :</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> sur 
+                        <span id="final-score-total">0</span> bonnes réponses
+                    </p>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Recommencer le quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Questions complètes avec explications et conseils
+        const quizData = {
+            questions: [
+                {
+                    question: "Which of the following demonstrates an Agile leadership approach?",
+                    options: [
+                        "Maintaining a focus on delivery by restricting time spent thinking creatively",
+                        "Quickly and efficiently validating all decisions made by members of the project team",
+                        "Inspiring passion and drive for personal and professional development",
+                        "Focusing on the system and tools available when considering the best way to lead"
+                    ],
+                    correctAnswer: "Inspiring passion and drive for personal and professional development",
+                    explanation: "L'approche de leadership agile met l'accent sur l'inspiration et l'autonomisation des individus plutôt que sur le contrôle. Inspirer la passion et l'engagement pour le développement personnel et professionnel s'aligne sur les principes agiles de valorisation des individus et de leurs interactions.",
+                    tip: "En AgilePM, le leadership agile se concentre sur l'autonomisation des équipes et la création d'un environnement où les personnes peuvent exceller."
+                },
+                {
+                    question: "At a Product Increment level, what provides the first level of contingency if problems occur?",
+                    options: [
+                        "Should Have requirements",
+                        "Could Have requirements",
+                        "Management reserve",
+                        "Tolerance budget"
+                    ],
+                    correctAnswer: "Could Have requirements",
+                    explanation: "Les exigences 'Could Have' (pourraient avoir) dans la priorisation MoSCoW fournissent le premier niveau de contingence. Si des problèmes surviennent pendant un Sprint, ces exigences peuvent être omises sans compromettre les livrables essentiels.",
+                    tip: "En AgilePM, la priorisation MoSCoW est un outil clé pour gérer les contingences : les exigences 'Could Have' sont les premières à être sacrifiées en cas de problèmes."
+                },
+                {
+                    question: "Which of the following does NOT reflect appropriate application of the planning concept 'Planning to sensible horizons'?",
+                    options: [
+                        "Plans for specialist involvement in specific Sprints are agreed during Foundations",
+                        "Business drivers for deployment of the solution are part of planning during Feasibility",
+                        "The detail of who is intended to carry out what tasks is part of Sprint Planning",
+                        "Vacation plans for Developers should be considered during the Daily Scrum"
+                    ],
+                    correctAnswer: "Vacation plans for Developers should be considered during the Daily Scrum",
+                    explanation: "La planification à des horizons raisonnables signifie planifier avec un niveau de détail approprié au moment approprié. Les plans de vacances des développeurs ne sont pas une préoccupation appropriée pour la mêlée quotidienne, qui se concentre sur la synchronisation du travail et l'identification des obstacles.",
+                    tip: "En AgilePM, la planification à des horizons raisonnables signifie que plus on s'éloigne dans le temps, moins les plans sont détaillés."
+                },
+                {
+                    question: "During which of the project lifecycle phases, should the scope of the project deliverables be clearly documented?",
+                    options: [
+                        "Feasibility phase",
+                        "Foundations phase",
+                        "Delivery phase",
+                        "Deployment phase"
+                    ],
+                    correctAnswer: "Foundations phase",
+                    explanation: "La phase Foundations (Fondations) est celle où le périmètre du projet est défini et documenté de manière claire. C'est à ce moment que les objectifs, les livrables et les contraintes sont établis pour fournir une base solide au projet.",
+                    tip: "En AgilePM, la phase Foundations établit les bases solides sur lesquelles le projet sera construit, y compris la définition claire du périmètre."
+                },
+                {
+                    question: "Which of the 9 Principles of Agile leadership is demonstrated by an active and visible leader who creates a vision for change and lends it credibility?",
+                    options: [
+                        "Actions speak louder than words",
+                        "Improved quality of thinking leads to improved outcomes",
+                        "Organizations improve through effective feedback",
+                        "Emotion is a foundation for enhanced creativity and innovation"
+                    ],
+                    correctAnswer: "Actions speak louder than words",
+                    explanation: "Le principe 'Actions speak louder than words' (Les actions parlent plus fort que les mots) est démontré par un leader actif et visible qui crée une vision et lui donne de la crédibilité par ses actions concrètes.",
+                    tip: "En AgilePM, le leadership agile exige que les leaders soient visibles et cohérents dans leurs actions pour inspirer confiance et engagement."
+                },
+                {
+                    question: "Which of the following are inputs for Sprint Planning?",
+                    options: [
+                        "Product Backlog, Sprint Backlog, Last product Increment",
+                        "Product Backlog, Sprint Backlog, Past performance of the Scrum Team",
+                        "Product Backlog, Last product Increment, Past performance of the Scrum Team",
+                        "Sprint Backlog, Last product Increment, Past performance of the Scrum Team"
+                    ],
+                    correctAnswer: "Product Backlog, Last product Increment, Past performance of the Scrum Team",
+                    explanation: "Les entrées pour la planification de Sprint sont : le Product Backlog (pour sélectionner les éléments à traiter), le dernier incrément de produit (pour comprendre l'état actuel) et les performances passées de l'équipe Scrum (pour estimer la capacité).",
+                    tip: "En Scrum, la planification de Sprint utilise ces trois entrées pour déterminer ce qui peut être réalisé dans le prochain Sprint."
+                },
+                {
+                    question: "Identify the missing word(s) in the following sentence. AgilePM recommends giving [?], not single figures.",
+                    options: [
+                        "ranges",
+                        "written values",
+                        "financial terms",
+                        "assumptions"
+                    ],
+                    correctAnswer: "ranges",
+                    explanation: "AgilePM recommande de donner des fourchettes (ranges) plutôt que des chiffres uniques pour les estimations, car cela reconnaît l'incertitude inhérente au développement de logiciels et aux projets complexes.",
+                    tip: "Les fourchettes d'estimation sont plus réalistes dans un contexte agile car elles reconnaissent l'incertitude et permettent une meilleure planification."
+                },
+                {
+                    question: "Which of the following are likely to influence interactions between individuals and groups?",
+                    options: [
+                        "Personal objectives",
+                        "Regularity of occurrence",
+                        "Willingness to collaborate",
+                        "All of the above"
+                    ],
+                    correctAnswer: "All of the above",
+                    explanation: "Tous ces facteurs - les objectifs personnels, la régularité des interactions et la volonté de collaborer - influencent la dynamique et l'efficacité des interactions entre individus et groupes.",
+                    tip: "En AgilePM, comprendre les dynamiques d'équipe et les facteurs qui influencent les interactions est essentiel pour une collaboration efficace."
+                },
+                {
+                    question: "A diverse agile delivery team, with many specialists from different backgrounds, are finding it difficult to communicate. Which of the following would help to improve the effectiveness of their communication?",
+                    options: [
+                        "A glossary of terms",
+                        "An informal online blog",
+                        "Regular email updates",
+                        "Technical training"
+                    ],
+                    correctAnswer: "A glossary of terms",
+                    explanation: "Un glossaire de termes aiderait à établir un langage commun entre les spécialistes de différents domaines, réduisant les malentendus et améliorant l'efficacité de la communication.",
+                    tip: "Dans les équipes multidisciplinaires, un glossaire partagé est un outil précieux pour aligner la compréhension et améliorer la communication."
+                },
+                {
+                    question: "Which of the following is NOT a MoSCoW priority?",
+                    options: [
+                        "Must Have",
+                        "Should Have",
+                        "Could Have",
+                        "Would Have"
+                    ],
+                    correctAnswer: "Would Have",
+                    explanation: "Les priorités MoSCoW sont : Must Have (doit avoir), Should Have (devrait avoir), Could Have (pourrait avoir) et Won't Have (n'aura pas). 'Would Have' n'est pas une catégorie standard dans cette technique de priorisation.",
+                    tip: "La technique MoSCoW est un pilier d'AgilePM pour la priorisation des exigences. Mémorisez les quatre catégories : Must, Should, Could, Won't."
+                },
+                {
+                    question: "Identify the missing word in the following statement from Jim Highsmith, one of the signatories of the original Manifesto for Agile Software Development. 'Documentation is not understanding, [?] is not discipline, formality is not skill.'",
+                    options: [
+                        "governance",
+                        "communication",
+                        "process",
+                        "leadership"
+                    ],
+                    correctAnswer: "process",
+                    explanation: "La citation complète de Jim Highsmith est : 'Documentation is not understanding, process is not discipline, formality is not skill.' Cela souligne que les processus formels ne garantissent pas la discipline, tout comme la documentation ne garantit pas la compréhension.",
+                    tip: "Cette citation rappelle que dans l'agilité, l'accent est mis sur les résultats et les valeurs plutôt que sur les artefacts et les processus formels."
+                },
+                {
+                    question: "Why is Scrum described as an empirical process?",
+                    options: [
+                        "Because knowledge is power",
+                        "Because decisions are based on what is observed",
+                        "Because two events are never the same",
+                        "Because theory is academic"
+                    ],
+                    correctAnswer: "Because decisions are based on what is observed",
+                    explanation: "Scrum est décrit comme un processus empirique car il s'appuie sur l'observation, l'expérience et l'adaptation. Les décisions sont basées sur ce qui est réellement observé plutôt que sur des plans prédéterminés.",
+                    tip: "Les trois piliers de Scrum (transparence, inspection, adaptation) soutiennent cette approche empirique de la gestion de projet."
+                },
+                {
+                    question: "When should the finer details of each requirement be defined?",
+                    options: [
+                        "During refinement of the Product Backlog",
+                        "When it is added to the Product Backlog",
+                        "When the User Story is written",
+                        "During the Foundations phase"
+                    ],
+                    correctAnswer: "During refinement of the Product Backlog",
+                    explanation: "Les détails plus fins de chaque exigence doivent être définis pendant l'affinage du Product Backlog, généralement juste avant qu'ils ne soient sélectionnés pour un Sprint. Cela suit le principe agile de définir les détails au dernier moment responsable.",
+                    tip: "L'affinage du backlog (backlog refinement) est une activité continue en Agile où les exigences sont détaillées au fur et à mesure qu'elles approchent de leur implémentation."
+                },
+                {
+                    question: "What is defined as 'A progressive, people-centric approach to all aspects of business that is transforming how organizations operate and succeed in the modern world'?",
+                    options: [
+                        "Scrum framework",
+                        "Business agility",
+                        "Human centred IT",
+                        "Project management"
+                    ],
+                    correctAnswer: "Business agility",
+                    explanation: "L'agilité métier (Business agility) est définie comme une approche progressive centrée sur les personnes qui transforme la façon dont les organisations fonctionnent et réussissent dans le monde moderne.",
+                    tip: "L'agilité métier va au-delà du développement logiciel pour englober toute l'organisation et sa capacité à s'adapter au changement."
+                },
+                {
+                    question: "Which of the following is NOT an AgilePM planning concept?",
+                    options: [
+                        "Outcome-based planning",
+                        "Planning to sensible horizons",
+                        "Plan and re-plan using most up to date estimates",
+                        "Tracking progress and responding to change"
+                    ],
+                    correctAnswer: "Tracking progress and responding to change",
+                    explanation: "Bien que le suivi des progrès et la réponse au changement soient des principes agiles importants, ce n'est pas spécifiquement l'un des concepts de planification AgilePM. Les concepts de planification AgilePM incluent la planification basée sur les résultats, la planification à des horizons raisonnables et la planification et replanification avec les estimations les plus récentes.",
+                    tip: "AgilePM distingue les concepts de planification des principes plus généraux de gestion de projet agile."
+                },
+                {
+                    question: "Which of the following focuses on the What and the How of the way a product will be built or improved?",
+                    options: [
+                        "Product Management",
+                        "Project Management",
+                        "Process Management",
+                        "Procurement Process"
+                    ],
+                    correctAnswer: "Product Management",
+                    explanation: "La gestion de produit (Product Management) se concentre sur le 'quoi' (ce qui sera construit) et le 'comment' (comment il sera construit ou amélioré) d'un produit.",
+                    tip: "En AgilePM, le Product Management se concentre sur la valeur métier et les besoins des utilisateurs, tandis que le Project Management se concentre sur la livraison."
+                },
+                {
+                    question: "Which of the following are Principles of Agile Leadership?",
+                    options: [
+                        "Communication and inspiration before action, Leadership lives everywhere in the organization, Leaders devolve appropriate power and authority",
+                        "Communication and inspiration before action, Leadership lives everywhere in the organization, Collaborative communities achieve more than individuals",
+                        "Communication and inspiration before action, Leaders devolve appropriate power and authority, Collaborative communities achieve more than individuals",
+                        "Leadership lives everywhere in the organization, Leaders devolve appropriate power and authority, Collaborative communities achieve more than individuals"
+                    ],
+                    correctAnswer: "Leadership lives everywhere in the organization, Leaders devolve appropriate power and authority, Collaborative communities achieve more than individuals",
+                    explanation: "Les principes du leadership agile incluent : le leadership existe partout dans l'organisation, les leaders délèguent un pouvoir et une autorité appropriés, et les communautés collaboratives réalisent plus que les individus. 'Communication and inspiration before action' n'est pas l'un des principes officiels du leadership agile.",
+                    tip: "Les 9 principes du leadership agile dans AgilePM mettent l'accent sur la distribution du leadership, l'autonomisation et la collaboration."
+                },
+                {
+                    question: "According to the Agile Manifesto Principles, what is the primary measure of progress?",
+                    options: [
+                        "Motivated individuals",
+                        "Customer satisfaction",
+                        "Shorter timescale",
+                        "Working solutions"
+                    ],
+                    correctAnswer: "Working solutions",
+                    explanation: "Selon le 7ème principe du Manifeste Agile : 'Un logiciel opérationnel est la principale mesure de progression'. La livraison de solutions fonctionnelles est considérée comme la mesure la plus importante des progrès.",
+                    tip: "Ce principe souligne l'importance de livrer de la valeur tangible plutôt que de simplement suivre des plans ou des documents."
+                },
+                {
+                    question: "Identify the missing words in AgilePM's definition of an external stakeholder. 'External stakeholders are [?], not directly part of the project organization but still with influence.'",
+                    options: [
+                        "external to the project",
+                        "not employed by the organization",
+                        "financing the project",
+                        "unaffected by the project solution"
+                    ],
+                    correctAnswer: "external to the project",
+                    explanation: "La définition complète est : 'Les parties prenantes externes sont externes au projet, ne font pas directement partie de l'organisation du projet mais ont toujours une influence.'",
+                    tip: "En AgilePM, l'identification et l'engagement des parties prenantes externes sont essentiels pour comprendre l'ensemble du contexte du projet."
+                },
+                {
+                    question: "What is recommended to mitigate the risk to contingency presented by inflexible requirements?",
+                    options: [
+                        "MoSCoW prioritization",
+                        "Commitment-based planning",
+                        "Outcome-based measurement",
+                        "Transparency of process and progress"
+                    ],
+                    correctAnswer: "MoSCoW prioritization",
+                    explanation: "La priorisation MoSCoW est recommandée pour atténuer le risque lié aux exigences inflexibles en permettant de classer les exigences par ordre d'importance et en fournissant des options de flexibilité.",
+                    tip: "MoSCoW permet de gérer l'incertitude en identifiant ce qui est essentiel (Must Have) par rapport à ce qui est souhaitable (Should/Could Have)."
+                },
+                {
+                    question: "Identify the missing words in the following sentence. The AgilePM philosophy is that 'best value emerges when projects are aligned to [?], deliver frequently and involve the collaboration of motivated and empowered people'.",
+                    options: [
+                        "tactical goals",
+                        "business knowledge",
+                        "clear goals",
+                        "Business Sponsor demands"
+                    ],
+                    correctAnswer: "clear goals",
+                    explanation: "La philosophie AgilePM complète est : 'La meilleure valeur émerge lorsque les projets sont alignés sur des objectifs clairs, livrent fréquemment et impliquent la collaboration de personnes motivées et autonomisées.'",
+                    tip: "Des objectifs clairs sont essentiels dans AgilePM pour fournir une direction tout en permettant la flexibilité dans la mise en œuvre."
+                },
+                {
+                    question: "Which of the following represents the relationship between the Project Manager and the Business Visionary?",
+                    options: [
+                        "Share same level of authority, Empowered by the Business Sponsor, Represent one another at key events",
+                        "Share same level of authority, Empowered by the Business Sponsor, Regular informal communication",
+                        "Share same level of authority, Represent one another at key events, Regular informal communication",
+                        "Empowered by the Business Sponsor, Represent one another at key events, Regular informal communication"
+                    ],
+                    correctAnswer: "Empowered by the Business Sponsor, Represent one another at key events, Regular informal communication",
+                    explanation: "La relation entre le Chef de Projet et le Visionnaire Métier comprend : être habilité par le Sponsor Métier, se représenter mutuellement lors d'événements clés et avoir une communication informelle régulière. Ils ne partagent pas le même niveau d'autorité.",
+                    tip: "En AgilePM, le Chef de Projet et le Visionnaire Métier travaillent en étroite collaboration mais ont des rôles et des responsabilités distincts."
+                },
+                {
+                    question: "What characteristic of agility helps to deal with the reality of VUCA?",
+                    options: [
+                        "Using standardized tools and techniques",
+                        "Being flexible, resilient, and adaptable",
+                        "Focusing on simple repetitive tasks",
+                        "Working efficiently with commitment and tenacity"
+                    ],
+                    correctAnswer: "Being flexible, resilient, and adaptable",
+                    explanation: "Être flexible, résilient et adaptable est la caractéristique clé de l'agilité qui aide à faire face à la réalité VUCA (Volatility, Uncertainty, Complexity, Ambiguity - Volatilité, Incertitude, Complexité, Ambiguïté).",
+                    tip: "VUCA décrit l'environnement commercial moderne, et l'agilité fournit les capacités nécessaires pour naviguer dans cet environnement complexe."
+                },
+                {
+                    question: "Which of the following is NOT a benefit of collaboration?",
+                    options: [
+                        "Experiential learning",
+                        "Increased productivity",
+                        "Reduced autonomy",
+                        "Better value delivery"
+                    ],
+                    correctAnswer: "Reduced autonomy",
+                    explanation: "La réduction de l'autonomie n'est pas un avantage de la collaboration. En fait, une collaboration efficace peut souvent augmenter l'autonomie des équipes en leur permettant de prendre des décisions collectives.",
+                    tip: "La collaboration dans AgilePM vise à améliorer l'engagement et l'appropriation, ce qui augmente généralement l'autonomie plutôt que de la réduire."
+                },
+                {
+                    question: "What is designed to highlight risk associated with both the project's objective and the agile way of working used in its delivery?",
+                    options: [
+                        "Contingency Plan",
+                        "Solution Backlog",
+                        "Project Approach Questionnaire",
+                        "Delivery Plan"
+                    ],
+                    correctAnswer: "Project Approach Questionnaire",
+                    explanation: "Le Questionnaire sur l'Approche de Projet (Project Approach Questionnaire) est conçu pour mettre en évidence les risques associés à la fois à l'objectif du projet et à la manière agile de travailler utilisée dans sa livraison.",
+                    tip: "Le PAQ est un outil important dans AgilePM pour évaluer la pertinence de l'approche agile pour un projet donné et identifier les risques potentiels."
+                },
+                {
+                    question: "Which of the following statements, about the need for agility in project delivery, are true?",
+                    options: [
+                        "Only 1 is true: Assumes that the problem won't change much during the project",
+                        "Only 2 is true: Assumes that the design will stay relevant and effective from start to finish",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Neither 1 or 2 is true",
+                    explanation: "Ni l'une ni l'autre des affirmations n'est vraie. L'agilité reconnaît précisément que les problèmes peuvent changer pendant le projet et que les conceptions peuvent devoir évoluer. C'est pourquoi l'approche agile est flexible et adaptative.",
+                    tip: "L'agilité est nécessaire précisément parce que les problèmes et les conceptions peuvent changer, contrairement aux approches prédictives qui supposent une stabilité."
+                },
+                {
+                    question: "What should be done if disagreements with statements in the PAQ are identified during the project?",
+                    options: [
+                        "The project should be immediately halted until all disagreements are resolved",
+                        "The disagreements should be ignored if they are minor, as AgilePM will still be effective without addressing them",
+                        "Temporary tailoring adjustments of the AgilePM approach should be considered, and mitigating strategies should be adopted to address the identified risks",
+                        "Only the Project Manager should review the PAQ responses, as team involvement is unnecessary"
+                    ],
+                    correctAnswer: "Temporary tailoring adjustments of the AgilePM approach should be considered, and mitigating strategies should be adopted to address the identified risks",
+                    explanation: "Si des désaccords avec les déclarations du PAQ sont identifiés pendant le projet, des ajustements temporaires de l'approche AgilePM devraient être envisagés et des stratégies d'atténuation devraient être adoptées pour traiter les risques identifiés.",
+                    tip: "AgilePM est conçu pour être adapté au contexte du projet, et le PAQ est un outil vivant qui peut être révisé si nécessaire."
+                },
+                {
+                    question: "Which of the following statements, about financial governance in an Agile world, are true?",
+                    options: [
+                        "Only 1 is true: Business Agility requires precise estimates of time and cost at the outset",
+                        "Only 2 is true: Estimators are responsible for determining a final figure on which the Business Sponsor can base investment decisions",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Neither 1 or 2 is true",
+                    explanation: "Ni l'une ni l'autre des affirmations n'est vraie. L'agilité métier ne nécessite pas d'estimations précises de temps et de coût au départ, et les estimateurs ne sont pas seuls responsables de déterminer un chiffre final. L'agilité reconnaît l'incertitude et utilise des approches comme le time-boxing et la priorisation pour gérer les investissements.",
+                    tip: "La gouvernance financière en agile se concentre sur la valeur livrée plutôt que sur l'adhésion à des estimations initiales précises."
+                },
+                {
+                    question: "Which of the following are Scrum Team roles?",
+                    options: [
+                        "Project Manager, Scrum Master, Product Owner",
+                        "Project Manager, Scrum Master, Developer",
+                        "Project Manager, Product Owner, Developer",
+                        "Scrum Master, Product Owner, Developer"
+                    ],
+                    correctAnswer: "Scrum Master, Product Owner, Developer",
+                    explanation: "Les rôles de l'équipe Scrum sont : Scrum Master, Product Owner et Developer. Il n'y a pas de rôle de Chef de Projet (Project Manager) dans Scrum tel que défini dans le Guide Scrum.",
+                    tip: "Scrum a trois rôles définis : Product Owner, Scrum Master et Developers. Le rôle de Project Manager n'existe pas dans le cadre Scrum pur."
+                },
+                {
+                    question: "Why is Agility in project management a flexible and adaptable approach?",
+                    options: [
+                        "A guarantee of the sum total of the final deliverable ensures commitment from the start",
+                        "Establishing constraints ensures stability and structure in a volatile environment",
+                        "Maintaining flexibility in an ever-changing environment is a competitive advantage",
+                        "Deployment of small changes removes the need for senior management involvement"
+                    ],
+                    correctAnswer: "Maintaining flexibility in an ever-changing environment is a competitive advantage",
+                    explanation: "L'agilité dans la gestion de projet est une approche flexible et adaptable parce que maintenir la flexibilité dans un environnement en constante évolution est un avantage concurrentiel. Cela permet aux organisations de répondre rapidement aux changements du marché et aux besoins des clients.",
+                    tip: "L'agilité considère le changement comme une opportunité plutôt que comme une menace, ce qui en fait un avantage concurrentiel dans les environnements dynamiques."
+                },
+                {
+                    question: "Which of the following does AgilePM recommend in order to maintain a focus on the quality of the solution delivered?",
+                    options: [
+                        "Varying timescales and costs associated with the project to ensure quality objectives are met",
+                        "Employing a quality management consultant to assess the solution at the end of each Sprint",
+                        "Combining AgilePM with a quality management system appropriate to the solution being developed",
+                        "Striving for design simplicity with a clear Definition of Done and Acceptance Criteria"
+                    ],
+                    correctAnswer: "Striving for design simplicity with a clear Definition of Done and Acceptance Criteria",
+                    explanation: "AgilePM recommande de viser la simplicité de conception avec une Definition of Done (Définition de Fini) claire et des critères d'acceptation pour maintenir l'accent sur la qualité de la solution livrée.",
+                    tip: "La Definition of Done est un concept clé en agile pour garantir que la qualité est intégrée dans le processus de développement plutôt qu'inspectée à la fin."
+                },
+                {
+                    question: "In the value statements of the Agile Manifesto, what is valued more than 'Processes and Tools'?",
+                    options: [
+                        "Comprehensive documentation",
+                        "Following a plan",
+                        "Individuals and interactions",
+                        "Contract negotiation"
+                    ],
+                    correctAnswer: "Individuals and interactions",
+                    explanation: "Dans les déclarations de valeur du Manifeste Agile, 'Individuals and interactions' (Les individus et leurs interactions) sont valorisés plus que 'Processes and Tools' (Les processus et les outils).",
+                    tip: "Cette valeur souligne l'importance des personnes et de la communication dans le succès des projets, par rapport à une dépendance excessive aux processus et outils."
+                },
+                {
+                    question: "Which is NOT a stated characteristic of Scrum?",
+                    options: [
+                        "Lightweight",
+                        "Simple",
+                        "Prescriptive",
+                        "A framework"
+                    ],
+                    correctAnswer: "Prescriptive",
+                    explanation: "Scrum est décrit comme lightweight (léger), simple à comprendre et difficile à maîtriser, et un framework (cadre). Il n'est pas décrit comme prescriptif - en fait, Scrum fournit un cadre qui peut être adapté à différents contextes.",
+                    tip: "Scrum est un cadre qui fournit des règles de base mais permet et encourage l'adaptation à des contextes spécifiques."
+                },
+                {
+                    question: "Which outcome is related to the AgilePM principle of Build Incrementally from Firm Foundations?",
+                    options: [
+                        "Business value is delivered as early as is practical",
+                        "Stakeholder confidence is reduced",
+                        "Team changes are made with less risk",
+                        "Additional overheads are leveraged on the project"
+                    ],
+                    correctAnswer: "Business value is delivered as early as is practical",
+                    explanation: "Le résultat lié au principe AgilePM 'Construire de manière incrémentielle à partir de bases solides' est que la valeur métier est livrée le plus tôt possible. Les bases solides permettent une livraison incrémentielle de valeur.",
+                    tip: "Ce principe combine la stabilité des bases solides avec la flexibilité de la livraison incrémentielle pour maximiser la valeur livrée tôt."
+                },
+                {
+                    question: "Why is a Scrum Team intentionally composed of cross-functional Developers?",
+                    options: [
+                        "To ensure each Developer can perform the same tasks interchangeably",
+                        "To meet compliance standards required for larger projects",
+                        "To match the complexity of the project requirements, combining diverse skills and expertise",
+                        "To reduce the need for collaboration with external stakeholders"
+                    ],
+                    correctAnswer: "To match the complexity of the project requirements, combining diverse skills and expertise",
+                    explanation: "Une équipe Scrum est intentionnellement composée de développeurs cross-fonctionnels pour correspondre à la complexité des exigences du projet, en combinant des compétences et une expertise diverses nécessaires pour créer un incrément de produit potentiellement livrable.",
+                    tip: "La composition cross-fonctionnelle des équipes Scrum leur permet d'être autonomes et de livrer de la valeur sans dépendances externes excessives."
+                },
+                {
+                    question: "How does risk arising from VUCA influence the management and execution of the AgilePM approach?",
+                    options: [
+                        "These risks are addressed and closed off during the initial planning phase",
+                        "AgilePM uses well-established agile philosophy, principles, and practices to guide the delivery of value",
+                        "VUCA-related risks are handled exclusively by a separate risk management team",
+                        "Managed primarily through traditional project management methods"
+                    ],
+                    correctAnswer: "AgilePM uses well-established agile philosophy, principles, and practices to guide the delivery of value",
+                    explanation: "Les risques découlant de VUCA influencent la gestion et l'exécution de l'approche AgilePM en ce que AgilePM utilise une philosophie, des principes et des pratiques agiles bien établis pour guider la livraison de valeur dans des environnements complexes et incertains.",
+                    tip: "AgilePM est spécifiquement conçu pour fonctionner efficacement dans des environnements VUCA en utilisant des approches itératives et adaptatives."
+                },
+                {
+                    question: "Which of the following statements, about Product Development, are true?",
+                    options: [
+                        "Only 1 is true: It is the process of taking a product from an initial idea to the point where it can be used to meet the needs of its intended users",
+                        "Only 2 is true: Its focus is mainly on what the product is, or needs to become and how it is designed, built, and improved over time",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Both 1 and 2 are true",
+                    explanation: "Les deux affirmations sont vraies. Le développement de produit est le processus qui consiste à amener un produit d'une idée initiale au point où il peut être utilisé pour répondre aux besoins de ses utilisateurs prévus, et son accent est principalement sur ce qu'est le produit, ou ce qu'il doit devenir, et comment il est conçu, construit et amélioré au fil du temps.",
+                    tip: "Le développement de produit dans un contexte agile est un processus continu qui s'étend au-delà de la livraison initiale pour inclure l'amélioration continue."
+                },
+                {
+                    question: "Identify the missing words in the following sentence. Benefit estimates should be based on delivering [?] requirements.",
+                    options: [
+                        "the Minimum Usable Subset",
+                        "all Must have and Should Have",
+                        "all Should Have",
+                        "all Should Have and Could Have"
+                    ],
+                    correctAnswer: "the Minimum Usable Subset",
+                    explanation: "La phrase complète est : 'Les estimations des bénéfices doivent être basées sur la livraison des exigences du Minimum Usable Subset (sous-ensemble minimum utilisable).' Cela correspond au principe agile de livrer d'abord la valeur la plus essentielle.",
+                    tip: "Le Minimum Usable Subset représente la plus petite collection de fonctionnalités qui fournit une valeur métier significative."
+                },
+                {
+                    question: "Which of the following statements, about the AgilePM project lifecycle, are true?",
+                    options: [
+                        "Only 1 is true: Realization activities can be carried out as operational activities rather than part of a project",
+                        "Only 2 is true: Each phase is only ever completed once",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Only 1 is true: Realization activities can be carried out as operational activities rather than part of a project",
+                    explanation: "Seule la première affirmation est vraie. Les activités de réalisation peuvent être menées comme des activités opérationnelles plutôt que comme faisant partie d'un projet. La deuxième affirmation est fausse car dans AgilePM, certaines phases (comme Delivery) peuvent être répétées dans des projets plus longs.",
+                    tip: "Le cycle de vie AgilePM est flexible et peut s'adapter à différents contextes de projet, y compris la transition des activités de projet vers les opérations."
+                },
+                {
+                    question: "In a multi-team project context, what enhancement does AgilePM offer to help manage dependencies?",
+                    options: [
+                        "Continuous collaboration",
+                        "Project Sprint Planning",
+                        "Sprint Planning event",
+                        "Sprint Retrospective event"
+                    ],
+                    correctAnswer: "Project Sprint Planning",
+                    explanation: "Dans un contexte de projet multi-équipes, AgilePM offre la planification de Sprint de projet (Project Sprint Planning) comme amélioration pour aider à gérer les dépendances entre les équipes.",
+                    tip: "La planification de Sprint de projet dans AgilePM aide à coordonner le travail entre plusieurs équipes travaillant sur le même projet."
+                },
+                {
+                    question: "In the context of AgilePM, what is defined as 'Stepwise refinements of the overall Solution that meet the agreed Definition of Done'?",
+                    options: [
+                        "Increment",
+                        "Solution Increment",
+                        "Product Increment",
+                        "Project Increment"
+                    ],
+                    correctAnswer: "Solution Increment",
+                    explanation: "Dans le contexte d'AgilePM, un 'Solution Increment' (incrément de solution) est défini comme des affinements progressifs de la solution globale qui répondent à la Definition of Done convenue.",
+                    tip: "En AgilePM, le terme 'Solution Increment' est utilisé plutôt que 'Product Increment' pour refléter que le livrable peut être un service ou un résultat plutôt qu'un produit logiciel."
+                },
+                {
+                    question: "Which of the following AgilePM project artifacts may be tailored for the purpose of demonstrating regulatory compliance?",
+                    options: [
+                        "Solution Architecture Definition, Project Review Reports, Team Board",
+                        "Solution Architecture Definition, Project Review Reports, Sprint-Review Record",
+                        "Solution Architecture Definition, Team Board, Sprint-Review Record",
+                        "Project Review Reports, Team Board, Sprint-Review Record"
+                    ],
+                    correctAnswer: "Solution Architecture Definition, Project Review Reports, Sprint-Review Record",
+                    explanation: "Les artefacts de projet AgilePM qui peuvent être adaptés pour démontrer la conformité réglementaire sont : Solution Architecture Definition, Project Review Reports et Sprint-Review Record. Le Team Board est généralement un artefact d'équipe interne et moins adapté à la démonstration de conformité.",
+                    tip: "AgilePM reconnaît que certains artefacts peuvent nécessiter une adaptation pour répondre à des exigences spécifiques comme la conformité réglementaire."
+                },
+                {
+                    question: "Which of the following statements, about the value that documentation in AgilePM might add, are true?",
+                    options: [
+                        "Only 1 is true: To keep track of important information such as assumptions, constraints, risks, decisions, and commitments that affect the solution and its delivery",
+                        "Only 2 is true: To show that the solution meets legal, regulatory, or industry standards",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Both 1 and 2 are true",
+                    explanation: "Les deux affirmations sont vraies. La documentation dans AgilePM peut ajouter de la valeur en gardant une trace des informations importantes et en montrant que la solution répond aux normes légales, réglementaires ou sectorielles.",
+                    tip: "AgilePM adopte une approche équilibrée de la documentation - ni trop ni trop peu, mais suffisante pour ajouter de la valeur et répondre aux besoins."
+                },
+                {
+                    question: "How does the Scrum Master serve the project?",
+                    options: [
+                        "Instructing the Project Manager to remove barriers that hinder progress",
+                        "Facilitating cross-team planning, refinement and review events",
+                        "Providing effective direction and leadership",
+                        "Telling the team which solution to develop, based on own knowledge and experience"
+                    ],
+                    correctAnswer: "Facilitating cross-team planning, refinement and review events",
+                    explanation: "Le Scrum Master sert le projet en facilitant les événements de planification, d'affinage et de revue inter-équipes. Cela s'aligne sur le rôle du Scrum Master en tant que servant-leader qui facilite les processus.",
+                    tip: "Le Scrum Master dans un contexte AgilePM étend son rôle de facilitation au-delà d'une seule équipe pour soutenir la coordination entre plusieurs équipes."
+                },
+                {
+                    question: "Which of the following demonstrates an agile approach to projects?",
+                    options: [
+                        "Short and frequent feedback loops",
+                        "Documentation of the proposed solution",
+                        "Deployment of solution on project completion",
+                        "Early assumptions and decision-making"
+                    ],
+                    correctAnswer: "Short and frequent feedback loops",
+                    explanation: "Des boucles de feedback courtes et fréquentes démontrent une approche agile des projets. Cela permet une adaptation rapide basée sur les retours des parties prenantes et des utilisateurs.",
+                    tip: "Les boucles de feedback courtes sont une caractéristique fondamentale de l'agilité, permettant l'apprentissage continu et l'adaptation."
+                },
+                {
+                    question: "What is defined as 'Deliverables that provide valuable outcomes to users'?",
+                    options: [
+                        "Requirement",
+                        "Backlog",
+                        "Solution",
+                        "Product"
+                    ],
+                    correctAnswer: "Solution",
+                    explanation: "Une 'Solution' est définie comme des livrables qui fournissent des résultats précieux aux utilisateurs. Cela peut inclure des produits, des services ou des résultats qui répondent à des besoins spécifiques.",
+                    tip: "En AgilePM, le terme 'Solution' est utilisé de manière plus large que 'Product' pour inclure divers types de livrables qui apportent de la valeur."
+                },
+                {
+                    question: "Which of the Tracking and Control concepts is demonstrated through the use of a Burn-up chart?",
+                    options: [
+                        "Outcome-based measurement",
+                        "Transparency of process and progress",
+                        "Responding to change",
+                        "Management by exception"
+                    ],
+                    correctAnswer: "Transparency of process and progress",
+                    explanation: "L'utilisation d'un graphique Burn-up (diagramme d'avancement) démontre le concept de suivi et de contrôle 'Transparency of process and progress' (Transparence du processus et des progrès). Les graphiques Burn-up rendent visibles les progrès vers les objectifs.",
+                    tip: "Les outils de visualisation comme les graphiques Burn-up soutiennent la transparence, l'un des principes clés de l'agilité."
+                },
+                {
+                    question: "Considering the words of the Agile Manifesto, which of the following is true?",
+                    options: [
+                        "Documentation should be avoided if possible",
+                        "Documentation should be encouraged by default",
+                        "Documentation should be considered for its value",
+                        "Documentation should be standardized for simplicity"
+                    ],
+                    correctAnswer: "Documentation should be considered for its value",
+                    explanation: "Compte tenu des mots du Manifeste Agile, la déclaration correcte est que la documentation doit être considérée pour sa valeur. Le Manifeste valorise 'un logiciel opérationnel plus qu'une documentation exhaustive', reconnaissant que la documentation a de la valeur mais ne devrait pas être privilégiée par rapport au logiciel fonctionnel.",
+                    tip: "L'agilité ne rejette pas la documentation mais l'évalue en fonction de la valeur qu'elle apporte au projet et aux parties prenantes."
+                },
+                {
+                    question: "How is contingency typically managed in an AgilePM project?",
+                    options: [
+                        "Not needed in an Agile project",
+                        "Adding a percentage to the high level estimates",
+                        "Varying the features to be delivered",
+                        "Varying time and cost"
+                    ],
+                    correctAnswer: "Varying the features to be delivered",
+                    explanation: "Dans un projet AgilePM, la contingence est généralement gérée en faisant varier les fonctionnalités à livrer. Cela s'aligne sur le principe de time-boxing où le temps est fixe et la portée est variable.",
+                    tip: "La gestion de la contingence par la variation des fonctionnalités est cohérente avec l'approche agile de time-boxing et de priorisation MoSCoW."
+                },
+                {
+                    question: "Which of the following statements, about the role of the Scrum Master, are true?",
+                    options: [
+                        "Only 1 is true: The Scrum Master manages and directs the Scrum Team",
+                        "Only 2 is true: The Scrum Master is accountable for establishing Scrum",
+                        "Both 1 and 2 are true",
+                        "Neither 1 or 2 is true"
+                    ],
+                    correctAnswer: "Only 2 is true: The Scrum Master is accountable for establishing Scrum",
+                    explanation: "Seule la deuxième affirmation est vraie. Le Scrum Master est responsable de l'établissement de Scrum. La première affirmation est fausse car le Scrum Master ne gère pas et ne dirige pas l'équipe Scrum - c'est une équipe auto-organisée.",
+                    tip: "Le rôle du Scrum Master est celui d'un servant-leader qui facilite et permet le travail de l'équipe plutôt que de le diriger."
+                },
+                // Ajout de 30 questions supplémentaires pour atteindre 80 questions
+                {
+                    question: "What is the primary purpose of the Feasibility phase in AgilePM?",
+                    options: [
+                        "To deliver the first working increment of the solution",
+                        "To determine if the project is viable and should proceed",
+                        "To establish detailed requirements for the entire project",
+                        "To create the final project budget and timeline"
+                    ],
+                    correctAnswer: "To determine if the project is viable and should proceed",
+                    explanation: "La phase de Faisabilité (Feasibility) dans AgilePM a pour objectif principal de déterminer si le projet est viable et devrait se poursuivre. Elle évalue la justification commerciale et la faisabilité technique.",
+                    tip: "La phase Feasibility dans AgilePM est cruciale pour éviter de poursuivre des projets qui ne sont pas réalisables ou qui n'offrent pas une valeur suffisante."
+                },
+                {
+                    question: "In AgilePM, what is the main responsibility of the Business Ambassador?",
+                    options: [
+                        "To manage the project budget and timeline",
+                        "To represent stakeholder interests and provide domain expertise",
+                        "To write technical specifications for the developers",
+                        "To facilitate Scrum events and remove impediments"
+                    ],
+                    correctAnswer: "To represent stakeholder interests and provide domain expertise",
+                    explanation: "Le Business Ambassador dans AgilePM a pour responsabilité principale de représenter les intérêts des parties prenantes et de fournir une expertise métier à l'équipe de développement.",
+                    tip: "Le Business Ambassador joue un rôle crucial en tant que lien entre l'équipe de développement et les utilisateurs métier finaux."
+                },
+                {
+                    question: "What is the purpose of the Timebox in AgilePM?",
+                    options: [
+                        "To limit the amount of time spent on documentation",
+                        "To create a fixed period for achieving specific objectives",
+                        "To track the time spent by each team member",
+                        "To schedule meetings at convenient times for all stakeholders"
+                    ],
+                    correctAnswer: "To create a fixed period for achieving specific objectives",
+                    explanation: "Le Timebox dans AgilePM a pour but de créer une période fixe pour atteindre des objectifs spécifiques. Il fournit un cadre temporel contraint qui favorise la focalisation et la livraison.",
+                    tip: "Les timeboxes dans AgilePM aident à gérer l'incertitude en fixant le temps tout en permettant une flexibilité sur la portée."
+                },
+                {
+                    question: "Which AgilePM principle emphasizes the importance of frequent delivery of valuable solutions?",
+                    options: [
+                        "Focus on Business Need",
+                        "Deliver Iteratively",
+                        "Collaborate",
+                        "Demonstrate Control"
+                    ],
+                    correctAnswer: "Deliver Iteratively",
+                    explanation: "Le principe 'Deliver Iteratively' (Livrer de manière itérative) met l'accent sur l'importance de la livraison fréquente de solutions précieuses. Cela permet un retour d'information précoce et une validation continue.",
+                    tip: "La livraison itérative est au cœur de l'agilité, permettant une validation précoce et une adaptation continue."
+                },
+                {
+                    question: "What is the main difference between AgilePM and PRINCE2 Agile?",
+                    options: [
+                        "AgilePM is for software projects only, while PRINCE2 Agile is for all types of projects",
+                        "AgilePM is based on DSDM, while PRINCE2 Agile is an extension of PRINCE2",
+                        "AgilePM doesn't allow for any documentation, while PRINCE2 Agile requires extensive documentation",
+                        "AgilePM is only for small projects, while PRINCE2 Agile is for large enterprises"
+                    ],
+                    correctAnswer: "AgilePM is based on DSDM, while PRINCE2 Agile is an extension of PRINCE2",
+                    explanation: "La principale différence est qu'AgilePM est basé sur DSDM (Dynamic Systems Development Method), tandis que PRINCE2 Agile est une extension de PRINCE2 conçue pour incorporer des pratiques agiles.",
+                    tip: "Bien que les deux frameworks combinent des principes agiles avec des pratiques de gestion de projet structurées, ils ont des origines et des approches différentes."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Facilitated Workshops?",
+                    options: [
+                        "To train new team members on agile practices",
+                        "To resolve conflicts between team members",
+                        "To collaboratively explore requirements and design solutions",
+                        "To present completed work to stakeholders"
+                    ],
+                    correctAnswer: "To collaboratively explore requirements and design solutions",
+                    explanation: "Les Ateliers Facilités (Facilitated Workshops) dans AgilePM ont pour but d'explorer collaborativement les exigences et de concevoir des solutions. Ils rassemblent diverses parties prenantes pour une collaboration productive.",
+                    tip: "Les ateliers facilités sont un outil puissant dans AgilePM pour obtenir un engagement rapide et un consensus sur les exigences et les solutions."
+                },
+                {
+                    question: "What is the role of the Technical Coordinator in AgilePM?",
+                    options: [
+                        "To manage the project budget and resources",
+                        "To ensure the technical quality and coherence of the solution",
+                        "To write all the code for the development team",
+                        "To facilitate communication between business and technical teams"
+                    ],
+                    correctAnswer: "To ensure the technical quality and coherence of the solution",
+                    explanation: "Le Technical Coordinator dans AgilePM a pour rôle de garantir la qualité technique et la cohérence de la solution. Il veille à ce que les aspects techniques s'alignent sur la vision globale.",
+                    tip: "Le Technical Coordinator joue un rôle crucial dans le maintien de l'intégrité technique tout en permettant la flexibilité agile."
+                },
+                {
+                    question: "How does AgilePM address the concept of 'quality' in project delivery?",
+                    options: [
+                        "By performing extensive testing at the end of the project",
+                        "By building quality into the process through frequent validation",
+                        "By outsourcing quality assurance to specialized teams",
+                        "By reducing scope to ensure high quality on limited features"
+                    ],
+                    correctAnswer: "By building quality into the process through frequent validation",
+                    explanation: "AgilePM aborde le concept de 'qualité' en intégrant la qualité dans le processus grâce à une validation fréquente. La qualité est vérifiée continuellement tout au long du projet plutôt qu'à la fin.",
+                    tip: "L'approche 'quality built-in' d'AgilePM est plus efficace que l'inspection de la qualité à la fin du projet."
+                },
+                {
+                    question: "What is the significance of the 'Management by Exception' principle in AgilePM?",
+                    options: [
+                        "Managers should only intervene when tolerances are exceeded",
+                        "Team members should manage their own exceptions without reporting",
+                        "All exceptions should be documented but not necessarily addressed",
+                        "Exceptions are not allowed in agile projects"
+                    ],
+                    correctAnswer: "Managers should only intervene when tolerances are exceeded",
+                    explanation: "Le principe 'Management by Exception' (Gestion par exception) dans AgilePM signifie que les managers ne devraient intervenir que lorsque les tolérances sont dépassées. Cela permet l'autonomie des équipes tout en maintenant un contrôle approprié.",
+                    tip: "Le Management by Exception permet aux équipes agiles de travailler de manière autonome tout en fournissant des points de contrôle pour les décisions importantes."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Prioritized Requirements List?",
+                    options: [
+                        "To track the time spent on each requirement",
+                        "To document all possible requirements without prioritization",
+                        "To provide a single ordered list of what needs to be delivered",
+                        "To assign requirements to specific team members"
+                    ],
+                    correctAnswer: "To provide a single ordered list of what needs to be delivered",
+                    explanation: "La Liste d'Exigences Prioritisées (Prioritized Requirements List) dans AgilePM a pour but de fournir une liste ordonnée unique de ce qui doit être livré. Elle guide l'ordre de livraison basé sur la valeur et les dépendances.",
+                    tip: "La Prioritized Requirements List est un artefact clé dans AgilePM pour maintenir la focalisation sur la livraison de valeur maximale."
+                },
+                {
+                    question: "How does AgilePM handle changes to requirements during the project?",
+                    options: [
+                        "Changes are not allowed once the project has started",
+                        "Changes are always accepted without impact assessment",
+                        "Changes are assessed for impact and incorporated if justified",
+                        "Changes are deferred to a future phase or project"
+                    ],
+                    correctAnswer: "Changes are assessed for impact and incorporated if justified",
+                    explanation: "AgilePM gère les changements aux exigences en les évaluant pour leur impact et en les incorporant s'ils sont justifiés. Cette approche équilibrée permet la flexibilité tout en maintenant le contrôle.",
+                    tip: "La gestion du changement dans AgilePM est structurée mais flexible, permettant l'adaptation tout en maintenant la visibilité des impacts."
+                },
+                {
+                    question: "What is the main benefit of using iterative development in AgilePM?",
+                    options: [
+                        "It eliminates the need for project planning",
+                        "It allows for early delivery of business value",
+                        "It reduces the need for stakeholder involvement",
+                        "It makes testing unnecessary"
+                    ],
+                    correctAnswer: "It allows for early delivery of business value",
+                    explanation: "Le principal avantage de l'utilisation du développement itératif dans AgilePM est qu'il permet la livraison précoce de valeur métier. Les parties prenantes commencent à recevoir de la valeur dès les premiers cycles.",
+                    tip: "Le développement itératif est un pilier de l'agilité, permettant une validation précoce et une réduction des risques."
+                },
+                {
+                    question: "In AgilePM, what is the purpose of the Solution Architecture Definition?",
+                    options: [
+                        "To provide detailed coding standards for developers",
+                        "To define the high-level structure of the solution",
+                        "To document individual user stories",
+                        "To track the progress of development tasks"
+                    ],
+                    correctAnswer: "To define the high-level structure of the solution",
+                    explanation: "La Définition de l'Architecture de Solution (Solution Architecture Definition) dans AgilePM a pour but de définir la structure de haut niveau de la solution. Elle fournit un cadre pour le développement tout en permettant la flexibilité.",
+                    tip: "L'architecture de solution dans AgilePM établit des contraintes nécessaires tout en permettant l'émergence de détails pendant le développement."
+                },
+                {
+                    question: "How does AgilePM ensure that projects remain aligned with business objectives?",
+                    options: [
+                        "Through rigid adherence to initial requirements",
+                        "By frequently reviewing and adjusting based on business needs",
+                        "By eliminating all documentation to focus on coding",
+                        "Through monthly progress reports to senior management"
+                    ],
+                    correctAnswer: "By frequently reviewing and adjusting based on business needs",
+                    explanation: "AgilePM garantit que les projets restent alignés sur les objectifs métier en examinant et en ajustant fréquemment en fonction des besoins métier. Cette approche adaptative maintient la pertinence commerciale.",
+                    tip: "L'alignement continu avec les objectifs métier est un avantage clé des approches agiles comme AgilePM."
+                },
+                {
+                    question: "What is the role of the Project Manager in AgilePM?",
+                    options: [
+                        "To micro-manage the daily work of each team member",
+                        "To focus on facilitating and enabling the team's work",
+                        "To make all technical decisions for the team",
+                        "To serve as the primary developer on the team"
+                    ],
+                    correctAnswer: "To focus on facilitating and enabling the team's work",
+                    explanation: "Le rôle du Chef de Projet dans AgilePM est de se concentrer sur la facilitation et l'activation du travail de l'équipe. Il crée un environnement où l'équipe peut exceller plutôt que de diriger chaque détail.",
+                    tip: "Le Chef de Projet dans AgilePM adopte un style de leadership plus facilitateur et habilitant par rapport aux approches traditionnelles."
+                },
+                {
+                    question: "How does AgilePM address risk management?",
+                    options: [
+                        "By identifying and mitigating all risks during project initiation",
+                        "Through continuous risk identification and management throughout the project",
+                        "By accepting all risks as inherent to agile approaches",
+                        "Through extensive documentation of potential risks"
+                    ],
+                    correctAnswer: "Through continuous risk identification and management throughout the project",
+                    explanation: "AgilePM aborde la gestion des risques par une identification et une gestion continues des risques tout au long du projet. Cette approche proactive permet une réponse rapide aux risques émergents.",
+                    tip: "La gestion des risques itérative dans AgilePM est plus efficace que les approches traditionnelles qui traitent les risques principalement en amont."
+                },
+                {
+                    question: "What is the purpose of the Daily Stand-up in AgilePM?",
+                    options: [
+                        "To provide a detailed status report to management",
+                        "To solve complex technical problems as a group",
+                        "To coordinate daily work and identify impediments",
+                        "To review completed work with stakeholders"
+                    ],
+                    correctAnswer: "To coordinate daily work and identify impediments",
+                    explanation: "Le Daily Stand-up (point quotidien) dans AgilePM a pour but de coordonner le travail quotidien et d'identifier les obstacles. C'est une réunion courte et focalisée pour la synchronisation de l'équipe.",
+                    tip: "Le Daily Stand-up est un événement clé pour maintenir la transparence et permettre une adaptation rapide aux défis quotidiens."
+                },
+                {
+                    question: "In AgilePM, what is the significance of the 'Firm Foundation' concept?",
+                    options: [
+                        "It means the project should have a fixed, unchangeable plan",
+                        "It refers to establishing clear boundaries and objectives before iterative development",
+                        "It requires that all team members have the same technical background",
+                        "It means the project must use specific agile tools and software"
+                    ],
+                    correctAnswer: "It refers to establishing clear boundaries and objectives before iterative development",
+                    explanation: "Le concept de 'Firm Foundation' (Fondation Solide) dans AgilePM fait référence à l'établissement de limites et d'objectifs clairs avant le développement itératif. Cela fournit la stabilité nécessaire pour une flexibilité efficace.",
+                    tip: "La Firm Foundation dans AgilePM crée le cadre nécessaire qui permet la flexibilité sans chaos."
+                },
+                {
+                    question: "How does AgilePM handle stakeholder communication?",
+                    options: [
+                        "Through formal reports at the end of each phase",
+                        "By limiting stakeholder involvement to key decision points",
+                        "Through continuous and collaborative engagement",
+                        "By using a single communication channel for all stakeholders"
+                    ],
+                    correctAnswer: "Through continuous and collaborative engagement",
+                    explanation: "AgilePM gère la communication avec les parties prenantes par un engagement continu et collaboratif. Les parties prenantes sont impliquées tout au long du projet plutôt qu'à des points décisionnels spécifiques.",
+                    tip: "L'engagement continu des parties prenantes dans AgilePM permet une meilleure alignement et une adoption plus facile de la solution."
+                },
+                {
+                    question: "What is the purpose of the Timebox Plan in AgilePM?",
+                    options: [
+                        "To schedule all team member vacations for the project duration",
+                        "To provide a detailed minute-by-minute schedule for each day",
+                        "To outline the objectives and activities for a specific timebox",
+                        "To track the exact time spent on each task"
+                    ],
+                    correctAnswer: "To outline the objectives and activities for a specific timebox",
+                    explanation: "Le Plan de Timebox (Timebox Plan) dans AgilePM a pour but de décrire les objectifs et les activités pour un timebox spécifique. Il fournit une feuille de route pour ce qui doit être accompli pendant cette période.",
+                    tip: "Le Timebox Plan dans AgilePM fournit suffisamment de structure pour guider le travail tout en permettant l'adaptation aux détails émergents."
+                },
+                {
+                    question: "How does AgilePM ensure that delivered solutions meet user needs?",
+                    options: [
+                        "Through extensive documentation of all requirements",
+                        "By involving users continuously throughout the project",
+                        "By relying solely on the expertise of the development team",
+                        "Through rigorous testing at the end of the project"
+                    ],
+                    correctAnswer: "By involving users continuously throughout the project",
+                    explanation: "AgilePM garantit que les solutions livrées répondent aux besoins des utilisateurs en impliquant les utilisateurs continuellement tout au long du projet. Cette participation continue permet une validation et un ajustement constants.",
+                    tip: "L'implication continue des utilisateurs est un principe fondamental de l'agilité pour garantir que la solution répond aux vrais besoins."
+                },
+                {
+                    question: "What is the role of the Business Analyst in AgilePM?",
+                    options: [
+                        "To manage the project budget and timeline",
+                        "To facilitate communication between business and technical stakeholders",
+                        "To write all the code for the application",
+                        "To make all final decisions about requirements"
+                    ],
+                    correctAnswer: "To facilitate communication between business and technical stakeholders",
+                    explanation: "Le rôle du Business Analyst dans AgilePM est de faciliter la communication entre les parties prenantes métier et techniques. Il aide à traduire les besoins métier en exigences compréhensibles pour l'équipe de développement.",
+                    tip: "Le Business Analyst dans AgilePM joue un rôle crucial de 'traducteur' entre le monde métier et le monde technique."
+                },
+                {
+                    question: "How does AgilePM address the challenge of changing priorities?",
+                    options: [
+                        "By refusing any changes to priorities once set",
+                        "Through frequent reassessment and reprioritization",
+                        "By creating multiple parallel teams for each priority",
+                        "Through extensive documentation of priority changes"
+                    ],
+                    correctAnswer: "Through frequent reassessment and reprioritization",
+                    explanation: "AgilePM aborde le défi des priorités changeantes par une réévaluation et une repriorisation fréquentes. Cette approche reconnaît que les priorités peuvent légitimement changer au fil du temps.",
+                    tip: "La repriorisation fréquente dans AgilePM permet aux projets de rester alignés sur les besoins métier actuels."
+                },
+                {
+                    question: "What is the purpose of the Project Approach Questionnaire (PAQ) in AgilePM?",
+                    options: [
+                        "To evaluate the performance of individual team members",
+                        "To assess the suitability of agile approaches for the project",
+                        "To document all technical requirements in detail",
+                        "To schedule meetings with stakeholders"
+                    ],
+                    correctAnswer: "To assess the suitability of agile approaches for the project",
+                    explanation: "Le Questionnaire sur l'Approche de Projet (Project Approach Questionnaire) dans AgilePM a pour but d'évaluer la pertinence des approches agiles pour le projet. Il aide à identifier les facteurs qui pourraient affecter le succès de l'approche agile.",
+                    tip: "Le PAQ est un outil précieux dans AgilePM pour évaluer la préparation organisationnelle et la pertinence du projet pour les approches agiles."
+                },
+                {
+                    question: "How does AgilePM handle dependencies between different work streams?",
+                    options: [
+                        "By ignoring dependencies and hoping they resolve themselves",
+                        "Through continuous coordination and communication",
+                        "By creating a single large team to handle all work",
+                        "Through detailed dependency mapping at project start"
+                    ],
+                    correctAnswer: "Through continuous coordination and communication",
+                    explanation: "AgilePM gère les dépendances entre différents flux de travail par une coordination et une communication continues. Cette approche proactive permet une résolution rapide des problèmes de dépendance.",
+                    tip: "La gestion continue des dépendances dans AgilePM est plus efficace que les approches traditionnelles qui tentent de cartographier toutes les dépendances à l'avance."
+                },
+                {
+                    question: "What is the significance of the 'Empowered Teams' concept in AgilePM?",
+                    options: [
+                        "Teams have complete autonomy without any oversight",
+                        "Teams are given authority to make decisions within defined boundaries",
+                        "Teams can change project objectives without consultation",
+                        "Teams are responsible for their own funding and resources"
+                    ],
+                    correctAnswer: "Teams are given authority to make decisions within defined boundaries",
+                    explanation: "Le concept d''Equipes Autonomisées' (Empowered Teams) dans AgilePM signifie que les équipes reçoivent l'autorité de prendre des décisions dans des limites définies. Cela permet une prise de décision rapide tout en maintenant l'alignement global.",
+                    tip: "Les équipes autonomisées dans AgilePM peuvent répondre plus rapidement aux défis et opportunités émergents."
+                },
+                {
+                    question: "How does AgilePM ensure transparency in project progress?",
+                    options: [
+                        "Through detailed weekly status reports",
+                        "By hiding progress information to avoid micromanagement",
+                        "Through visible information radiators and frequent reviews",
+                        "By only sharing progress with senior management"
+                    ],
+                    correctAnswer: "Through visible information radiators and frequent reviews",
+                    explanation: "AgilePM garantit la transparence dans la progression du projet par des radiateurs d'information visibles et des revues fréquentes. Ces pratiques rendent l'état du projet visible à toutes les parties prenantes.",
+                    tip: "La transparence dans AgilePM permet une inspection et une adaptation précoces, essentiels au succès des projets agiles."
+                },
+                {
+                    question: "What is the purpose of the Risk Log in AgilePM?",
+                    options: [
+                        "To document all potential risks without action plans",
+                        "To track and manage identified risks throughout the project",
+                        "To assign blame for project issues to specific team members",
+                        "To eliminate the need for risk management meetings"
+                    ],
+                    correctAnswer: "To track and manage identified risks throughout the project",
+                    explanation: "Le Registre des Risques (Risk Log) dans AgilePM a pour but de suivre et de gérer les risques identifiés tout au long du projet. C'est un outil vivant qui évolue à mesure que de nouveaux risques sont identifiés et que les risques existants sont traités.",
+                    tip: "Le Risk Log dans AgilePM est un artefact dynamique qui soutient la gestion proactive des risques tout au long du projet."
+                }
+            ]
+        };
+
+        // DOM Elements
+        const settingsPanelEl = document.getElementById('settings-panel');
+        const quizContentEl = document.getElementById('quiz-content');
+        const questionCountEl = document.getElementById('question-count');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const tipBoxEl = document.getElementById('tip-box');
+        const tipTextEl = document.getElementById('tip-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+        let selectedQuestionCount = 80;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            selectedQuestionCount = parseInt(questionCountEl.value);
+            // Shuffle all questions and take the selected number
+            const shuffledQuestions = shuffleArray([...quizData.questions]);
+            questions = shuffledQuestions.slice(0, selectedQuestionCount);
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            // Hide settings, show quiz content
+            settingsPanelEl.classList.add('d-none');
+            quizContentEl.classList.remove('d-none');
+            
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            tipBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.textContent = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            if(isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Bravo, c'est la bonne réponse !";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explication :";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+            
+            // Show tip if available
+            if (question.tip) {
+                tipTextEl.textContent = question.tip;
+                tipBoxEl.classList.remove('d-none');
+            }
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showFinalResults() {
+            const percentage = (score / questions.length) * 100;
+            let scoreColor;
+            let recommendationsHtml;
+
+            if (percentage >= 80) {
+                scoreColor = 'var(--success-color)';
+                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellent !</h5><p>Vous avez une solide maîtrise des concepts AgilePM. Continuez à appliquer ces connaissances dans vos projets !</p>';
+            } else if (percentage >= 60) {
+                scoreColor = 'var(--scrum-orange)';
+                recommendationsHtml = '<h5><i class="fas fa-chart-line text-info"></i> Bon travail !</h5><p>Vous avez de bonnes bases en AgilePM. Quelques points méritent d\'être approfondis pour renforcer votre expertise.</p>';
+            } else if (percentage >= 40) {
+                scoreColor = 'var(--agile-blue)';
+                recommendationsHtml = '<h5><i class="fas fa-book text-primary"></i> En progression !</h5><p>Vous avez compris les bases d\'AgilePM. Continuez à étudier et pratiquer pour améliorer votre maîtrise.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> Encore un effort !</h5><p>C\'est un bon début. Nous vous encourageons à revoir les principes fondamentaux d\'AgilePM pour consolider vos connaissances.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            resultsModal.show();
+        }
+
+        function restartQuiz() {
+            // Show settings, hide quiz content
+            settingsPanelEl.classList.remove('d-none');
+            quizContentEl.classList.add('d-none');
+            resultsModal.hide();
+        }
+
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', restartQuiz);
+        
+        // Initial call - show settings panel
+        document.addEventListener('DOMContentLoaded', () => {
+            settingsPanelEl.classList.remove('d-none');
+            quizContentEl.classList.add('d-none');
+        });
+    </script>
+</body>
+</html>
