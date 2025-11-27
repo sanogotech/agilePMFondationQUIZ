@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz AgilePM v3 - Niveau Avancé</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --advanced-purple: #9b59b6;
+            --agile-blue: #4d8af0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --light-bg: #f8f9fa;
+            --white-color: #ffffff;
+            --grey-text: #7f8c8d;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            padding-top: 2rem;
+        }
+
+        .quiz-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .quiz-header h1 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .quiz-header p {
+            text-align: center;
+            color: var(--grey-text);
+            margin-bottom: 2rem;
+        }
+
+        .difficulty-badge {
+            background-color: var(--advanced-purple);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .progress-container {
+            margin-bottom: 1.5rem;
+        }
+
+        #question-counter {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        #question-card {
+            border: none;
+            border-radius: 10px;
+            padding: 2rem;
+            background-color: #fdfdfd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        #question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 1rem 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 2px solid #ecf0f1;
+            background-color: var(--white-color);
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover:not([disabled]) {
+            border-color: var(--advanced-purple);
+            background-color: #f9f5ff;
+        }
+        
+        .option-btn.correct {
+            background-color: #e9f7ef;
+            border-color: var(--success-color);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+
+        .option-btn.incorrect {
+            background-color: #fdeded;
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+            font-weight: 600;
+        }
+
+        #explanation-box {
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+        }
+        
+        #explanation-box h5 {
+            font-weight: 700;
+        }
+
+        .explanation-correct {
+             background-color: #e9f7ef;
+             border-left: 5px solid var(--success-color);
+        }
+
+        .explanation-incorrect {
+            background-color: #fdeded;
+            border-left: 5px solid var(--danger-color);
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .nav-btn {
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+        }
+
+        /* Modal styling */
+        .modal-header {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+
+        .modal-title-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+        }
+        
+        .final-score {
+            font-size: 3.5rem;
+            font-weight: 700;
+        }
+        
+        .score-text {
+            font-size: 1.5rem;
+        }
+        
+        .question-number-badge {
+            background-color: var(--advanced-purple);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .tip-box {
+            background-color: #f0e6ff;
+            border-left: 5px solid var(--advanced-purple);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+        }
+        
+        .tip-box h6 {
+            color: var(--advanced-purple);
+            font-weight: 600;
+        }
+        
+        .settings-panel {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .advanced-hint {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 0.75rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="quiz-container">
+            <div class="quiz-header">
+                <h1><i class="fas fa-graduation-cap" style="color:var(--advanced-purple);"></i> Quiz AgilePM v3 - Niveau Avancé</h1>
+                <p>Testez vos connaissances approfondies sur Agile Project Management et préparez-vous aux certifications avancées.</p>
+                <span class="difficulty-badge"><i class="fas fa-star"></i> NIVEAU EXPERT</span>
+            </div>
+            
+            <div id="settings-panel" class="settings-panel">
+                <h4><i class="fas fa-cog"></i> Configuration du quiz</h4>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label for="question-count" class="form-label">Nombre de questions :</label>
+                        <select id="question-count" class="form-select">
+                            <option value="10">10 questions</option>
+                            <option value="20">20 questions</option>
+                            <option value="30">30 questions</option>
+                            <option value="50">50 questions</option>
+                            <option value="60">60 questions</option>
+                            <option value="70">70 questions</option>
+                            <option value="80" selected>80 questions (complet)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 d-flex align-items-end">
+                        <button id="start-quiz-btn" class="btn btn-primary w-100">Commencer le quiz</button>
+                    </div>
+                </div>
+                <div class="advanced-hint mt-3">
+                    <strong><i class="fas fa-lightbulb"></i> Conseil :</strong> Ce quiz contient des questions de niveau avancé qui testent votre compréhension approfondie des concepts AgilePM et votre capacité à les appliquer dans des scénarios complexes.
+                </div>
+            </div>
+
+            <div id="quiz-content" class="d-none">
+                <div class="progress-container">
+                     <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span id="question-counter">Question 1 / 80</span>
+                        <span id="current-score">Score: 0</span>
+                     </div>
+                    <div class="progress" style="height: 10px;">
+                        <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 1.25%;" aria-valuenow="1.25" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+
+                <div id="question-card" class="card">
+                    <div class="card-body">
+                        <h2 id="question-text">Chargement de la question...</h2>
+                        <div id="options-container">
+                            <!-- Les boutons d'options seront insérés ici par JavaScript -->
+                        </div>
+                        <div id="explanation-box" class="d-none">
+                            <h5 id="explanation-title"></h5>
+                            <p id="explanation-text"></p>
+                            <div id="tip-box" class="tip-box d-none">
+                                <h6><i class="fas fa-lightbulb"></i> Conseil AgilePM Avancé</h6>
+                                <p id="tip-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quiz-navigation">
+                    <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Précédent</button>
+                    <button id="next-btn" class="btn btn-primary nav-btn">Suivant <i class="fas fa-arrow-right"></i></button>
+                    <button id="finish-btn" class="btn btn-success nav-btn d-none">Terminer & Voir les Résultats</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for results -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Résultats du Quiz Avancé</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center p-4">
+                    <h4 class="score-text">Votre score final est :</h4>
+                    <p class="final-score" id="final-score-percentage">0%</p>
+                    <p class="text-muted fs-5">
+                        <span id="final-score-correct">0</span> sur 
+                        <span id="final-score-total">0</span> bonnes réponses
+                    </p>
+                    <hr>
+                    <div id="final-recommendations"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Recommencer le quiz</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Questions avancées avec explications détaillées et conseils
+        const quizData = {
+            questions: [
+                {
+                    question: "Dans un contexte AgilePM, comment le principe 'Manage by Exception' s'applique-t-il lorsque plusieurs équipes travaillent sur des incréments de solution interdépendants?",
+                    options: [
+                        "Chaque équipe gère ses propres exceptions sans coordination",
+                        "Seul le Project Manager a l'autorité pour gérer les exceptions",
+                        "Les exceptions sont gérées au niveau approprié avec une escalade coordonnée",
+                        "Les exceptions sont ignorées pour maintenir la vélocité des équipes"
+                    ],
+                    correctAnswer: "Les exceptions sont gérées au niveau approprié avec une escalade coordonnée",
+                    explanation: "Dans un contexte multi-équipes, le 'Manage by Exception' dans AgilePM implique que les exceptions sont gérées au niveau approprié avec une escalade coordonnée. Les équipes gèrent les exceptions dans leurs tolérances, mais les exceptions qui affectent plusieurs équipes ou dépassent les tolérances d'équipe nécessitent une escalade coordonnée au niveau du projet.",
+                    tip: "En environnement multi-équipes, l'escalade coordonnée des exceptions est essentielle pour maintenir l'alignement tout en préservant l'autonomie des équipes."
+                },
+                {
+                    question: "Quelle est la différence fondamentale entre la 'Definition of Done' d'une équipe et la 'Definition of Done' au niveau du projet dans AgilePM?",
+                    options: [
+                        "Il n'y a pas de différence, les deux sont identiques",
+                        "La DoD d'équipe concerne les critères techniques, la DoD de projet concerne les critères métier",
+                        "La DoD d'équipe s'applique à un incrément d'équipe, la DoD de projet à l'incrément de solution global",
+                        "La DoD d'équipe est facultative, la DoD de projet est obligatoire"
+                    ],
+                    correctAnswer: "La DoD d'équipe s'applique à un incrément d'équipe, la DoD de projet à l'incrément de solution global",
+                    explanation: "La Definition of Done d'équipe définit les critères pour qu'un incrément d'équipe soit considéré comme 'fini', tandis que la Definition of Done au niveau du projet définit les critères supplémentaires nécessaires pour que l'incrément de solution global soit considéré comme prêt pour le déploiement. La DoD de projet inclut généralement des éléments comme l'intégration, les tests de performance, et la documentation de déploiement.",
+                    tip: "La distinction entre DoD d'équipe et DoD de projet est cruciale dans les projets multi-équipes pour garantir que les incréments individuels s'intègrent correctement dans la solution globale."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le conflit potentiel entre la nécessité de stabilité pour les fondations et la nécessité de flexibilité pour l'émergence?",
+                    options: [
+                        "En favorisant toujours la stabilité au détriment de la flexibilité",
+                        "En établissant des fondations solides mais en permettant l'émergence dans les détails d'implémentation",
+                        "En éliminant complètement la planification initiale",
+                        "En permettant des changements fondamentaux aux fondations à tout moment"
+                    ],
+                    correctAnswer: "En établissant des fondations solides mais en permettant l'émergence dans les détails d'implémentation",
+                    explanation: "AgilePM résout ce conflit en établissant des fondations solides (objectifs, contraintes majeures, architecture de haut niveau) qui fournissent la stabilité nécessaire, tout en permettant l'émergence et l'adaptation dans les détails d'implémentation pendant les phases de delivery. Cette approche équilibrée permet à la fois la prévisibilité et l'adaptabilité.",
+                    tip: "Le concept de 'Firm Foundations' dans AgilePM crée le cadre stable nécessaire pour permettre une flexibilité contrôlée dans l'exécution."
+                },
+                {
+                    question: "Dans un projet AgilePM à grande échelle avec des équipes distribuées, quel mécanisme est le plus efficace pour maintenir l'alignement stratégique?",
+                    options: [
+                        "Des réunions quotidiennes de tous les membres de toutes les équipes",
+                        "Une documentation détaillée et centralisée de tous les requis",
+                        "Un réseau de Business Ambassadors coordonnés et des revues de projet régulières",
+                        "La délégation complète aux Product Owners d'équipe sans coordination"
+                    ],
+                    correctAnswer: "Un réseau de Business Ambassadors coordonnés et des revues de projet régulières",
+                    explanation: "Dans les projets à grande échelle avec des équipes distribuées, un réseau de Business Ambassadors coordonnés (formant une communauté de pratique) combiné à des revues de projet régulières est le mécanisme le plus efficace pour maintenir l'alignement stratégique. Cela permet une communication bidirectionnelle, le partage des apprentissages, et la coordination des priorités tout en préservant l'autonomie des équipes.",
+                    tip: "La communauté de pratique des Business Ambassadors est un élément clé de la gouvernance agile à grande échelle dans AgilePM."
+                },
+                {
+                    question: "Comment le concept de 'timeboxing' dans AgilePM diffère-t-il fondamentalement des délais traditionnels dans les approches prédictives?",
+                    options: [
+                        "Les timeboxes sont toujours plus courts que les délais traditionnels",
+                        "Les timeboxes fixent le temps mais permettent la flexibilité sur la portée, contrairement aux délais traditionnels qui fixent souvent les deux",
+                        "Les timeboxes ne sont pas contraignantes, contrairement aux délais traditionnels",
+                        "Il n'y a pas de différence fondamentale"
+                    ],
+                    correctAnswer: "Les timeboxes fixent le temps mais permettent la flexibilité sur la portée, contrairement aux délais traditionnels qui fixent souvent les deux",
+                    explanation: "La différence fondamentale est que le timeboxing dans AgilePM fixe la durée (time) mais permet la flexibilité sur la portée (scope) dans les limites des priorités MoSCoW. Les approches traditionnelles tendent à fixer à la fois le temps et la portée, ce qui conduit souvent à des compromis sur la qualité ou à des dépassements de délais.",
+                    tip: "Le timeboxing agile est un mécanisme de gestion de l'incertitude qui reconnaît qu'il est plus facile d'estimer l'effort que de prédire précisément les résultats dans des environnements complexes."
+                },
+                {
+                    question: "Quelle est la implication la plus significative du principe 'Focus on Business Need' dans la prise de décision technique?",
+                    options: [
+                        "Les décisions techniques sont entièrement déléguées aux développeurs sans considération métier",
+                        "Le besoin métier prime toujours sur les considérations techniques",
+                        "Les décisions techniques doivent être comprises et justifiées en termes de valeur métier",
+                        "Les considérations techniques ne sont jamais prioritaires"
+                    ],
+                    correctAnswer: "Les décisions techniques doivent être comprises et justifiées en termes de valeur métier",
+                    explanation: "L'implication la plus significative est que les décisions techniques, bien que basées sur l'expertise technique, doivent être comprises et justifiées en termes de valeur métier. Cela ne signifie pas que le besoin métier prime toujours, mais que le compromis entre les considérations techniques et métier doit être explicitement évalué en fonction de la valeur délivrée.",
+                    tip: "Dans AgilePM, même les décisions techniques les plus complexes doivent pouvoir être expliquées en termes d'impact sur la valeur métier."
+                },
+                {
+                    question: "Comment AgilePM intègre-t-il la gestion des parties prenantes externes ayant des intérêts contradictoires?",
+                    options: [
+                        "En ignorant les parties prenantes externes pour se concentrer sur les internes",
+                        "En donnant un veto à la partie prenante la plus puissante",
+                        "Par une analyse continue des parties prenantes et une négociation transparente des compromis",
+                        "En établissant des exigences fixes au début du projet"
+                    ],
+                    correctAnswer: "Par une analyse continue des parties prenantes et une négociation transparente des compromis",
+                    explanation: "AgilePM intègre la gestion des parties prenantes externes avec des intérêts contradictoires par une analyse continue des parties prenantes et une négociation transparente des compromis. Le Business Ambassador et le Business Analyst jouent un rôle clé dans la facilitation de ces négociations, en s'assurant que les compromis sont explicités et alignés avec la vision métier globale.",
+                    tip: "La gestion des parties prenantes dans AgilePM est un processus continu et adaptatif, pas un événement ponctuel en début de projet."
+                },
+                {
+                    question: "Quelle est la relation appropriée entre la vélocité d'une équipe et la planification des releases dans AgilePM?",
+                    options: [
+                        "La vélocité détermine exactement la date de release",
+                        "La vélocité est ignorée dans la planification des releases",
+                        "La vélocité fournit une indication pour la planification mais n'est pas le seul facteur",
+                        "La vélocité est utilisée uniquement pour mesurer la performance individuelle"
+                    ],
+                    correctAnswer: "La vélocité fournit une indication pour la planification mais n'est pas le seul facteur",
+                    explanation: "La vélocité fournit une indication historique utile pour la planification des releases, mais elle n'est pas le seul facteur. D'autres éléments comme les dépendances, les risques, la complexité des exigences restantes, et les contraintes externes doivent également être considérés. La vélocité est un guide, pas une mesure précise de la capacité future.",
+                    tip: "Une utilisation mature de la vélocité dans AgilePM la considère comme une mesure d'équipe pour l'amélioration continue, pas comme un outil de prédiction précise."
+                },
+                {
+                    question: "Comment le rôle de Business Sponsor évolue-t-il dans un environnement agile mature par rapport aux approches traditionnelles?",
+                    options: [
+                        "Le Business Sponsor est moins impliqué dans les projets agiles",
+                        "Le Business Sponsor délègue toute autorité au Product Owner",
+                        "Le Business Sponsor reste engagé mais change son mode d'implication vers plus de cadrage et moins de micro-management",
+                        "Le rôle de Business Sponsor est éliminé dans AgilePM"
+                    ],
+                    correctAnswer: "Le Business Sponsor reste engagé mais change son mode d'implication vers plus de cadrage et moins de micro-management",
+                    explanation: "Dans un environnement agile mature, le Business Sponsor reste crucialement engagé mais change son mode d'implication. Il se concentre davantage sur le cadrage stratégique, la définition des objectifs business, et la gestion des attentes des parties prenantes de haut niveau, tout en déléguant les décisions tactiques au Business Visionary et à l'équipe projet. C'est un passage du micro-management au macro-leadership.",
+                    tip: "La transition vers l'agilité nécessite souvent une évolution des rôles de gouvernance, pas leur élimination."
+                },
+                {
+                    question: "Quelle est la considération la plus importante lors de l'établissement des tolérances dans un projet AgilePM?",
+                    options: [
+                        "Les tolérances doivent être aussi serrées que possible pour maintenir le contrôle",
+                        "Les tolérances doivent refléter le niveau d'incertitude du projet et permettre l'autonomie des équipes",
+                        "Les tolérances sont inutiles dans les projets agiles",
+                        "Les tolérances doivent être identiques pour tous les projets"
+                    ],
+                    correctAnswer: "Les tolérances doivent refléter le niveau d'incertitude du projet et permettre l'autonomie des équipes",
+                    explanation: "La considération la plus importante est que les tolérances doivent refléter le niveau d'incertitude du projet et permettre l'autonomie des équipes. Dans les environnements très incertains, des tolérances plus larges sont nécessaires pour permettre l'adaptation. Les tolérances doivent équilibrer le besoin de contrôle avec le besoin de flexibilité, et varier en fonction du contexte du projet.",
+                    tip: "L'établissement des tolérances dans AgilePM est un exercice d'équilibre entre autonomie et alignement, adapté au contexte spécifique du projet."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le défi de l'intégration continue dans les projets avec des équipes distribuées géographiquement?",
+                    options: [
+                        "En évitant les équipes distribuées autant que possible",
+                        "Par des intégrations moins fréquentes pour réduire la complexité",
+                        "En établissant des standards techniques communs et des environnements d'intégration automatisés",
+                        "En demandant à chaque équipe de développer des solutions complètement indépendantes"
+                    ],
+                    correctAnswer: "En établissant des standards techniques communs et des environnements d'intégration automatisés",
+                    explanation: "AgilePM aborde ce défi en établissant des standards techniques communs (définis par le Technical Coordinator) et des environnements d'intégration automatisés qui permettent une intégration continue malgré la distribution géographique. La Solution Architecture Definition joue un rôle clé en fournissant le cadre technique qui guide le développement distribué.",
+                    tip: "L'intégration continue dans les environnements distribués nécessite un investissement initial dans l'automatisation et la standardisation, qui paie en réduisant les risques d'intégration plus tard dans le projet."
+                },
+                {
+                    question: "Quelle est la différence subtile entre 'priorisation' et 'ordonnancement' dans la gestion du Product Backlog en AgilePM?",
+                    options: [
+                        "Il n'y a pas de différence, les termes sont interchangeables",
+                        "La priorisation concerne l'importance relative, l'ordonnancement concerne l'ordre de traitement",
+                        "La priorisation est technique, l'ordonnancement est métier",
+                        "La priorisation se fait par le Product Owner, l'ordonnancement par l'équipe de développement"
+                    ],
+                    correctAnswer: "La priorisation concerne l'importance relative, l'ordonnancement concerne l'ordre de traitement",
+                    explanation: "La différence subtile est que la priorisation concerne l'importance relative des éléments (ce qui est Must Have vs Should Have vs Could Have), tandis que l'ordonnancement concerne l'ordre spécifique dans lequel les éléments seront traités. L'ordonnancement prend en compte non seulement la priorité, mais aussi les dépendances, les risques, et l'effort nécessaire.",
+                    tip: "Une backlog bien gérée dans AgilePM distingue clairement la priorisation (valeur) de l'ordonnancement (séquence optimale de livraison)."
+                },
+                {
+                    question: "Comment le concept de 'dette technique' est-il géré différemment dans AgilePM par rapport aux approches traditionnelles?",
+                    options: [
+                        "La dette technique est ignorée dans AgilePM",
+                        "La dette technique est entièrement éliminée dans AgilePM",
+                        "La dette technique est explicitement reconnue et gérée comme un compromis conscient",
+                        "La dette technique est la responsabilité exclusive des développeurs"
+                    ],
+                    correctAnswer: "La dette technique est explicitement reconnue et gérée comme un compromis conscient",
+                    explanation: "Dans AgilePM, la dette technique est explicitement reconnue et gérée comme un compromis conscient entre la livraison rapide de valeur et la qualité technique à long terme. Elle est visible dans le backlog, discutée avec les parties prenantes métier, et des timeboxes spécifiques peuvent être allouées pour la réduire lorsque cela affecte la capacité de livrer de la valeur future.",
+                    tip: "La gestion transparente de la dette technique est un marqueur de maturité agile - elle est reconnue comme un investissement/compromis business, pas comme un échec technique."
+                },
+                {
+                    question: "Quelle est la réponse la plus appropriée lorsqu'une exigence 'Must Have' menace de dépasser son estimation initiale dans un timebox?",
+                    options: [
+                        "Réduire la qualité pour respecter le timebox",
+                        "Étendre le timebox pour accommoder l'exigence",
+                        "Collaborer avec le Business Ambassador pour identifier des options : simplification, réduction de scope, ou report partiel",
+                        "Abandonner l'exigence complètement"
+                    ],
+                    correctAnswer: "Collaborer avec le Business Ambassador pour identifier des options : simplification, réduction de scope, ou report partiel",
+                    explanation: "La réponse la plus appropriée est de collaborer avec le Business Ambassador pour identifier des options telles que la simplification de l'exigence, la réduction de son scope, ou le report partiel de certaines fonctionnalités. Cette approche collaborative respecte à la fois l'intégrité du timebox et l'importance des exigences Must Have, en trouvant un équilibre pragmatique.",
+                    tip: "La gestion des exigences Must Haven dans AgilePM est un processus de collaboration, pas de concession unilatérale."
+                },
+                {
+                    question: "Comment AgilePM intègre-t-il les considérations de sécurité et de conformité dans le processus de développement itératif?",
+                    options: [
+                        "En traitant la sécurité comme une phase distincte à la fin du projet",
+                        "En intégrant les exigences de sécurité et conformité dans la Definition of Done et les critères d'acceptation",
+                        "En externalisant la sécurité à une équipe spécialisée",
+                        "En considérant la sécurité comme une préoccupation purement technique"
+                    ],
+                    correctAnswer: "En intégrant les exigences de sécurité et conformité dans la Definition of Done et les critères d'acceptation",
+                    explanation: "AgilePM intègre les considérations de sécurité et de conformité en les incorporant dans la Definition of Done et les critères d'acceptation des user stories. Cela garantit que la sécurité est 'built-in' plutôt que 'bolted-on', et que chaque incrément respecte les exigences de sécurité et conformité dès le début.",
+                    tip: "L'intégration précoce des exigences non-fonctionnelles comme la sécurité est un avantage clé des approches agiles bien implémentées."
+                },
+                {
+                    question: "Quelle est la nuance importante dans l'application du principe 'Learn from Experience' dans les environnements organisationnels complexes?",
+                    options: [
+                        "L'apprentissage doit être limité à l'équipe projet",
+                        "L'apprentissage doit être formalisé et partagé au-delà de l'équipe projet",
+                        "L'apprentissage est inutile dans les environnements complexes",
+                        "L'apprentissage doit attendre la fin du projet"
+                    ],
+                    correctAnswer: "L'apprentissage doit être formalisé et partagé au-delà de l'équipe projet",
+                    explanation: "La nuance importante est que dans les environnements organisationnels complexes, l'apprentissage doit être formalisé et partagé au-delà de l'équipe projet immédiate. Les revues de projet, les communautés de pratique, et la documentation des leçons apprises aident à institutionaliser l'apprentissage et à bénéficier à l'ensemble de l'organisation.",
+                    tip: "L'apprentissage organisationnel est un multiplicateur de valeur dans l'agilité à l'échelle - il transforme les succès et échecs locaux en améliorations systémiques."
+                },
+                {
+                    question: "Comment le Business Visionary et le Project Manager doivent-ils équilibrer leurs rôles lors de conflits entre les besoins métier et les contraintes projet?",
+                    options: [
+                        "Le Business Visionary doit toujours prévaloir",
+                        "Le Project Manager doit toujours prévaloir",
+                        "Ils doivent collaborer pour trouver une solution qui préserve la valeur métier dans les contraintes projet",
+                        "Ils doivent escalader immédiatement au Business Sponsor"
+                    ],
+                    correctAnswer: "Ils doivent collaborer pour trouver une solution qui préserve la valeur métier dans les contraintes projet",
+                    explanation: "Le Business Visionary et le Project Manager doivent collaborer pour trouver des solutions créatives qui préservent la valeur métier essentielle tout en respectant les contraintes projet. Cette collaboration est au cœur de la gouvernance agile - reconnaître que les contraintes et les objectifs business ont tous deux de la valeur et nécessitent un équilibre négocié.",
+                    tip: "La relation Business Visionary/Project Manager dans AgilePM est un partenariat d'égal à égal, pas une relation hiérarchique."
+                },
+                {
+                    question: "Quelle est la considération la plus critique lors de l'adaptation d'AgilePM à un contexte réglementaire strict?",
+                    options: [
+                        "Abandonner AgilePM pour une approche traditionnelle",
+                        "Cacher les activités agiles aux régulateurs",
+                        "Adapter les artefacts et ceremonies pour fournir la traçabilité requise sans sacrifier l'agilité",
+                        "Ignorer les exigences réglementaires"
+                    ],
+                    correctAnswer: "Adapter les artefacts et ceremonies pour fournir la traçabilité requise sans sacrifier l'agilité",
+                    explanation: "La considération la plus critique est d'adapter les artefacts et cérémonies AgilePM pour fournir la traçabilité et la documentation requises par le contexte réglementaire, sans sacrifier les principes agiles fondamentaux. Cela peut inclure des versions adaptées de la Solution Architecture Definition, des registres de décision, et des procès-verbaux de revue qui satisfont aux exigences réglementaires tout en maintenant un rythme de livraison agile.",
+                    tip: "L'agilité dans des contextes réglementaires nécessite de penser la documentation comme un livrable de valeur, pas comme un fardeau bureaucratique."
+                },
+                {
+                    question: "Comment le concept de 'variable scope' dans AgilePM affecte-t-il la gestion des contrats avec les fournisseurs externes?",
+                    options: [
+                        "Il rend impossible la collaboration avec des fournisseurs externes",
+                        "Il nécessite des contrats basés sur le temps et les matériaux plutôt que sur un scope fixe",
+                        "Il permet des contrats basés sur la livraison de valeur avec des mécanismes de variation formels",
+                        "Il exige que tous les fournisseurs deviennent agiles"
+                    ],
+                    correctAnswer: "Il permet des contrats basés sur la livraison de valeur avec des mécanismes de variation formels",
+                    explanation: "Le concept de variable scope permet des contrats basés sur la livraison de valeur avec des mécanismes de variation formels. Ces contrats définissent les objectifs business et les priorités (MoSCoW) plutôt qu'un scope détaillé fixe, avec des mécanismes clairs pour ajuster le scope en cours de route tout en protégeant les intérêts des deux parties.",
+                    tip: "Les contrats agiles matures se concentrent sur la valeur délivrée et la collaboration, pas sur le respect d'un scope prédéfini potentiellement obsolète."
+                },
+                {
+                    question: "Quelle est la différence essentielle entre la gestion des risques dans AgilePM et dans les approches traditionnelles?",
+                    options: [
+                        "AgilePM élimine complètement le besoin de gestion des risques",
+                        "La gestion des risques dans AgilePM est réactive plutôt que proactive",
+                        "La gestion des risques dans AgilePM est intégrée dans le cycle de développement itératif",
+                        "Il n'y a pas de différence essentielle"
+                    ],
+                    correctAnswer: "La gestion des risques dans AgilePM est intégrée dans le cycle de développement itératif",
+                    explanation: "La différence essentielle est que la gestion des risques dans AgilePM est intégrée dans le cycle de développement itératif, plutôt que d'être une activité distincte en amont. Les risques sont identifiés, priorisés et traités continuellement à travers les timeboxes, avec une attention particulière aux risques qui pourraient affecter la livraison de valeur.",
+                    tip: "L'intégration de la gestion des risques dans le rythme itératif permet une réponse plus rapide aux risques émergents dans des environnements incertains."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le défi de la coordination entre les équipes de développement et les équipes opérationnelles?",
+                    options: [
+                        "En ignorant les équipes opérationnelles jusqu'à la deployment",
+                        "Par l'intégration précoce des considérations opérationnelles dans la Definition of Done",
+                        "En demandant aux développeurs de gérer également les opérations",
+                        "En traitant les opérations comme une préoccupation distincte du développement"
+                    ],
+                    correctAnswer: "Par l'intégration précoce des considérations opérationnelles dans la Definition of Done",
+                    explanation: "AgilePM aborde ce défi par l'intégration précoce des considérations opérationnelles dans la Definition of Done. Les exigences opérationnelles (monitoring, déploiement, support) sont traitées comme des critères d'acceptation dès le début, et la collaboration avec les équipes opérationnelles est encouragée tout au long du projet.",
+                    tip: "L'adoption des pratiques DevOps est une extension naturelle des principes AgilePM pour améliorer la collaboration développement-opérations."
+                },
+                {
+                    question: "Quelle est la réponse la plus appropriée face à un changement majeur dans l'environnement business en milieu de projet AgilePM?",
+                    options: [
+                        "Ignorer le changement pour respecter le plan initial",
+                        "Arrêter immédiatement le projet",
+                        "Réévaluer la justification business et adapter le projet en conséquence",
+                        "Continuer comme prévu et traiter le changement dans un projet futur"
+                    ],
+                    correctAnswer: "Réévaluer la justification business et adapter le projet en conséquence",
+                    explanation: "La réponse la plus appropriée est de réévaluer la justification business et d'adapter le projet en conséquence. AgilePM reconnaît que les environnements business changent, et que la capacité à s'adapter à ces changements est une force, pas une faiblesse. Cela peut impliquer de revoir les objectifs, les priorités, ou même la viabilité continue du projet.",
+                    tip: "La capacité d'adaptation aux changements business est un avantage compétitif clé des approches agiles - elle transforme les perturbations en opportunités."
+                },
+                {
+                    question: "Comment le principe 'Build Incrementally from Firm Foundations' s'applique-t-il à l'architecture technique?",
+                    options: [
+                        "L'architecture complète doit être définie en détail avant tout développement",
+                        "L'architecture émerge complètement du développement itératif",
+                        "L'architecture de haut niveau est établie initialement, avec les détails qui émergent itérativement",
+                        "L'architecture est ignorée dans les approches agiles"
+                    ],
+                    correctAnswer: "L'architecture de haut niveau est établie initialement, avec les détails qui émergent itérativement",
+                    explanation: "Le principe s'applique en établissant l'architecture de haut niveau (les fondations techniques) pendant la phase Foundations, avec les détails d'architecture qui émergent itérativement pendant les phases de Delivery. Cette approche équilibrée fournit la stabilité nécessaire tout en permettant l'adaptation aux apprentissages techniques.",
+                    tip: "L'architecture émergente dans AgilePM n'est pas synonyme d'architecture improvisée - elle combine direction stratégique et adaptation tactique."
+                },
+                {
+                    question: "Quelle est la différence subtile entre 'facilitation' et 'direction' dans le rôle du Scrum Master en contexte AgilePM?",
+                    options: [
+                        "Il n'y a pas de différence, les termes sont synonymes",
+                        "La facilitation aide l'équipe à trouver ses solutions, la direction impose des solutions",
+                        "La facilitation est pour les réunions, la direction est pour le travail technique",
+                        "La facilitation est l'apanage du Project Manager, la direction du Scrum Master"
+                    ],
+                    correctAnswer: "La facilitation aide l'équipe à trouver ses solutions, la direction impose des solutions",
+                    explanation: "La différence subtile est que la facilitation aide l'équipe à trouver ses propres solutions en guidant le processus, tandis que la direction impose des solutions en disant à l'équipe quoi faire. Le Scrum Master mature favorise la facilitation, renforçant ainsi l'auto-organisation et l'appropriation de l'équipe.",
+                    tip: "Le passage de la direction à la facilitation est une transition clé dans le développement d'une culture agile mature."
+                },
+                {
+                    question: "Comment AgilePM intègre-t-il la mesure de la valeur business délivrée au-delà de la simple livraison de fonctionnalités?",
+                    options: [
+                        "En se focalisant exclusivement sur la vélocité des équipes",
+                        "Par des revues business régulières évaluant l'impact des incréments livrés",
+                        "En attendant la fin du projet pour mesurer la valeur",
+                        "En déléguant la mesure de valeur au Business Sponsor seul"
+                    ],
+                    correctAnswer: "Par des revues business régulières évaluant l'impact des incréments livrés",
+                    explanation: "AgilePM intègre la mesure de la valeur business par des revues business régulières où les parties prenantes évaluent l'impact des incréments livrés. Ces revues vont au-delà de la démonstration technique pour évaluer comment les fonctionnalités délivrées soutiennent les objectifs business, permettant des ajustements basés sur la valeur réelle délivrée.",
+                    tip: "La mesure continue de la valeur business transforme le développement agile de la livraison de sorties (outputs) à la génération d'impacts (outcomes)."
+                },
+                {
+                    question: "Quelle est la considération la plus importante lors du scaling d'AgilePM à des programmes ou portfolios?",
+                    options: [
+                        "Standardiser rigoureusement toutes les pratiques à travers toutes les équipes",
+                        "Maintenir une cohérence stratégique tout en permettant l'adaptation locale",
+                        "Éliminer toute variation entre les équipes",
+                        "Centraliser toutes les décisions au niveau du portfolio"
+                    ],
+                    correctAnswer: "Maintenir une cohérence stratégique tout en permettant l'adaptation locale",
+                    explanation: "La considération la plus importante est de maintenir une cohérence stratégique au niveau du programme/portfolio tout en permettant l'adaptation locale aux contextes spécifiques des équipes. Cela crée un équilibre entre alignement et autonomie, essentiel pour le scaling réussi des pratiques agiles.",
+                    tip: "Le scaling agile réussi consiste à trouver le bon niveau de standardisation - suffisamment pour l'alignement, pas trop pour étouffer l'adaptation locale."
+                },
+                {
+                    question: "Comment le concept de 'transparency' dans AgilePM influence-t-il la communication avec le Business Sponsor?",
+                    options: [
+                        "En limitant les communications aux bonnes nouvelles",
+                        "En partageant ouvertement les progrès, les défis et les apprentissages",
+                        "En simplifiant excessivement les rapports pour éviter la confusion",
+                        "En déléguant toute communication au Project Manager"
+                    ],
+                    correctAnswer: "En partageant ouvertement les progrès, les défis et les apprentissages",
+                    explanation: "Le concept de transparency influence la communication en encourageant le partage ouvert des progrès, des défis et des apprentissages avec le Business Sponsor. Cette honnêteté radicale construit la confiance, permet une prise de décision éclairée, et transforme les problèmes en opportunités d'amélioration collaborative.",
+                    tip: "La transparence radicale avec les sponsors n'est pas un risque - c'est un investissement dans la confiance et la résilience du projet."
+                },
+                {
+                    question: "Quelle est la nuance importante dans l'application du principe 'Collaborate' avec des parties prenantes très occupées ou difficiles à joindre?",
+                    options: [
+                        "Abandonner la collaboration avec ces parties prenantes",
+                        "Forcer leur participation par l'escalade managériale",
+                        "Adapter les modalités de collaboration pour respecter leurs contraintes tout en maintenant l'engagement",
+                        "Les exclure du processus de décision"
+                    ],
+                    correctAnswer: "Adapter les modalités de collaboration pour respecter leurs contraintes tout en maintenant l'engagement",
+                    explanation: "La nuance importante est d'adapter les modalités de collaboration pour respecter les contraintes des parties prenantes très occupées tout en maintenant un engagement significatif. Cela peut inclure des réunions plus courtes mais plus ciblées, des communications asynchrones bien structurées, ou la désignation de délégués appropriés.",
+                    tip: "La collaboration efficace dans AgilePM est pragmatique - elle trouve des moyens de maintenir l'engagement malgré les contraintes, pas des excuses pour l'éviter."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le défi de la conservation des connaissances dans les équipes avec un turnover important?",
+                    options: [
+                        "En documentant excessivement pour compenser le turnover",
+                        "En évitant tout turnover dans les équipes agiles",
+                        "Par un équilibre entre documentation essentielle et transfert de connaissances actif",
+                        "En considérant la connaissance comme exclusivement tribale et non transférable"
+                    ],
+                    correctAnswer: "Par un équilibre entre documentation essentielle et transfert de connaissances actif",
+                    explanation: "AgilePM aborde ce défi par un équilibre entre documentation essentielle (capturant les décisions importantes, l'architecture, et le contexte business) et des pratiques actives de transfert de connaissances comme le pair programming, les revues de code, et l'intégration progressive des nouveaux membres. Cette approche reconnaît à la fois la valeur de la documentation et les limites de la documentation seule.",
+                    tip: "La gestion des connaissances dans les environnements agiles est un mélange d'artefacts légers et de pratiques sociales de partage."
+                },
+                {
+                    question: "Quelle est la réponse la plus mature face à un échec dans un timebox AgilePM?",
+                    options: [
+                        "Cacher l'échec pour protéger l'équipe",
+                        "Chercher des coupables individuels",
+                        "Analyser l'échec comme une opportunité d'apprentissage et adapter les approches futures",
+                        "Abandonner immédiatement le projet"
+                    ],
+                    correctAnswer: "Analyser l'échec comme une opportunité d'apprentissage et adapter les approches futures",
+                    explanation: "La réponse la plus mature est d'analyser l'échec comme une opportunité d'apprentissage et d'adapter les approches futures. Dans une culture agile mature, les échecs sont normalisés comme des sources précieuses d'apprentissage, non comme des fautes à punir. La rétrospective est l'outil clé pour cette analyse constructive.",
+                    tip: "Une organisation qui punit l'échec n'apprendra jamais à réussir - la sécurité psychologique est le fondement de l'amélioration continue."
+                },
+                // Ajout de 50 questions supplémentaires pour atteindre 80 questions avancées
+                {
+                    question: "Dans un contexte de transformation agile à l'échelle, comment AgilePM s'intègre-t-il avec d'autres frameworks comme SAFe ou LeSS?",
+                    options: [
+                        "AgilePM remplace complètement ces frameworks",
+                        "AgilePM est incompatible avec ces frameworks",
+                        "AgilePM peut fournir la gouvernance de projet tandis que SAFe/LeSS gèrent le portfolio et le programme",
+                        "AgilePM est uniquement pour les projets standalone"
+                    ],
+                    correctAnswer: "AgilePM peut fournir la gouvernance de projet tandis que SAFe/LeSS gèrent le portfolio et le programme",
+                    explanation: "AgilePM peut fonctionner en complément des frameworks de scaling comme SAFe ou LeSS en fournissant une gouvernance de projet robuste au niveau de l'équipe ou du projet, tandis que ces frameworks adressent les défis du portfolio et du programme. Cette intégration permet une agilité cohérente à tous les niveaux de l'organisation.",
+                    tip: "L'intégration des frameworks agiles est souvent plus efficace que leur compétition - chaque framework apporte des forces différentes."
+                },
+                {
+                    question: "Comment le concept de 'variable scope' dans AgilePM affecte-t-il la gestion financière traditionnelle?",
+                    options: [
+                        "Il rend la gestion financière impossible",
+                        "Il nécessite une transition vers le financement basé sur la valeur et les outcomes",
+                        "Il permet de maintenir les pratiques financières traditionnelles sans changement",
+                        "Il élimine le besoin de suivi financier"
+                    ],
+                    correctAnswer: "Il nécessite une transition vers le financement basé sur la valeur et les outcomes",
+                    explanation: "Le concept de variable scope nécessite une transition vers le financement basé sur la valeur et les outcomes plutôt que sur la livraison d'un scope prédéfini. Cela implique de financer des timeboxes ou des outcomes business, avec une réévaluation régulière de la continuation du financement basée sur la valeur délivrée.",
+                    tip: "L'alignement des pratiques financières avec les principes agiles est souvent le dernier mais le plus important défi dans les transformations agiles."
+                },
+                {
+                    question: "Quelle est la différence fondamentale entre la gestion des dépendances dans AgilePM et les approches traditionnelles?",
+                    options: [
+                        "AgilePM ignore complètement les dépendances",
+                        "Les dépendances sont gérées réactivement dans AgilePM plutôt que proactivement",
+                        "AgilePM traite les dépendances comme des contraintes à visualiser et résoudre collaborativement",
+                        "Il n'y a pas de différence fondamentale"
+                    ],
+                    correctAnswer: "AgilePM traite les dépendances comme des contraintes à visualiser et résoudre collaborativement",
+                    explanation: "La différence fondamentale est qu'AgilePM traite les dépendances comme des contraintes à visualiser et résoudre collaborativement, plutôt que comme des éléments à planifier et contrôler de manière centralisée. La visualisation des dépendances et la collaboration entre équipes sont privilégiées par rapport à la micro-gestion des dépendances.",
+                    tip: "La gestion collaborative des dépendances dans AgilePM transforme les problèmes de coordination en opportunités de collaboration inter-équipes."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le défi de la coordination entre les équipes agiles et les parties prenantes non agiles?",
+                    options: [
+                        "En forçant toutes les parties prenantes à devenir agiles",
+                        "En isolant les équipes agiles des parties prenantes non agiles",
+                        "Par l'adaptation des communications et des livrables pour répondre aux besoins des deux mondes",
+                        "En abandonnant l'agilité pour s'aligner sur les parties prenantes non agiles"
+                    ],
+                    correctAnswer: "Par l'adaptation des communications et des livrables pour répondre aux besoins des deux mondes",
+                    explanation: "AgilePM aborde ce défi par l'adaptation des communications et des livrables pour répondre aux besoins à la fois des équipes agiles et des parties prenantes non agiles. Le Business Ambassador et le Project Manager jouent un rôle crucial de 'traduction' entre ces différents modes de fonctionnement.",
+                    tip: "L'agilité contextuelle reconnaît que différentes parties de l'organisation peuvent avoir besoin de différents modes de fonctionnement - l'important est l'alignement sur les outcomes, pas l'uniformité des pratiques."
+                },
+                {
+                    question: "Quelle est la considération la plus importante lors de l'établissement des métriques pour un projet AgilePM?",
+                    options: [
+                        "Choisir des métriques qui mesurent l'activité plutôt que les outcomes",
+                        "Sélectionner des métriques qui favorisent les comportements souhaités et évitent les effets pervers",
+                        "Utiliser exclusivement la vélocité comme métrique principale",
+                        "Éviter complètement les métriques pour préserver l'autonomie de l'équipe"
+                    ],
+                    correctAnswer: "Sélectionner des métriques qui favorisent les comportements souhaités et évitent les effets pervers",
+                    explanation: "La considération la plus importante est de sélectionner des métriques qui favorisent les comportements souhaités (collaboration, qualité, valeur délivrée) et évitent les effets pervers (optimisation locale, gaming des métriques). Les métriques doivent être un outil d'amélioration, pas de contrôle.",
+                    tip: "Les bonnes métriques en agilité posent la question 'comment pouvons-nous nous améliorer?' plutôt que 'qui a mal performé?'"
+                },
+                {
+                    question: "Comment le principe 'Demonstrate Control' dans AgilePM influence-t-il la reporting aux comités de direction?",
+                    options: [
+                        "En éliminant complètement le reporting formel",
+                        "En fournissant une visibilité basée sur les incréments livrés et les tendances plutôt que sur le pourcentage d'avancement",
+                        "En cachant les problèmes pour maintenir une apparence de contrôle",
+                        "En utilisant les mêmes rapports que les approches traditionnelles"
+                    ],
+                    correctAnswer: "En fournissant une visibilité basée sur les incréments livrés et les tendances plutôt que sur le pourcentage d'avancement",
+                    explanation: "Le principe 'Demonstrate Control' influence le reporting en se concentrant sur la démonstration tangible des incréments livrés et l'analyse des tendances (brun-up, vélocité, qualité) plutôt que sur le pourcentage d'avancement subjectif. Ce reporting factuel et transparent construit la confiance grâce à l'honnêteté radicale.",
+                    tip: "Le contrôle dans AgilePM se démontre par la transparence et la prédictibilité émergente, pas par l'illusion de certitude."
+                },
+                {
+                    question: "Quelle est la réponse la plus appropriée face à un conflit entre l'équipe de développement et le Business Ambassador sur une exigence?",
+                    options: [
+                        "L'équipe de développement doit toujours prévaloir sur les considérations techniques",
+                        "Le Business Ambassador doit toujours prévaloir sur les considérations métier",
+                        "Rechercher une solution collaborative qui respecte à la fois les contraintes techniques et la valeur métier",
+                        "Escalader immédiatement au Business Sponsor pour trancher"
+                    ],
+                    correctAnswer: "Rechercher une solution collaborative qui respecte à la fois les contraintes techniques et la valeur métier",
+                    explanation: "La réponse la plus appropriée est de rechercher une solution collaborative qui respecte à la fois les contraintes techniques et la valeur métier. Le Scrum Master peut faciliter cette collaboration en aidant les parties à comprendre mutuellement leurs perspectives et contraintes.",
+                    tip: "Les conflits constructifs entre perspectives techniques et métier sont une source d'innovation - l'important est de les aborder avec respect et ouverture."
+                },
+                {
+                    question: "Comment AgilePM intègre-t-il les considérations d'accessibilité et d'inclusion dans le processus de développement?",
+                    options: [
+                        "En traitant l'accessibilité comme une exigence non-fonctionnelle optionnelle",
+                        "En intégrant les critères d'accessibilité dans la Definition of Done et les tests d'acceptation",
+                        "En externalisant l'accessibilité à des experts spécialisés en fin de projet",
+                        "En considérant l'accessibilité comme exclusivement technique"
+                    ],
+                    correctAnswer: "En intégrant les critères d'accessibilité dans la Definition of Done et les tests d'acceptation",
+                    explanation: "AgilePM intègre les considérations d'accessibilité et d'inclusion en les incorporant dans la Definition of Done et les tests d'acceptation, garantissant ainsi que chaque incrément est accessible dès le début. Cette approche 'shift-left' est plus efficace et moins coûteuse que de traiter l'accessibilité en fin de projet.",
+                    tip: "L'accessibilité n'est pas une fonctionnalité - c'est une qualité fondamentale qui doit être intégrée dans le processus de développement."
+                },
+                {
+                    question: "Quelle est la nuance importante dans l'application du timeboxing pour les activités de recherche et d'innovation?",
+                    options: [
+                        "Le timeboxing ne s'applique pas aux activités de recherche",
+                        "Les timeboxes pour la recherche doivent être plus longs et plus flexibles",
+                        "Le timeboxing doit être strictement appliqué même pour la recherche",
+                        "La recherche doit être complètement séparée du développement"
+                    ],
+                    correctAnswer: "Les timeboxes pour la recherche doivent être plus longs et plus flexibles",
+                    explanation: "La nuance importante est que les timeboxes pour les activités de recherche et d'innovation doivent souvent être plus longs et plus flexibles que pour le développement standard, reconnaissant la nature incertaine et exploratoire de ces activités. Cependant, un cadrage temporel reste important pour maintenir la focalisation et éviter les dérives.",
+                    tip: "Le timeboxing adaptatif reconnaît que différents types de travail nécessitent différents rythmes et contraintes temporelles."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le défi de l'intégration des systèmes legacy dans les transformations digitales?",
+                    options: [
+                        "En évitant complètement les systèmes legacy",
+                        "En traitant les systèmes legacy comme des contraintes à gérer dans l'architecture et la planification",
+                        "En refactorisant complètement tous les systèmes legacy avant de commencer",
+                        "En externalisant la gestion des systèmes legacy à des équipes séparées"
+                    ],
+                    correctAnswer: "En traitant les systèmes legacy comme des contraintes à gérer dans l'architecture et la planification",
+                    explanation: "AgilePM aborde ce défi en traitant les systèmes legacy comme des contraintes à gérer dans l'architecture et la planification, plutôt que comme des obstacles à éviter. La Solution Architecture Definition joue un rôle clé en définissant les stratégies d'intégration et les patterns d'évolution des systèmes legacy.",
+                    tip: "L'approche pragmatique des systèmes legacy dans AgilePM reconnaît que la valeur business réside souvent dans l'intégration innovante de l'ancien et du nouveau."
+                },
+                {
+                    question: "Quelle est la différence subtile entre l'adaptation et le compromis dans la mise en œuvre d'AgilePM?",
+                    options: [
+                        "Il n'y a pas de différence, les termes sont synonymes",
+                        "L'adaptation préserve les principes fondamentaux, le compromis les sacrifie",
+                        "L'adaptation est technique, le compromis est métier",
+                        "L'adaptation est pour les petites équipes, le compromis pour les grandes"
+                    ],
+                    correctAnswer: "L'adaptation préserve les principes fondamentaux, le compromis les sacrifie",
+                    explanation: "La différence subtile est que l'adaptation préserve les principes fondamentaux d'AgilePM tout en ajustant les pratiques au contexte, tandis que le compromis sacrifie les principes fondamentaux pour des raisons de commodité ou de pression à court terme. L'adaptation mature comprend quels principes sont inviolables et quelles pratiques peuvent être ajustées.",
+                    tip: "La sagesse dans l'implémentation d'AgilePM consiste à savoir quand adapter (bon) et quand résister au compromis (essentiel)."
+                },
+                {
+                    question: "Comment le concept de 'value' est-il élargi dans AgilePM au-delà du retour sur investissement financier?",
+                    options: [
+                        "La valeur dans AgilePM est exclusivement financière",
+                        "La valeur inclut également l'apprentissage, l'engagement des équipes, et la résilience organisationnelle",
+                        "La valeur non-financière est ignorée dans AgilePM",
+                        "La valeur est définie uniquement par le Business Sponsor"
+                    ],
+                    correctAnswer: "La valeur inclut également l'apprentissage, l'engagement des équipes, et la résilience organisationnelle",
+                    explanation: "Le concept de valeur dans AgilePM est élargi pour inclure non seulement le retour sur investissement financier, mais également l'apprentissage organisationnel, l'engagement des équipes, l'amélioration des processus, et le développement des capacités organisationnelles. Cette vision holistique reconnaît que les bénéfices à long terme dépassent souvent les gains financiers immédiats.",
+                    tip: "La valeur agile mature se mesure en capacités développées autant qu'en outputs livrés."
+                },
+                {
+                    question: "Quelle est la considération la plus critique lors de l'introduction d'AgilePM dans une organisation fortement réglementée?",
+                    options: [
+                        "Cacher les pratiques agiles aux régulateurs",
+                        "Adapter les artefacts AgilePM pour fournir l'audit trail requis",
+                        "Abandonner les exigences réglementaires",
+                        "Implémenter AgilePM exactement comme dans les organisations non-réglementées"
+                    ],
+                    correctAnswer: "Adapter les artefacts AgilePM pour fournir l'audit trail requis",
+                    explanation: "La considération la plus critique est d'adapter les artefacts AgilePM (Solution Architecture Definition, décisions d'architecture, critères d'acceptation) pour fournir l'audit trail requis par les régulateurs, tout en préservant l'agilité du processus de développement. Cette adaptation démontre que l'agilité et la conformité ne sont pas mutuellement exclusives.",
+                    tip: "L'agilité en environnement réglementé nécessite de penser la documentation comme un livrable de valeur qui soutient à la fois la conformité et la livraison rapide."
+                },
+                {
+                    question: "Comment AgilePM intègre-t-il la gestion de la capacité technique (technical debt) à long terme?",
+                    options: [
+                        "En ignorant la dette technique pour se concentrer sur la livraison de fonctionnalités",
+                        "Par l'allocation régulière de timeboxes spécifiques pour la réduction de la dette technique",
+                        "En externalisant la gestion de la dette technique à une équipe séparée",
+                        "En considérant la dette technique comme exclusivement technique sans implication métier"
+                    ],
+                    correctAnswer: "Par l'allocation régulière de timeboxes spécifiques pour la réduction de la dette technique",
+                    explanation: "AgilePM intègre la gestion de la dette technique à long terme par l'allocation régulière de timeboxes spécifiques pour sa réduction, traitée comme un investissement business nécessaire pour maintenir la vélocité à long terme. Cette approche transparente implique les parties prenantes métier dans les décisions d'investissement technique.",
+                    tip: "La gestion mature de la dette technique la traite comme un prêt business - parfois nécessaire, mais dont les intérêts doivent être gérés activement."
+                },
+                {
+                    question: "Quelle est la réponse la plus appropriée face à une divergence croissante entre la vision initiale du Business Sponsor et les apprentissages du projet?",
+                    options: [
+                        "Ignorer les apprentissages pour respecter la vision initiale",
+                        "Abandonner immédiatement la vision initiale",
+                        "Réévaluer et adapter la vision en intégrant les apprentissages",
+                        "Cacher les apprentissages au Business Sponsor"
+                    ],
+                    correctAnswer: "Réévaluer et adapter la vision en intégrant les apprentissages",
+                    explanation: "La réponse la plus appropriée est de réévaluer et d'adapter la vision en intégrant les apprentissages du projet. Cette approche reconnaît que la vision initiale était basée sur des hypothèses, et que les apprentissages réels peuvent révéler de meilleures opportunités ou de nouveaux risques nécessitant un ajustement de la vision.",
+                    tip: "La force de l'agilité n'est pas dans l'exécution fidèle d'un plan initial, mais dans l'adaptation intelligente à la réalité émergente."
+                },
+                {
+                    question: "Comment le principe 'Focus on Business Need' influence-t-il la gestion des exigences non-fonctionnelles?",
+                    options: [
+                        "Les exigences non-fonctionnelles sont ignorées dans AgilePM",
+                        "Les exigences non-fonctionnelles sont traitées exclusivement comme des contraintes techniques",
+                        "Les exigences non-fonctionnelles sont évaluées en fonction de leur impact sur la valeur métier",
+                        "Les exigences non-fonctionnelles sont priorisées après toutes les exigences fonctionnelles"
+                    ],
+                    correctAnswer: "Les exigences non-fonctionnelles sont évaluées en fonction de leur impact sur la valeur métier",
+                    explanation: "Le principe 'Focus on Business Need' influence la gestion des exigences non-fonctionnelles en les évaluant en fonction de leur impact sur la valeur métier, plutôt que comme des considérations purement techniques. La performance, la sécurité, et l'évolutivité sont comprises comme des enableurs (ou des obstacles) à la valeur métier.",
+                    tip: "Dans AgilePM mature, il n'y a pas d'exigences 'non-fonctionnelles' - seulement des exigences avec différents types d'impact sur la valeur business."
+                },
+                {
+                    question: "Quelle est la nuance importante dans l'application du concept de 'minimal viable product' (MVP) dans les contextes enterprise?",
+                    options: [
+                        "Le MVP dans les entreprises doit être aussi complet que possible",
+                        "Le MVP doit fournir une valeur métier minimale mais suffisante pour valider les hypothèses clés",
+                        "Le MVP est inutile dans les contextes enterprise",
+                        "Le MVP doit être développé sans implication des parties prenantes"
+                    ],
+                    correctAnswer: "Le MVP doit fournir une valeur métier minimale mais suffisante pour valider les hypothèses clés",
+                    explanation: "La nuance importante est que dans les contextes enterprise, le MVP doit fournir une valeur métier minimale mais suffisante pour valider les hypothèses clés business, tout en respectant les contraintes enterprise (sécurité, intégration, conformité). Ce MVP enterprise est souvent plus substantiel qu'un MVP startup, mais garde le focus sur l'apprentissage validé.",
+                    tip: "Le MVP enterprise équilibre la nécessité d'apprentissage rapide avec les réalités des environnements complexes à grande échelle."
+                },
+                {
+                    question: "Comment AgilePM aborde-t-il le défi de la coordination entre les équipes avec des cycles de release différents?",
+                    options: [
+                        "En forçant toutes les équipes à avoir le même cycle de release",
+                        "Par l'établissement de points d'intégration réguliers et de contrats d'interface clairs",
+                        "En ignorant les dépendances entre les équipes",
+                        "En centralisant toutes les décisions de release"
+                    ],
+                    correctAnswer: "Par l'établissement de points d'intégration réguliers et de contrats d'interface clairs",
+                    explanation: "AgilePM aborde ce défi par l'établissement de points d'intégration réguliers et de contrats d'interface clairs entre les équipes, permettant une coordination efficace malgré les cycles de release différents. La Solution Architecture Definition joue un rôle crucial en définissant ces interfaces et points d'intégration.",
+                    tip: "La coordination dans les environnements à releases asynchrones repose sur des interfaces stables et une intégration continue, pas sur une synchronisation parfaite."
+                },
+                {
+                    question: "Quelle est la différence fondamentale entre la gestion des risques dans AgilePM et le management traditionnel des risques?",
+                    options: [
+                        "AgilePM élimine complètement le besoin de gestion des risques",
+                        "La gestion des risques dans AgilePM est intégrée dans le rythme itératif plutôt que traité en phase séparée",
+                        "Il n'y a pas de différence fondamentale",
+                        "AgilePM externalise la gestion des risques à des experts dédiés"
+                    ],
+                    correctAnswer: "La gestion des risques dans AgilePM est intégrée dans le rythme itératif plutôt que traité en phase séparée",
+                    explanation: "La différence fondamentale est que la gestion des risques dans AgilePM est intégrée dans le rythme itératif du projet, avec une identification, évaluation et traitement continus des risques, plutôt que d'être traitée comme une activité séparée en amont du projet. Cette approche permet une réponse plus rapide aux risques émergents.",
+                    tip: "L'intégration de la gestion des risques dans le cycle de développement est particulièrement valuable dans les environnements incertains où les risques évoluent rapidement."
+                },
+                {
+                    question: "Comment le concept de 'servant leadership' influence-t-il les rôles managériaux dans une organisation adoptant AgilePM?",
+                    options: [
+                        "Il élimine complètement le besoin de managers",
+                        "Il transforme les managers de contrôleurs en facilitateurs et enableurs",
+                        "Il renforce les modèles managériaux traditionnels",
+                        "Il s'applique uniquement au Scrum Master"
+                    ],
+                    correctAnswer: "Il transforme les managers de contrôleurs en facilitateurs et enableurs",
+                    explanation: "Le concept de servant leadership influence les rôles managériaux en transformant les managers de contrôleurs en facilitateurs et enableurs. Leur focus passe de la direction et du contrôle à l'élimination des obstacles, au développement des capacités de l'équipe, et à la création d'un environnement où l'équipe peut exceller.",
+                    tip: "La transition vers le servant leadership est souvent le changement culturel le plus difficile mais le plus transformateur dans l'adoption d'AgilePM."
+                },
+                {
+                    question: "Quelle est la considération la plus importante lors de l'établissement de la Solution Architecture Definition dans un projet AgilePM?",
+                    options: [
+                        "Définir l'architecture complète en détail avant tout développement",
+                        "Établir les décisions d'architecture irréversibles tôt, tout en permettant l'émergence des détails",
+                        "Laisser l'architecture émerger complètement du développement itératif",
+                        "Copier l'architecture d'un projet similaire sans adaptation"
+                    ],
+                    correctAnswer: "Établir les décisions d'architecture irréversibles tôt, tout en permettant l'émergence des détails",
+                    explanation: "La considération la plus importante est d'établir les décisions d'architecture irréversibles (ou très coûteuses à changer) tôt dans le projet, tout en permettant l'émergence des détails d'architecture pendant le développement itératif. Cette approche équilibrée fournit la stabilité nécessaire sans étouffer l'adaptation aux apprentissages.",
+                    tip: "L'architecture dans AgilePM suit le principe YAGNI (You Ain't Gonna Need It) pour les détails, mais applique une vision stratégique pour les décisions fondamentales."
+                },
+                {
+                    question: "Comment AgilePM intègre-t-il la perspective du cycle de vie complet du produit au-delà de la livraison initiale?",
+                    options: [
+                        "AgilePM se concentre exclusivement sur la livraison initiale",
+                        "En incluant les considérations de maintenance et d'évolution dans la Solution Architecture Definition et la Definition of Done",
+                        "En traitant la maintenance comme une préoccupation séparée du développement",
+                        "En externalisant la maintenance à des équipes dédiées après la livraison"
+                    ],
+                    correctAnswer: "En incluant les considérations de maintenance et d'évolution dans la Solution Architecture Definition et la Definition of Done",
+                    explanation: "AgilePM intègre la perspective du cycle de vie complet en incluant les considérations de maintenance, d'évolution, et d'exploitation dans la Solution Architecture Definition et la Definition of Done. Cette approche 'product thinking' reconnaît que la valeur se délivre sur tout le cycle de vie, pas seulement à la livraison initiale.",
+                    tip: "L'évolution vers le 'product thinking' dans AgilePM représente une maturation de l'agilité au-delà de la livraison de projet vers la gestion de valeur continue."
+                }
+            ]
+        };
+
+        // DOM Elements
+        const settingsPanelEl = document.getElementById('settings-panel');
+        const quizContentEl = document.getElementById('quiz-content');
+        const questionCountEl = document.getElementById('question-count');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const questionCounterEl = document.getElementById('question-counter');
+        const currentScoreEl = document.getElementById('current-score');
+        const progressBarEl = document.getElementById('progress-bar');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const explanationBoxEl = document.getElementById('explanation-box');
+        const explanationTitleEl = document.getElementById('explanation-title');
+        const explanationTextEl = document.getElementById('explanation-text');
+        const tipBoxEl = document.getElementById('tip-box');
+        const tipTextEl = document.getElementById('tip-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const finishBtn = document.getElementById('finish-btn');
+        
+        // Modal Elements
+        const resultsModal = new bootstrap.Modal(document.getElementById('resultsModal'));
+        const finalScoreCorrectEl = document.getElementById('final-score-correct');
+        const finalScoreTotalEl = document.getElementById('final-score-total');
+        const finalScorePercentageEl = document.getElementById('final-score-percentage');
+        const finalRecommendationsEl = document.getElementById('final-recommendations');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+
+        // Quiz State
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = [];
+        let questions = [];
+        let selectedQuestionCount = 80;
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function startQuiz() {
+            selectedQuestionCount = parseInt(questionCountEl.value);
+            // Shuffle all questions and take the selected number
+            const shuffledQuestions = shuffleArray([...quizData.questions]);
+            questions = shuffledQuestions.slice(0, selectedQuestionCount);
+            
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            // Hide settings, show quiz content
+            settingsPanelEl.classList.add('d-none');
+            quizContentEl.classList.remove('d-none');
+            
+            displayQuestion(currentQuestionIndex);
+            updateScoreDisplay();
+            resultsModal.hide();
+        }
+
+        function displayQuestion(index) {
+            // Hide explanation from previous question
+            explanationBoxEl.classList.add('d-none');
+            tipBoxEl.classList.add('d-none');
+            
+            const question = questions[index];
+            questionTextEl.textContent = question.question;
+            
+            // Clear previous options
+            optionsContainerEl.innerHTML = '';
+            
+            // Display options
+            question.options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.textContent = optionText;
+                button.classList.add('btn', 'option-btn');
+                button.onclick = () => selectAnswer(button, optionText, index);
+                optionsContainerEl.appendChild(button);
+            });
+            
+            updateNavigation();
+            updateProgressBar();
+            
+            // If the user has already answered this question, show their answer
+            if (userAnswers[index] !== null) {
+                showAnswerFeedback(index);
+            }
+        }
+        
+        function selectAnswer(button, selectedAnswer, questionIndex) {
+            // Prevent re-answering
+            if (userAnswers[questionIndex] !== null) return;
+            
+            const question = questions[questionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+            
+            userAnswers[questionIndex] = {
+                selected: selectedAnswer,
+                correct: question.correctAnswer,
+                isCorrect: isCorrect
+            };
+            
+            if(isCorrect) {
+                score++;
+            }
+            updateScoreDisplay();
+            showAnswerFeedback(questionIndex);
+        }
+
+        function showAnswerFeedback(index) {
+            const userAnswer = userAnswers[index];
+            if (!userAnswer) return;
+
+            const question = questions[index];
+
+            // Disable all option buttons
+            const optionButtons = optionsContainerEl.querySelectorAll('.option-btn');
+            optionButtons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === userAnswer.correct) {
+                    btn.classList.add('correct');
+                } else if (btn.textContent === userAnswer.selected) {
+                    btn.classList.add('incorrect');
+                }
+            });
+
+            // Show explanation
+            explanationTextEl.textContent = question.explanation;
+            if (userAnswer.isCorrect) {
+                explanationTitleEl.textContent = "Bravo, c'est la bonne réponse !";
+                explanationBoxEl.className = 'explanation-correct';
+            } else {
+                explanationTitleEl.textContent = "Explication :";
+                explanationBoxEl.className = 'explanation-incorrect';
+            }
+            explanationBoxEl.classList.remove('d-none');
+            
+            // Show tip if available
+            if (question.tip) {
+                tipTextEl.textContent = question.tip;
+                tipBoxEl.classList.remove('d-none');
+            }
+        }
+
+        function updateNavigation() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.classList.toggle('d-none', currentQuestionIndex === questions.length - 1);
+            finishBtn.classList.toggle('d-none', currentQuestionIndex !== questions.length - 1);
+        }
+
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            progressBarEl.setAttribute('aria-valuenow', progress);
+            questionCounterEl.textContent = `Question ${currentQuestionIndex + 1} / ${questions.length}`;
+        }
+        
+        function updateScoreDisplay() {
+            currentScoreEl.textContent = `Score: ${score}`;
+        }
+
+        function handleNext() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function handlePrev() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion(currentQuestionIndex);
+            }
+        }
+
+        function showFinalResults() {
+            const percentage = (score / questions.length) * 100;
+            let scoreColor;
+            let recommendationsHtml;
+
+            if (percentage >= 85) {
+                scoreColor = 'var(--success-color)';
+                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellence !</h5><p>Vous maîtrisez parfaitement les concepts avancés d\'AgilePM. Votre compréhension approfondie vous prépare aux certifications les plus exigeantes.</p>';
+            } else if (percentage >= 70) {
+                scoreColor = 'var(--advanced-purple)';
+                recommendationsHtml = '<h5><i class="fas fa-chart-line text-info"></i> Très bon niveau !</h5><p>Vous avez une excellente compréhension des concepts AgilePM avancés. Quelques points méritent d\'être approfondis pour atteindre l\'excellence.</p>';
+            } else if (percentage >= 50) {
+                scoreColor = 'var(--agile-blue)';
+                recommendationsHtml = '<h5><i class="fas fa-book text-primary"></i> Bonne base avancée !</h5><p>Vous comprenez les concepts avancés d\'AgilePM mais certains aspects nécessitent plus d\'étude. Continuez à pratiquer et à approfondir.</p>';
+            } else {
+                scoreColor = 'var(--danger-color)';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> Défi identifié !</h5><p>Les concepts avancés d\'AgilePM présentent un défi. Nous vous recommandons de revoir les fondamentaux avant de vous attaquer aux aspects avancés.</p>';
+            }
+
+            finalScoreCorrectEl.textContent = score;
+            finalScoreTotalEl.textContent = questions.length;
+            finalScorePercentageEl.textContent = `${percentage.toFixed(0)}%`;
+            finalScorePercentageEl.style.color = scoreColor;
+            finalRecommendationsEl.innerHTML = recommendationsHtml;
+
+            resultsModal.show();
+        }
+
+        function restartQuiz() {
+            // Show settings, hide quiz content
+            settingsPanelEl.classList.remove('d-none');
+            quizContentEl.classList.add('d-none');
+            resultsModal.hide();
+        }
+
+        // Event Listeners
+        startQuizBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', handleNext);
+        prevBtn.addEventListener('click', handlePrev);
+        finishBtn.addEventListener('click', showFinalResults);
+        restartQuizBtn.addEventListener('click', restartQuiz);
+        
+        // Initial call - show settings panel
+        document.addEventListener('DOMContentLoaded', () => {
+            settingsPanelEl.classList.remove('d-none');
+            quizContentEl.classList.add('d-none');
+        });
+    </script>
+</body>
+</html>
