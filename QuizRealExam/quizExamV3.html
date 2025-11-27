@@ -3,15 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AgilePM v3 Quiz - Practical Scenarios</title>
+    <title>AgilePM v3 Exam Simulation - Advanced Governance</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -20,13 +17,14 @@
         :root {
             --primary-color: #2c3e50;
             --secondary-color: #3498db;
-            --scenario-teal: #1abc9c;
+            --advanced-purple: #9b59b6;
             --agile-blue: #4d8af0;
             --success-color: #27ae60;
             --danger-color: #e74c3c;
             --light-bg: #f8f9fa;
             --white-color: #ffffff;
             --grey-text: #7f8c8d;
+            --exam-orange: #e67e22; /* New color for exam focus */
         }
 
         body {
@@ -57,8 +55,8 @@
             margin-bottom: 2rem;
         }
 
-        .scenario-badge {
-            background-color: var(--scenario-teal);
+        .difficulty-badge {
+            background-color: var(--exam-orange);
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 20px;
@@ -90,15 +88,6 @@
             margin-bottom: 2rem;
         }
 
-        .scenario-box {
-            background-color: #e8f6f3;
-            border-left: 5px solid var(--scenario-teal);
-            padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            font-style: italic;
-        }
-
         .option-btn {
             display: block;
             width: 100%;
@@ -113,8 +102,8 @@
         }
 
         .option-btn:hover:not([disabled]) {
-            border-color: var(--scenario-teal);
-            background-color: #f0f9f7;
+            border-color: var(--exam-orange);
+            background-color: #fff8f2;
         }
         
         .option-btn.correct {
@@ -186,7 +175,7 @@
         }
         
         .question-number-badge {
-            background-color: var(--scenario-teal);
+            background-color: var(--exam-orange);
             color: white;
             border-radius: 50%;
             width: 30px;
@@ -199,15 +188,15 @@
         }
         
         .tip-box {
-            background-color: #e8f6f3;
-            border-left: 5px solid var(--scenario-teal);
+            background-color: #fff8f2;
+            border-left: 5px solid var(--exam-orange);
             padding: 1rem;
             border-radius: 5px;
             margin-top: 1rem;
         }
         
         .tip-box h6 {
-            color: var(--scenario-teal);
+            color: var(--exam-orange);
             font-weight: 600;
         }
         
@@ -218,9 +207,9 @@
             margin-bottom: 2rem;
         }
         
-        .scenario-hint {
-            background-color: #d1ecf1;
-            border-left: 5px solid #17a2b8;
+        .advanced-hint {
+            background-color: #ffe8d6;
+            border-left: 5px solid var(--exam-orange);
             padding: 0.75rem;
             border-radius: 5px;
             margin-top: 1rem;
@@ -233,58 +222,53 @@
     <div class="container">
         <div class="quiz-container">
             <div class="quiz-header">
-                <h1><i class="fas fa-clipboard-check" style="color:var(--scenario-teal);"></i> AgilePM v3 Quiz - Practical Scenarios</h1>
-                <p>Test your ability to apply AgilePM in real-world situations and complex cases.</p>
-                <span class="scenario-badge"><i class="fas fa-project-diagram"></i> CASE STUDIES</span>
+                <h1><i class="fas fa-book-reader" style="color:var(--exam-orange);"></i> AgilePM v3 Official Exam Simulation</h1>
+                <p>Test your nuanced and complex understanding of AgilePM for advanced certification success.</p>
+                <span class="difficulty-badge"><i class="fas fa-certificate"></i> EXAM LEVEL</span>
             </div>
             
             <div id="settings-panel" class="settings-panel">
                 <h4><i class="fas fa-cog"></i> Quiz Configuration</h4>
                 <div class="row mt-3">
                     <div class="col-md-6">
-                        <label for="question-count" class="form-label">Number of questions:</label>
+                        <label for="question-count" class="form-label">Number of Questions:</label>
                         <select id="question-count" class="form-select">
-                            <option value="10">10 questions</option>
-                            <option value="20">20 questions</option>
-                            <option value="30">30 questions</option>
-                            <option value="50">50 questions</option>
-                            <option value="60">60 questions</option>
-                            <option value="70">70 questions</option>
-                            <option value="80" selected>80 questions (complete)</option>
+                            <option value="10">10 Questions</option>
+                            <option value="20">20 Questions</option>
+                            <option value="30" selected>30 Questions (Recommended)</option>
+                            <option value="50">50 Questions</option>
                         </select>
                     </div>
                     <div class="col-md-6 d-flex align-items-end">
-                        <button id="start-quiz-btn" class="btn btn-primary w-100">Start Quiz</button>
+                        <button id="start-quiz-btn" class="btn btn-primary w-100" style="background-color: var(--exam-orange); border-color: var(--exam-orange);">Start Exam Simulation</button>
                     </div>
                 </div>
-                <div class="scenario-hint mt-3">
-                    <strong><i class="fas fa-lightbulb"></i> Special Feature:</strong> This quiz focuses on practical scenarios and real case studies. You'll need to apply AgilePM concepts to complex situations you might encounter in your work.
+                <div class="advanced-hint mt-3">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Warning:</strong> These questions are designed to test subtle distinctions in roles, principles, and techniques, similar to those encountered in the official AgilePM Advanced examination.
                 </div>
             </div>
 
             <div id="quiz-content" class="d-none">
                 <div class="progress-container">
                      <div class="d-flex justify-content-between align-items-center mb-1">
-                        <span id="question-counter">Question 1 / 80</span>
+                        <span id="question-counter">Question 1 / 30</span>
                         <span id="current-score">Score: 0</span>
                      </div>
                     <div class="progress" style="height: 10px;">
-                        <div id="progress-bar" class="progress-bar bg-info" role="progressbar" style="width: 1.25%;" aria-valuenow="1.25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div id="progress-bar" class="progress-bar" style="background-color: var(--exam-orange); width: 3.33%;" role="progressbar" aria-valuenow="3.33" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                 </div>
 
                 <div id="question-card" class="card">
                     <div class="card-body">
-                        <div id="scenario-container"></div>
                         <h2 id="question-text">Loading question...</h2>
                         <div id="options-container">
-                            <!-- Option buttons will be inserted here by JavaScript -->
-                        </div>
+                            </div>
                         <div id="explanation-box" class="d-none">
                             <h5 id="explanation-title"></h5>
                             <p id="explanation-text"></p>
                             <div id="tip-box" class="tip-box d-none">
-                                <h6><i class="fas fa-lightbulb"></i> Practical Application</h6>
+                                <h6><i class="fas fa-lightbulb"></i> Official Exam Insight</h6>
                                 <p id="tip-text"></p>
                             </div>
                         </div>
@@ -293,438 +277,403 @@
 
                 <div class="quiz-navigation">
                     <button id="prev-btn" class="btn btn-outline-secondary nav-btn" disabled><i class="fas fa-arrow-left"></i> Previous</button>
-                    <button id="next-btn" class="btn btn-primary nav-btn">Next <i class="fas fa-arrow-right"></i></button>
-                    <button id="finish-btn" class="btn btn-success nav-btn d-none">Finish & See Results</button>
+                    <button id="next-btn" class="btn btn-primary nav-btn" style="background-color: var(--exam-orange); border-color: var(--exam-orange);">Next <i class="fas fa-arrow-right"></i></button>
+                    <button id="finish-btn" class="btn btn-success nav-btn d-none"><i class="fas fa-flag-checkered"></i> Finish & View Results</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Modal for results -->
     <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-trophy modal-title-icon"></i>Scenario Quiz Results</h5>
+                <div class="modal-header" style="background-color: var(--exam-orange);">
+                    <h5 class="modal-title" id="resultsModalLabel"><i class="fas fa-medal modal-title-icon"></i> Exam Simulation Results</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center p-4">
                     <h4 class="score-text">Your final score is:</h4>
                     <p class="final-score" id="final-score-percentage">0%</p>
                     <p class="text-muted fs-5">
-                        <span id="final-score-correct">0</span> correct out of 
-                        <span id="final-score-total">0</span> questions
+                        <span id="final-score-correct">0</span> out of 
+                        <span id="final-score-total">0</span> correct answers
                     </p>
                     <hr>
                     <div id="final-recommendations"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="restart-quiz-btn"><i class="fas fa-redo"></i> Restart Quiz</button>
+                    <button type="button" class="btn btn-primary" id="restart-quiz-btn" style="background-color: var(--exam-orange); border-color: var(--exam-orange);"><i class="fas fa-redo"></i> Re-take Simulation</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Practical scenario questions with detailed explanations and tips
+        // Advanced questions with detailed explanations and tips (Translated)
         const quizData = {
             questions: [
                 {
-                    scenario: "You're leading an AgilePM project to develop a new customer portal. Two weeks into the first timebox, the marketing department announces a major campaign that requires features you hadn't planned to deliver until Timebox 3. The Business Ambassador is insisting these features become 'Must Haves' for the current timebox.",
-                    question: "What is the most appropriate AgilePM approach to handle this situation?",
+                    question: "According to the 'Never Compromise Quality' principle, what is the *only* acceptable action when a development timebox cannot deliver all 'Must Have' requirements without lowering the Definition of Done?",
                     options: [
-                        "Immediately incorporate all the new features and extend the timebox duration",
-                        "Reject the new requirements to protect the current timebox plan",
-                        "Assess the impact on current commitments and negotiate scope adjustments using MoSCoW",
-                        "Ask the Business Sponsor to override the Business Ambassador's request"
+                        "Extend the timebox slightly to complete the work",
+                        "Collaborate with the Business Ambassador to de-scope or simplify a 'Must Have' to fit the timebox",
+                        "Accept a lower quality increment to meet the original time constraint",
+                        "Seek immediate escalation to the Business Sponsor for tolerance extension"
                     ],
-                    correctAnswer: "Assess the impact on current commitments and negotiate scope adjustments using MoSCoW",
-                    explanation: "The AgilePM approach would be to assess the impact on current commitments and negotiate scope adjustments using MoSCoW prioritization. This involves working with the Business Ambassador to understand the true business value of the new features and determining what existing 'Should Have' or 'Could Have' items might be descoped to accommodate the new 'Must Haves' while respecting the timebox constraints.",
-                    tip: "In AgilePM, scope is variable within timeboxes, but changes must be managed through formal prioritization and negotiation, not simply added without consideration of impacts."
+                    correctAnswer: "Collaborate with the Business Ambassador to de-scope or simplify a 'Must Have' to fit the timebox",
+                    explanation: "The principle 'Never Compromise Quality' is paramount. The timebox is fixed. Therefore, if the Must Have cannot be delivered to the required quality within the timebox, the *scope* must be reduced or simplified in collaboration with the Business Ambassador. Extending the timebox or lowering quality violates fundamental AgilePM principles.",
+                    tip: "In AgilePM, Quality is fixed, Time is fixed, and Scope is variable (via MoSCoW). When a 'Must Have' is at risk, you protect Quality and Time by adjusting Scope."
                 },
                 {
-                    scenario: "Your distributed AgilePM team spans three time zones. The Development Team in Asia is consistently delivering high-quality work but rarely participates in daily stand-ups due to time zone differences. The European team members are complaining about lack of visibility and coordination.",
-                    question: "Which approach best addresses this coordination challenge while respecting AgilePM principles?",
+                    question: "Which of the following best defines the primary difference between the **Technical Coordinator** and the **Solution Developer** role in AgilePM?",
                     options: [
-                        "Mandate that all team members attend a single daily stand-up regardless of time zones",
-                        "Create separate teams for each time zone with minimal coordination",
-                        "Establish overlapping collaboration hours and use asynchronous communication tools effectively",
-                        "Ask the Asian team to work European hours temporarily"
+                        "The Technical Coordinator designs the architecture; the Solution Developer focuses solely on testing.",
+                        "The Technical Coordinator ensures technical consistency across the project; the Solution Developer focuses on code delivery and technical quality within the team.",
+                        "The Technical Coordinator manages the overall technical risk; the Solution Developer manages the detailed project schedule.",
+                        "The Technical Coordinator is a business role; the Solution Developer is a technical role."
                     ],
-                    correctAnswer: "Establish overlapping collaboration hours and use asynchronous communication tools effectively",
-                    explanation: "The best approach is to establish overlapping collaboration hours where possible and leverage asynchronous communication tools effectively. This might include recorded stand-ups, detailed handover documentation, and using collaboration platforms that work across time zones. AgilePM emphasizes practical solutions over rigid adherence to ceremonies.",
-                    tip: "For distributed teams, focus on the purpose of communication (coordination and transparency) rather than the specific ceremony format. Adapt practices to fit the team's reality."
+                    correctAnswer: "The Technical Coordinator ensures technical consistency across the project; the Solution Developer focuses on code delivery and technical quality within the team.",
+                    explanation: "The **Technical Coordinator** (TC) has a cross-team/project-wide view, ensuring technical consistency and architectural integrity. The **Solution Developer** is focused on the actual creation, testing, and technical quality of the increment within their specific team/timebox.",
+                    tip: "The TC's responsibility is *governance* of the solution design, while the Solution Developer's is *delivery* according to that design."
                 },
                 {
-                    scenario: "During the third timebox review, stakeholders identify significant usability issues with the current solution increment. The Development Team argues these were not in the original requirements, while business stakeholders insist good usability is implied in the 'Definition of Done'.",
-                    question: "How should the Project Manager facilitate resolution of this conflict?",
+                    question: "If a 'Should Have' requirement is de-scoped (removed) from the current Project Increment due to time constraints, what is the mandatory next step in line with the 'Demonstrate Control' principle?",
                     options: [
-                        "Side with the Development Team since requirements weren't explicit",
-                        "Immediately halt the project until usability standards are defined",
-                        "Facilitate a workshop to clarify and agree on usability criteria for the Definition of Done",
-                        "Ask the Business Sponsor to make a unilateral decision"
+                        "The Project Manager must formally log the de-scoping in the **Project Review Form** and ensure the **Prioritised Requirements List (PRL)** is updated.",
+                        "The Business Ambassador must justify the decision to the Project Manager verbally.",
+                        "The de-scoped item must be immediately escalated to the Business Sponsor for approval.",
+                        "The team must automatically replace the 'Should Have' with a 'Could Have' of similar effort."
                     ],
-                    correctAnswer: "Facilitate a workshop to clarify and agree on usability criteria for the Definition of Done",
-                    explanation: "The Project Manager should facilitate a workshop to clarify and agree on usability criteria for the Definition of Done. This collaborative approach ensures shared understanding between business and technical stakeholders and prevents similar conflicts in future timeboxes. The updated Definition of Done should then be applied consistently.",
-                    tip: "Ambiguity in the Definition of Done often causes late-project conflicts. Regular refinement of DoD criteria is essential for maintaining alignment between business and technical expectations."
+                    correctAnswer: "The Project Manager must formally log the de-scoping in the **Project Review Form** and ensure the **Prioritised Requirements List (PRL)** is updated.",
+                    explanation: "De-scoping a 'Should Have' is a valid action within tolerance, but the 'Demonstrate Control' principle requires formal management. The Project Manager documents all significant deviations and the current project status in the Project Review Form, and the PRL is the live document that tracks what has been delivered and what remains.",
+                    tip: "The PRL is the key document for scope management and the Project Review Form (or its equivalent) is the key document for governance and control visibility."
                 },
                 {
-                    scenario: "A regulatory change requires your financial services project to implement new compliance features. The change affects multiple teams and requires coordination with legal and compliance departments outside the project team.",
-                    question: "What is the most effective way to manage this cross-functional dependency in AgilePM?",
+                    question: "What is the primary objective of the **Project Review** in the AgilePM lifecycle, distinct from a Post-Project Review?",
                     options: [
-                        "Treat it as a separate project and hope timelines align",
-                        "Add compliance representatives to each development team",
-                        "Create a cross-functional workstream with clear coordination points and dependency mapping",
-                        "Ask each team to handle compliance independently"
+                        "To perform detailed lessons learned for future projects.",
+                        "To determine whether the project has continued business justification and remains viable.",
+                        "To conduct an in-depth technical inspection of the code quality.",
+                        "To secure final sign-off for the deployment of the final solution."
                     ],
-                    correctAnswer: "Create a cross-functional workstream with clear coordination points and dependency mapping",
-                    explanation: "The most effective approach is to create a cross-functional workstream with clear coordination points and dependency mapping. This involves establishing regular sync points between development teams and compliance experts, visualizing dependencies on team boards, and potentially creating a dedicated coordination role to manage the cross-cutting concern.",
-                    tip: "For enterprise-scale dependencies in AgilePM, explicit coordination mechanisms often work better than hoping for emergent collaboration, especially when external stakeholders are involved."
+                    correctAnswer: "To determine whether the project has continued business justification and remains viable.",
+                    explanation: "The Project Review is a formal governance checkpoint, typically occurring at the end of each Project Increment, to assess project performance, address risks, and, most importantly, re-examine the **Business Case** to ensure the project remains on track and provides continued viability for the investment.",
+                    tip: "Think of the Project Review as a continuous 'Go/No Go' decision point, protecting the investment by checking for ongoing business justification."
                 },
                 {
-                    scenario: "Your project is halfway through the planned timeboxes when a competitor launches a similar product with innovative features your stakeholders now want to match. The Business Visionary wants to pivot the project direction significantly.",
-                    question: "What AgilePM principle should guide your response to this market change?",
+                    question: "Which scenario represents the *most appropriate* application of the **Deployment Timebox** as defined in AgilePM?",
                     options: [
-                        "Stick to the original plan to demonstrate commitment",
-                        "Immediately abandon current work and pursue the new direction",
-                        "Conduct a feasibility assessment and business case review for the new direction",
-                        "Hide the competitor's launch from the team to maintain focus"
+                        "A three-day effort to complete the last 10% of code for the final functional requirements.",
+                        "A highly controlled, fixed-duration, and dedicated period for migrating data, installing the solution, and handing it over to operations.",
+                        "A phase dedicated to resolving all outstanding 'Nice to Have' requirements after the final testing is complete.",
+                        "An emergency timebox used to fix critical bugs found during the final User Acceptance Testing (UAT)."
                     ],
-                    correctAnswer: "Conduct a feasibility assessment and business case review for the new direction",
-                    explanation: "AgilePM principles would guide you to conduct a feasibility assessment and business case review for the new direction. This ensures that the pivot is strategically sound and feasible before committing significant resources. The assessment should evaluate technical feasibility, business value, and impact on already delivered increments.",
-                    tip: "AgilePM embraces change but requires disciplined evaluation of major directional shifts. Not every market change warrants a project pivot - focus on sustainable value delivery."
+                    correctAnswer: "A highly controlled, fixed-duration, and dedicated period for migrating data, installing the solution, and handing it over to operations.",
+                    explanation: "The Deployment Timebox is a short, sharp, and highly controlled period specifically for deployment and transition activities, such as data migration, installation, and formal handover. It is *not* for developing new features, fixing major bugs, or completing development work.",
+                    tip: "The Deployment Timebox is an operational activity, not a development one. All development should be complete before it starts."
                 },
                 {
-                    scenario: "The Development Team has identified significant technical debt that's slowing their velocity. The Business Ambassador doesn't understand the technical issues and is pushing for more features in the next timebox.",
-                    question: "How should the Technical Coordinator address this communication gap?",
+                    question: "In a scenario where a core system dependency is failing to integrate with the new solution, creating a severe risk of not meeting the timebox objectives, which AgilePM role is primarily responsible for **facilitating the resolution** of this dependency clash?",
                     options: [
-                        "Implement the technical debt work without business approval",
-                        "Explain the technical issues in business terms focusing on impact to feature delivery",
-                        "Complain to the Project Manager about uncooperative business stakeholders",
-                        "Reduce quality standards to maintain feature delivery pace"
+                        "The Business Visionary, as the clash affects the ultimate product vision.",
+                        "The Technical Coordinator, as they are responsible for overall technical integrity and architectural guidance.",
+                        "The Project Manager, as they are responsible for managing the project's overall constraints and facilitating communication across different teams/stakeholders.",
+                        "The Business Ambassador, as they prioritize the dependencies."
                     ],
-                    correctAnswer: "Explain the technical issues in business terms focusing on impact to feature delivery",
-                    explanation: "The Technical Coordinator should explain the technical issues in business terms, focusing on the impact to feature delivery. This might include showing how specific technical debt items are increasing development time, causing defects, or limiting future flexibility. Frame technical investment decisions in terms of business outcomes.",
-                    tip: "Effective AgilePM practitioners translate technical concerns into business impacts. Technical debt becomes a business issue when it affects the ability to deliver value efficiently."
+                    correctAnswer: "The Project Manager, as they are responsible for managing the project's overall constraints and facilitating communication across different teams/stakeholders.",
+                    explanation: "While the Technical Coordinator provides the *technical advice* and the Solution Development Team handles the *technical execution*, the **Project Manager** is the ultimate owner of the project's constraints (Time, Cost, Quality) and is responsible for *facilitating* the resolution of cross-cutting risks and conflicts, often by engaging the appropriate stakeholders (including the TC) and managing the escalation process.",
+                    tip: "The Project Manager role in AgilePM is focused on managing the project's 'Big Picture' constraints and facilitating the environment for success, especially in complex dependencies."
                 },
                 {
-                    scenario: "During timebox planning, the team realizes that a 'Must Have' requirement has dependencies on another team's work that won't be available until the next timebox.",
-                    question: "What is the appropriate AgilePM response to this dependency risk?",
+                    question: "What is the key difference between the **Business Case** and the **Benefits Assessment** in the context of project closure?",
                     options: [
-                        "Proceed anyway and hope the dependency resolves itself",
-                        "Escalate to senior management to force the other team to reprioritize",
-                        "Collaborate with the other team to find interim solutions or adjust scope",
-                        "Remove the 'Must Have' requirement entirely"
+                        "The Business Case is created at project closure; the Benefits Assessment is created during the Feasibility phase.",
+                        "The Business Case justifies the *initial* investment; the Benefits Assessment verifies the *actual* realization of benefits after the solution has gone live.",
+                        "The Business Case is a mandatory document; the Benefits Assessment is optional.",
+                        "The Business Case is focused on technology; the Benefits Assessment is focused on finance."
                     ],
-                    correctAnswer: "Collaborate with the other team to find interim solutions or adjust scope",
-                    explanation: "The appropriate AgilePM response is to collaborate with the other team to find interim solutions or adjust scope. This might involve creating mock interfaces, finding alternative approaches, or negotiating with business stakeholders to adjust priorities. AgilePM emphasizes collaborative problem-solving over escalation.",
-                    tip: "Dependency management in AgilePM is proactive and collaborative. The focus is on finding solutions rather than assigning blame for constraints."
+                    correctAnswer: "The Business Case justifies the *initial* investment; the Benefits Assessment verifies the *actual* realization of benefits after the solution has gone live.",
+                    explanation: "The Business Case (justification) is the core document created early on and maintained throughout to justify the project. The Benefits Assessment (verification) is typically conducted *after* project closure and solution deployment (often 3-6 months later) to confirm that the promised benefits have actually been realized.",
+                    tip: "Benefits Assessment ensures the 'Focus on Business Need' principle is applied throughout, even post-delivery, by checking for outcomes, not just outputs."
                 },
                 {
-                    scenario: "The Business Sponsor is becoming increasingly anxious about project progress after seeing several 'Should Have' items deferred from recent timeboxes. They're requesting detailed status reports and individual team member productivity metrics.",
-                    question: "How should the Project Manager address these concerns while maintaining AgilePM principles?",
+                    question: "Which AgilePM practice directly ensures the principle 'Communicate Continuously and Clearly' is upheld by providing a living, high-level document of all key decisions and agreements?",
                     options: [
-                        "Provide the requested individual metrics to reassure the sponsor",
-                        "Ignore the request to protect team autonomy",
-                        "Share timebox burn-down charts and demonstrate working increments instead",
-                        "Blame the Development Team for the delays"
+                        "The Daily Stand-Up.",
+                        "The Timebox Review.",
+                        "The **Project Approach Questionnaire (PAQ)**.",
+                        "The Business Ambassador's weekly status report."
                     ],
-                    correctAnswer: "Share timebox burn-down charts and demonstrate working increments instead",
-                    explanation: "The Project Manager should share timebox burn-down charts and demonstrate working increments to address the sponsor's concerns. This focuses on tangible progress and team-level metrics rather than individual productivity, which aligns with AgilePM principles and provides more meaningful progress indicators.",
-                    tip: "In AgilePM, working software is the primary measure of progress. Demonstrating functional increments often addresses stakeholder concerns more effectively than detailed status reports."
+                    correctAnswer: "The **Project Approach Questionnaire (PAQ)**.",
+                    explanation: "The PAQ is a formal document created during the Foundations phase that defines the specific tailored approach, roles, tools, and constraints for the project. It is reviewed by key stakeholders and acts as the project's definitive rulebook for communication and operation, which is critical for continuous and clear communication.",
+                    tip: "The PAQ is often overlooked but is a vital component of the Foundations phase, ensuring project alignment from the start."
                 },
                 {
-                    scenario: "Your project involves integrating with several legacy systems. The Solution Architecture Definition identified potential integration risks, but the Development Team now discovers the actual integration is much more complex than anticipated.",
-                    question: "What AgilePM practice helps manage this type of emerging technical risk?",
+                    question: "How does the **Modelling** technique, when used effectively in AgilePM, contribute to the 'Build Incrementally from Firm Foundations' principle?",
                     options: [
-                        "Continue as planned and fix issues later",
-                        "Stop all work until architecture is completely redefined",
-                        "Use timeboxed spikes to investigate and reduce uncertainty",
-                        "Blame the Technical Coordinator for poor architecture planning"
+                        "It allows the team to deliver a fully functional increment without needing a technical architecture.",
+                        "It helps establish the **Firm Foundations** by visualizing the architectural design and business context before development begins.",
+                        "It is exclusively used during the Deployment Timebox to simulate the final go-live process.",
+                        "It replaces the need for the Prioritised Requirements List (PRL)."
                     ],
-                    correctAnswer: "Use timeboxed spikes to investigate and reduce uncertainty",
-                    explanation: "Timeboxed spikes are the appropriate AgilePM practice for managing emerging technical risks. A spike is a timeboxed research activity aimed at reducing uncertainty. The team can use a spike to explore the integration complexity and identify potential solutions before committing to a specific implementation approach.",
-                    tip: "Spikes are a crucial risk management tool in AgilePM for dealing with technical uncertainty. They provide structured investigation without derailing the entire project."
+                    correctAnswer: "It helps establish the **Firm Foundations** by visualizing the architectural design and business context before development begins.",
+                    explanation: "Modelling (e.g., prototyping, data diagrams) is essential in the Foundations phase to visualize the high-level architecture and overall business context. This initial modelling work defines the 'Firm Foundations' that the iterative and incremental development will build upon.",
+                    tip: "Modelling ensures that the Foundations are firm enough to prevent costly rework later in the delivery timeboxes."
                 },
                 {
-                    scenario: "The organization is undergoing restructuring, and your key Business Ambassador is being reassigned to another department. Knowledge transfer has been minimal, and the replacement needs time to get up to speed.",
-                    question: "What immediate actions should the Project Manager take to mitigate this risk?",
+                    question: "When applying MoSCoW, the **Business Visionary** insists that a specific requirement be classified as a 'Must Have'. The **Business Ambassador** argues it is a 'Should Have'. According to AgilePM principles, whose classification must prevail?",
                     options: [
-                        "Continue without a Business Ambassador until the replacement is ready",
-                        "Put the project on hold indefinitely",
-                        "Facilitate intensive knowledge transfer and adjust timebox expectations accordingly",
-                        "Ask the Development Team to make business decisions temporarily"
+                        "The Business Ambassador, as they represent the day-to-day users.",
+                        "The Business Visionary, as they represent the overall business goal and strategic funding.",
+                        "The Project Manager, as they are responsible for meeting the overall project objectives.",
+                        "The Development Team, as they know the technical effort required."
                     ],
-                    correctAnswer: "Facilitate intensive knowledge transfer and adjust timebox expectations accordingly",
-                    explanation: "The Project Manager should facilitate intensive knowledge transfer and adjust timebox expectations accordingly. This might include extending the current timebox, reducing scope, or bringing in additional business representation temporarily. The focus should be on maintaining business alignment while accommodating the transition.",
-                    tip: "Stakeholder continuity is critical in AgilePM projects. Have contingency plans for key role transitions, and don't underestimate the impact of losing business representation."
+                    correctAnswer: "The Business Visionary, as they represent the overall business goal and strategic funding.",
+                    explanation: "The Business Visionary is the strategic decision-maker and the source of funding and overall business objectives. Their view on the strategic importance of a requirement (and therefore its MoSCoW rating) must ultimately prevail in cases of conflict, even if the Business Ambassador provides a strong user-level argument.",
+                    tip: "The Business Visionary holds the strategic MoSCoW pen; the Business Ambassador holds the tactical details."
                 },
                 {
-                    scenario: "During a timebox review, stakeholders love the new features but express concern about performance. The system meets all documented non-functional requirements but feels slow in real-world usage.",
-                    question: "How should the team address these performance concerns?",
+                    question: "What is the *most* accurate definition of **Risk Capacity** in a controlled AgilePM environment?",
                     options: [
-                        "Ignore the feedback since requirements are met",
-                        "Immediately stop feature development and focus only on performance",
-                        "Add performance improvements to the backlog and prioritize them in future timeboxes",
-                        "Blame the infrastructure team for environment issues"
+                        "The total number of risks the Project Manager is able to track simultaneously.",
+                        "The maximum amount of time or budget tolerance the Business Sponsor is willing to accept before an Exception is declared.",
+                        "The total risk exposure that can be ignored by the Development Team.",
+                        "The likelihood that a risk will actually occur during a timebox."
                     ],
-                    correctAnswer: "Add performance improvements to the backlog and prioritize them in future timeboxes",
-                    explanation: "The team should add performance improvements to the backlog and prioritize them in future timeboxes. This approach acknowledges the valid feedback while maintaining a balanced approach to value delivery. The improvements can be prioritized against other backlog items using MoSCoW.",
-                    tip: "Emergent quality concerns are common in AgilePM. The backlog serves as a living document that evolves based on real user feedback and emerging requirements."
+                    correctAnswer: "The maximum amount of time or budget tolerance the Business Sponsor is willing to accept before an Exception is declared.",
+                    explanation: "**Risk Capacity** relates directly to the maximum allowable deviation or tolerance set by the Business Sponsor. Once a risk materializes and its impact pushes the project beyond these defined tolerances, an Exception situation is triggered, requiring escalation.",
+                    tip: "Risk Capacity defines the governance boundaries. It's set high up (Sponsor) and enforced by the Project Manager."
                 },
                 {
-                    scenario: "The Development Team has consistently exceeded their velocity forecasts for three consecutive timeboxes, delivering more than planned each iteration.",
-                    question: "What risk might this pattern indicate, and how should it be addressed?",
+                    question: "How does the principle 'Focus on Business Need' primarily influence the management of **technical debt**?",
                     options: [
-                        "No risk - celebrate the high performance",
-                        "The team might be taking technical shortcuts that create future debt",
-                        "Velocity forecasts should be increased permanently",
-                        "The Business Ambassador should add more requirements"
+                        "Technical debt is always deferred to maximize feature delivery.",
+                        "Technical debt is addressed only if the Development Team has spare capacity.",
+                        "Technical debt is visible, estimated, and addressed *when* it threatens the team's ability to deliver future business value.",
+                        "Technical debt is solely the responsibility of the Technical Coordinator and is not discussed with business roles."
                     ],
-                    correctAnswer: "The team might be taking technical shortcuts that create future debt",
-                    explanation: "Consistently exceeding velocity forecasts might indicate the team is taking technical shortcuts that create future debt. The Project Manager should investigate whether quality standards are being maintained and whether the Definition of Done is being properly applied. Sustainable pace is more valuable than short-term overperformance.",
-                    tip: "In AgilePM, consistent over-delivery can be as concerning as under-delivery. It may indicate underestimated work, compromised quality, or unsustainable work practices."
+                    correctAnswer: "Technical debt is visible, estimated, and addressed *when* it threatens the team's ability to deliver future business value.",
+                    explanation: "Technical debt is a threat to the ability to deliver future value. Following the 'Focus on Business Need' principle, technical debt is managed as a business investment: it is prioritized and addressed when the cost of continuing with the debt (reduced velocity, increased bug rate) exceeds the cost of fixing it.",
+                    tip: "In AgilePM, technical debt is a business decision, not a purely technical one."
                 },
                 {
-                    scenario: "A critical security vulnerability is discovered in a third-party library used by your solution. Patching it requires significant rework and testing.",
-                    question: "How should this emergency be handled within the AgilePM framework?",
+                    question: "During a **Project Increment**, a significant dependency on an external supplier has been identified. Which document is *least* likely to be the primary source for formally tracking the status and dates of this external dependency?",
                     options: [
-                        "Ignore it since it wasn't in the original requirements",
-                        "Treat it as a highest-priority 'Must Have' and adjust the current timebox accordingly",
-                        "Add it to the backlog for consideration in future timeboxes",
-                        "Stop all development until the security issue is fully resolved"
+                        "The Delivery Plan.",
+                        "The Prioritised Requirements List (PRL).",
+                        "The Risk Log.",
+                        "The **Feasibility Assessment**."
                     ],
-                    correctAnswer: "Treat it as a highest-priority 'Must Have' and adjust the current timebox accordingly",
-                    explanation: "Critical security vulnerabilities should be treated as highest-priority 'Must Haves' and the current timebox should be adjusted accordingly. This might mean descoping other planned work to accommodate the essential security fix. Some emergencies legitimately disrupt planned work.",
-                    tip: "AgilePM's flexibility allows for responding to genuine emergencies while maintaining structured change management. Not all changes can wait for the next timebox planning session."
+                    correctAnswer: "The **Feasibility Assessment**.",
+                    explanation: "The Feasibility Assessment is a short document created at the very start of the project to check if an agile approach is appropriate and viable. It is not a live tracking document. The Delivery Plan, PRL, and Risk Log are all actively used during the Project Increment to track status, requirements, and risks, including external dependencies.",
+                    tip: "Feasibility is a one-time check; Delivery Plan, PRL, and Risk Log are continuous tracking mechanisms."
                 },
                 {
-                    scenario: "The Business Visionary and Business Ambassador are providing conflicting direction about feature priorities. The Development Team is confused about what to build next.",
-                    question: "What escalation path does AgilePM recommend for resolving business priority conflicts?",
+                    question: "Which statement best describes the Project Manager's role in the **Timebox Review**?",
                     options: [
-                        "Let the Development Team decide which stakeholder to listen to",
-                        "The Project Manager should make the decision unilaterally",
-                        "Escalate to the Business Sponsor for clarification and direction",
-                        "Build both sets of features to avoid conflict"
+                        "To lead the review, deciding which requirements are considered 'done'.",
+                        "To observe and listen, ensuring the process is followed and removing any cross-team obstacles discussed.",
+                        "To challenge the Development Team's MoSCoW ratings for the next Timebox.",
+                        "To formally sign off the completed requirements and approve deployment."
                     ],
-                    correctAnswer: "Escalate to the Business Sponsor for clarification and direction",
-                    explanation: "AgilePM recommends escalating to the Business Sponsor for clarification and direction when business stakeholders provide conflicting priorities. The Business Sponsor has ultimate responsibility for business alignment and should resolve conflicts between business representatives.",
-                    tip: "Clear decision-making authority is essential in AgilePM. When business stakeholders disagree, the defined escalation path to the Business Sponsor ensures timely resolution."
+                    correctAnswer: "To observe and listen, ensuring the process is followed and removing any cross-team obstacles discussed.",
+                    explanation: "The Project Manager acts as a facilitator and observer in the Timebox Review. They ensure the review is effective, but they do *not* assess the work or determine 'done-ness'—that is the team's and Business Ambassador's responsibility. Their focus is on process and obstacle removal.",
+                    tip: "The Project Manager in AgilePM is a servant leader who focuses on the project environment, not the detailed content of the team's work."
                 },
                 {
-                    scenario: "Your multi-team project is using AgilePM with a shared Product Backlog. Teams are complaining about backlog refinement sessions being too long and unproductive.",
-                    question: "What approach might improve the efficiency of backlog refinement?",
+                    question: "In a regulated environment, which document must be carefully adapted to ensure that both business stakeholders and regulatory auditors have a common, auditable understanding of what 'complete' means?",
                     options: [
-                        "Eliminate backlog refinement entirely",
-                        "Have each team maintain separate backlogs without coordination",
-                        "Implement a two-tier refinement process with team representatives",
-                        "Let the Business Ambassador refine the backlog alone"
+                        "The Team Development Contract.",
+                        "The Daily Stand-Up Notes.",
+                        "The **Definition of Done (DoD)**.",
+                        "The Business Sponsor's Mandate."
                     ],
-                    correctAnswer: "Implement a two-tier refinement process with team representatives",
-                    explanation: "Implementing a two-tier refinement process with team representatives can improve efficiency. This involves a smaller group doing initial refinement before bringing well-prepared items to the full team session. It maintains collaboration while making better use of everyone's time.",
-                    tip: "As projects scale, refinement processes often need adaptation. The goal is maintaining shared understanding while optimizing for efficiency."
+                    correctAnswer: "The **Definition of Done (DoD)**.",
+                    explanation: "The DoD is the explicit, auditable checklist that defines the quality standard for an increment. In a regulated environment, it must incorporate compliance, security, and documentation requirements to satisfy auditors, while ensuring the team maintains quality and regulatory adherence.",
+                    tip: "The DoD is where Quality and Compliance meet. It is one of the most critical governance artifacts in a regulated AgilePM setting."
                 },
                 {
-                    scenario: "The Project Manager notices that the Development Team is consistently working overtime to meet timebox commitments. Team morale is declining, and quality issues are increasing.",
-                    question: "What immediate action should the Project Manager take?",
+                    question: "What is the primary function of the **Solution Architect** in a highly iterative project?",
                     options: [
-                        "Push the team to work harder to maintain commitments",
-                        "Ignore the issue as temporary and expected in agile projects",
-                        "Facilitate a discussion about sustainable pace and adjust expectations",
-                        "Replace underperforming team members"
+                        "To write all the code for the most complex features.",
+                        "To continually manage and evolve the *Solution Architecture Definition*, ensuring technical integrity and non-functional requirements are met.",
+                        "To act as the permanent chairperson for the Daily Stand-Up.",
+                        "To represent the customer's voice and prioritize the requirements."
                     ],
-                    correctAnswer: "Facilitate a discussion about sustainable pace and adjust expectations",
-                    explanation: "The Project Manager should facilitate a discussion about sustainable pace and adjust expectations. This might involve renegotiating timebox scope, addressing underlying causes of overtime, or improving estimation practices. Sustainable pace is a core agile principle.",
-                    tip: "Consistent overtime is a symptom of deeper issues in AgilePM projects. Address the root causes rather than treating the symptoms."
+                    correctAnswer: "To continually manage and evolve the *Solution Architecture Definition*, ensuring technical integrity and non-functional requirements are met.",
+                    explanation: "The Solution Architect is responsible for the overall technical design and integrity. They own the **Solution Architecture Definition** and evolve it iteratively, ensuring that the architecture supports the project's goals and meets crucial non-functional requirements (like performance and security).",
+                    tip: "The Solution Architect's document (SAD) is the technical equivalent of the Business Visionary's (BC) - it provides the necessary technical 'Firm Foundation'."
                 },
                 {
-                    scenario: "During a timebox, the team discovers that a key 'Could Have' requirement would provide significantly more business value than initially anticipated.",
-                    question: "How should this new understanding be handled?",
+                    question: "According to the 'Collaborate' principle, which is the *least* effective way for the Project Manager to handle a major conflict between the Business Ambassador and the Solution Developer on a requirement's implementation?",
                     options: [
-                        "Ignore it since priorities are already set",
-                        "Immediately reprioritize it as a 'Must Have' without analysis",
-                        "Discuss the new information with the Business Ambassador for potential reprioritization",
-                        "Implement it secretly as a bonus feature"
+                        "Facilitate a short, focused workshop for mutual understanding and compromise.",
+                        "Present both arguments to the Business Visionary for a strategic decision.",
+                        "Send a detailed email summarizing the two positions and asking for a response.",
+                        "Use the Scrum Master to mediate and find a technically feasible, high-value solution."
                     ],
-                    correctAnswer: "Discuss the new information with the Business Ambassador for potential reprioritization",
-                    explanation: "The team should discuss the new information with the Business Ambassador for potential reprioritization. AgilePM embraces emerging understanding, and backlog priorities should evolve as the team learns more about both the solution and the business needs.",
-                    tip: "The backlog is a dynamic artifact in AgilePM. New insights should regularly inform priority adjustments to maximize value delivery."
+                    correctAnswer: "Send a detailed email summarizing the two positions and asking for a response.",
+                    explanation: "The 'Collaborate' principle emphasizes face-to-face communication and joint problem-solving. Sending an email is the least effective method as it is inherently asynchronous, risks misinterpretation, and fails to leverage the collective creativity needed for a collaborative solution.",
+                    tip: "Collaboration means dialogue and joint problem-solving, especially when high-value requirements are in conflict."
                 },
                 {
-                    scenario: "The Solution Architecture Definition specified using a particular technology stack, but the Development Team has found a newer technology that would be more efficient.",
-                    question: "What process should be followed to consider this technology change?",
+                    question: "When is the **Lessons Learned Report** most effectively initiated and utilized in a continuous improvement context?",
                     options: [
-                        "Immediately adopt the new technology without consultation",
-                        "Stick rigidly to the original architecture decision",
-                        "Evaluate the change through formal architecture review and impact analysis",
-                        "Let each developer choose their preferred technology"
+                        "It is exclusively written at the end of the project during the Close phase.",
+                        "It is completed after every Project Increment and reviewed at the next Project Increment Review.",
+                        "It is completed after every Delivery Timebox and is the key output of the Retrospective.",
+                        "It is a continuous log maintained by the Scrum Master throughout the project."
                     ],
-                    correctAnswer: "Evaluate the change through formal architecture review and impact analysis",
-                    explanation: "The change should be evaluated through formal architecture review and impact analysis. This involves assessing technical merits, migration effort, training needs, and impact on other teams. Significant architecture changes require proper evaluation, even in agile environments.",
-                    tip: "AgilePM balances flexibility with architectural integrity. Not all changes are equal - some require more formal evaluation due to their systemic impact."
+                    correctAnswer: "It is completed after every Project Increment and reviewed at the next Project Increment Review.",
+                    explanation: "While learning happens in every Timebox (via the Retrospective), the formal **Lessons Learned Report** is an output of the **Post-Project Review**, but is best captured and updated at the end of *each Project Increment* to formalize and share organizational learning across the project governance structure.",
+                    tip: "Retrospectives are for the team (tactical); Lessons Learned Reports are for the organization/governance (strategic)."
                 },
                 {
-                    scenario: "The Business Sponsor wants to reduce project funding after seeing early increments that delivered substantial value. They believe the remaining features aren't worth the additional investment.",
-                    question: "How should the Project Manager respond to this early termination request?",
+                    question: "Which of the following best exemplifies the **Project Management** role's responsibility during the **Evolve** lifecycle phase?",
                     options: [
-                        "Resist strongly to protect the full project scope",
-                        "Immediately shut down the project as requested",
-                        "Facilitate a review of delivered value vs. remaining investment",
-                        "Hide the remaining high-value features from the sponsor"
+                        "Detailed coding and unit testing of the remaining 'Could Have' features.",
+                        "Ensuring that the delivered solution continues to be actively supported and that the planned benefits are being measured and realized.",
+                        "Finalizing the Business Case and securing funding for the next major project.",
+                        "Creating a comprehensive communication plan for the next project."
                     ],
-                    correctAnswer: "Facilitate a review of delivered value vs. remaining investment",
-                    explanation: "The Project Manager should facilitate a review of delivered value vs. remaining investment. This might show that certain remaining features still provide good ROI, or it might validate the sponsor's assessment. AgilePM projects should deliver the most valuable features first, making early termination a valid option when appropriate.",
-                    tip: "One advantage of AgilePM is the ability to stop projects early when diminishing returns set in, having already delivered the highest-value increments."
+                    correctAnswer: "Ensuring that the delivered solution continues to be actively supported and that the planned benefits are being measured and realized.",
+                    explanation: "The Project Manager's responsibility often extends into the Evolve phase, particularly around ensuring the project's outputs transition smoothly to operations and that the actual **Benefit Assessment** process is being followed, ensuring the 'Focus on Business Need' principle is fully satisfied.",
+                    tip: "The Evolve phase is critical for validating the initial business need through observed outcomes, often post-Project Manager handover."
                 },
                 {
-                    scenario: "A team member reveals they've been taking significant shortcuts to meet timebox commitments, compromising long-term maintainability.",
-                    question: "What is the most constructive way to address this situation?",
+                    question: "If a project is deemed **not viable** during the mid-project **Project Review**, which key decision is the **Business Sponsor** primarily responsible for making?",
                     options: [
-                        "Publicly shame the team member as an example",
-                        "Ignore it since the timebox was met",
-                        "Use it as a learning opportunity to improve team practices and Definition of Done",
-                        "Implement stricter monitoring of individual work"
+                        "Directing the Project Manager to reduce the 'Must Have' scope to save the project.",
+                        "Terminating the project immediately or changing the project's strategic direction.",
+                        "Re-assigning all team members to a different project.",
+                        "Extending the project's deadline by one month to resolve the viability issue."
                     ],
-                    correctAnswer: "Use it as a learning opportunity to improve team practices and Definition of Done",
-                    explanation: "The most constructive approach is to use this as a learning opportunity to improve team practices and Definition of Done. This might involve refining the DoD to prevent similar shortcuts, improving estimation, or addressing cultural factors that made shortcuts seem necessary.",
-                    tip: "Quality issues in AgilePM are often systemic rather than individual. Focus on improving processes and understanding root causes rather than blaming individuals."
-                },
-                // Adding 60 more scenario-based questions to reach 80 total
-                {
-                    scenario: "Your project is developing a mobile banking app. The legal department suddenly requires all new features to undergo a 2-week compliance review before deployment, which wasn't accounted for in your timebox planning.",
-                    question: "How should you adapt your AgilePM approach to accommodate this new constraint?",
-                    options: [
-                        "Ignore the legal requirement to maintain your delivery schedule",
-                        "Extend all timeboxes by 2 weeks to accommodate the review process",
-                        "Work with legal to integrate review checkpoints within your timeboxes",
-                        "Stop the project until legal requirements are removed"
-                    ],
-                    correctAnswer: "Work with legal to integrate review checkpoints within your timeboxes",
-                    explanation: "The best approach is to work with legal to integrate review checkpoints within your timeboxes. This might involve having legal representatives participate in timebox planning, creating earlier review points, or finding ways to parallelize development and review activities.",
-                    tip: "Regulatory constraints in AgilePM should be treated as non-negotiable requirements that need to be integrated into the development process, not avoided or worked around."
+                    correctAnswer: "Terminating the project immediately or changing the project's strategic direction.",
+                    explanation: "The Business Sponsor is the owner of the Business Case and the ultimate decision-maker on project viability. If a Project Review determines the project is no longer viable (e.g., the costs outweigh the remaining benefits), the Sponsor must decide whether to terminate it or significantly change its strategic course.",
+                    tip: "The Project Review is the checkpoint for the Sponsor to exercise their governance responsibility for the project's continued existence."
                 },
                 {
-                    scenario: "The Development Team has split a large user story into technical tasks, but the Business Ambassador can't understand how these tasks relate to business value and is questioning the team's approach.",
-                    question: "How can the team improve communication about their work while maintaining technical integrity?",
+                    question: "What is the *most critical* consideration for the **Business Ambassador** during the **Timebox Review**?",
                     options: [
-                        "Stop breaking down stories to avoid confusion",
-                        "Create business-facing task descriptions that map technical work to user benefits",
-                        "Exclude the Business Ambassador from technical discussions",
-                        "Ask the Business Ambassador to trust the team without explanation"
+                        "Analyzing the technical efficiency of the code.",
+                        "Formally accepting or rejecting the Increment based on the achievement of Acceptance Criteria and the Definition of Done.",
+                        "Calculating the team's velocity for the next Timebox.",
+                        "Detailed discussion of team resourcing for the next Timebox."
                     ],
-                    correctAnswer: "Create business-facing task descriptions that map technical work to user benefits",
-                    explanation: "The team should create business-facing task descriptions that map technical work to user benefits. This helps business stakeholders understand how technical activities contribute to delivering value, improving transparency and collaboration.",
-                    tip: "In AgilePM, technical work should always be traceable to business value. Teams that can explain their work in business terms build stronger stakeholder trust."
+                    correctAnswer: "Formally accepting or rejecting the Increment based on the achievement of Acceptance Criteria and the Definition of Done.",
+                    explanation: "The Business Ambassador (BA) is the business representative in the team and is responsible for the quality of the delivered solution from a business perspective. Their key task in the Timebox Review is to confirm that the increment meets the Acceptance Criteria (business view) and the Definition of Done (quality view).",
+                    tip: "The BA acts as the 'Gatekeeper' for the acceptance of delivered value at the team level."
                 },
                 {
-                    scenario: "During a timebox, the team realizes that a 'Should Have' requirement conflicts with a 'Must Have' requirement implemented in the previous timebox. Fixing the conflict requires significant rework.",
-                    question: "What process should be followed to resolve this requirement conflict?",
+                    question: "Which of the following best reflects the **Empower Teams** principle in the context of the **Solution Developer** role?",
                     options: [
-                        "Implement both requirements and deal with conflicts later",
-                        "Choose one requirement arbitrarily and abandon the other",
-                        "Analyze the business impact and negotiate priority adjustments with stakeholders",
-                        "Blame the Business Ambassador for poor requirement definition"
+                        "Solution Developers must be solely responsible for defining the project's MoSCoW priorities.",
+                        "Solution Developers are empowered to make day-to-day decisions on *how* to build the solution and what goes into the **Technical Design**. ",
+                        "Solution Developers can unilaterally change the Definition of Done if they think it is too restrictive.",
+                        "Solution Developers must always follow the instructions of the Project Manager without question."
                     ],
-                    correctAnswer: "Analyze the business impact and negotiate priority adjustments with stakeholders",
-                    explanation: "The team should analyze the business impact and negotiate priority adjustments with stakeholders. This involves understanding which requirement delivers more value and making informed decisions about what to keep, modify, or descope.",
-                    tip: "Requirement conflicts often emerge during implementation in AgilePM. Treat them as discovery opportunities rather than failures in initial planning."
+                    correctAnswer: "Solution Developers are empowered to make day-to-day decisions on *how* to build the solution and what goes into the **Technical Design**. ",
+                    explanation: "Empowerment means the team is trusted to self-organize and make the day-to-day technical decisions. Solution Developers are the experts on *how* to build the product and are empowered to design the technical solution within the framework of the **Solution Architecture Definition**.",
+                    tip: "Empowerment focuses on *how* to deliver (technical decisions), not *what* to deliver (prioritization/MoSCoW)."
                 },
                 {
-                    scenario: "The organization's security team mandates penetration testing for all new features, but their availability is limited to specific windows that don't align with your timebox schedule.",
-                    question: "How can you maintain AgilePM delivery cadence while meeting security requirements?",
+                    question: "When applying the **MoSCoW** technique, an item classified as a 'Won't Have' for the current Project Increment may be which of the following?",
                     options: [
-                        "Bypass security testing to maintain your schedule",
-                        "Align your timeboxes with security team availability",
-                        "Implement continuous security testing within your development process",
-                        "Treat security testing as a separate phase after development"
+                        "A requirement that the Business Visionary has agreed will *never* be built.",
+                        "A requirement that the Project Manager deems too technically complex for the current team.",
+                        "A requirement that is valid but agreed to be delivered *after* the current Project Increment.",
+                        "A requirement that is automatically removed from the Prioritised Requirements List (PRL)."
                     ],
-                    correctAnswer: "Implement continuous security testing within your development process",
-                    explanation: "The best approach is to implement continuous security testing within your development process. This might involve automated security tools, training developers on security practices, or embedding security expertise within the team.",
-                    tip: "In modern AgilePM, quality attributes like security should be 'shifted left' into the development process rather than treated as final validation steps."
+                    correctAnswer: "A requirement that is valid but agreed to be delivered *after* the current Project Increment.",
+                    explanation: "A 'Won't Have' (W) means the requirement will not be delivered in *this specific* increment, but it may be delivered in a *future* increment or project. It is **not** a guarantee that it will never be built.",
+                    tip: "MoSCoW is an Incremental/Timebox prioritization tool; it is not a permanent strategic decision on the lifetime of a requirement."
                 },
                 {
-                    scenario: "The Business Visionary wants to demonstrate an early increment to important clients, but the Development Team says the current build is too unstable for demonstration.",
-                    question: "How should this tension between business needs and technical reality be resolved?",
+                    question: "What is the most accurate purpose of **Facilitated Workshops** in the AgilePM Framework?",
                     options: [
-                        "Force the team to stabilize the build immediately",
-                        "Cancel the demonstration entirely",
-                        "Create a separate demonstration branch with stabilized features",
-                        "Demonstrate the unstable build with disclaimers"
+                        "To allow the Project Manager to issue formal instructions to the team.",
+                        "To ensure rapid, shared, and effective creation of a deliverable by bringing all necessary stakeholders together for an intensive session.",
+                        "To replace all informal communication with structured meetings.",
+                        "To provide a forum for the team to air grievances about project constraints."
                     ],
-                    correctAnswer: "Create a separate demonstration branch with stabilized features",
-                    explanation: "Creating a separate demonstration branch with stabilized features balances both needs. It allows showcasing completed work to clients while respecting the team's development process and maintaining technical integrity.",
-                    tip: "AgilePM encourages frequent demonstration of value, but this shouldn't compromise the development process. Technical practices like feature flags or release branches can help balance these needs."
+                    correctAnswer: "To ensure rapid, shared, and effective creation of a deliverable by bringing all necessary stakeholders together for an intensive session.",
+                    explanation: "Facilitated Workshops are a core technique for accelerating information exchange, decision-making, and consensus building. They are used to collaboratively create or validate key deliverables (like the Solution Architecture Definition or major user stories) quickly and effectively.",
+                    tip: "Workshops leverage collaboration to achieve rapid consensus and high-quality deliverables, often replacing weeks of email and individual meetings."
                 },
                 {
-                    scenario: "A key developer resigns unexpectedly, taking unique knowledge about a critical component. Knowledge transfer was minimal due to time pressures.",
-                    question: "What immediate risk mitigation steps should the Project Manager take?",
+                    question: "How does AgilePM address the need for a comprehensive audit trail and formal sign-off in a high-governance environment?",
                     options: [
-                        "Continue as planned and hope for the best",
-                        "Halt the project until a replacement is fully trained",
-                        "Document current knowledge gaps and adjust timebox expectations accordingly",
-                        "Blame the departing developer for poor knowledge sharing"
+                        "By requiring every delivered line of code to be signed off by the Business Sponsor.",
+                        "Through the use of key governance documents like the **Project Review Form**, which tracks sign-offs and decisions at Increment boundaries.",
+                        "By eliminating all paperwork in favor of a purely verbal process.",
+                        "By forcing the Project Manager to maintain a separate, non-agile set of documentation."
                     ],
-                    correctAnswer: "Document current knowledge gaps and adjust timebox expectations accordingly",
-                    explanation: "The Project Manager should document current knowledge gaps and adjust timebox expectations accordingly. This might involve extending timeboxes, bringing in external expertise, or reprioritizing work to minimize impact from the knowledge loss.",
-                    tip: "Bus factor (how many people need to be hit by a bus before the project is in trouble) is a real risk in AgilePM. Proactive knowledge sharing reduces this vulnerability."
+                    correctAnswer: "Through the use of key governance documents like the **Project Review Form**, which tracks sign-offs and decisions at Increment boundaries.",
+                    explanation: "AgilePM uses its formal documentation (Project Review Form, Project Management Handbook, Solution Architecture Definition) at strategic points (like the end of Foundations or Increments) to provide the necessary audit trail and formal sign-off needed for good governance.",
+                    tip: "Formal governance in AgilePM is light but strategically placed, focusing on checkpoints, not continuous micro-management."
                 },
                 {
-                    scenario: "Stakeholders are complaining that the solution, while functionally complete, doesn't 'feel' polished or professional. The team followed all documented requirements.",
-                    question: "How should the team address these subjective quality concerns?",
+                    question: "Which role is primarily responsible for ensuring that the non-functional requirements (e.g., performance, security) are correctly interpreted and integrated into the Definition of Done (DoD)?",
                     options: [
-                        "Ignore them since requirements were met",
-                        "Add 'polish' as a new requirement for all future work",
-                        "Conduct user experience testing to identify specific improvement areas",
-                        "Tell stakeholders their expectations are unrealistic"
+                        "The Business Visionary.",
+                        "The **Technical Coordinator** (TC).",
+                        "The Team Leader.",
+                        "The Business Ambassador."
                     ],
-                    correctAnswer: "Conduct user experience testing to identify specific improvement areas",
-                    explanation: "The team should conduct user experience testing to identify specific improvement areas. This provides concrete feedback about what aspects feel unpolished and helps the team understand subjective quality expectations better.",
-                    tip: "Subjective quality concerns in AgilePM often indicate missing non-functional requirements or insufficient user feedback loops during development."
+                    correctAnswer: "The **Technical Coordinator** (TC).",
+                    explanation: "The Technical Coordinator (TC) is responsible for the overall technical solution and integrity. Non-functional requirements (NFRs) are critical technical constraints, and it is the TC's job to ensure they are adequately defined and reflected in the quality standard (DoD).",
+                    tip: "The TC is the custodian of technical quality and NFRs at the project level."
                 },
                 {
-                    scenario: "The project budget is running low, but several high-priority 'Should Have' requirements remain unfinished. The Business Sponsor is unwilling to provide additional funding.",
-                    question: "What AgilePM approach helps maximize value delivery within remaining budget?",
+                    question: "In a Timebox planning session, the **Team Leader** uses their experience from previous Timeboxes to estimate a task. This is an example of which AgilePM estimation technique?",
                     options: [
-                        "Implement all remaining requirements with reduced quality",
-                        "Deliver only the completed 'Must Haves' and close the project",
-                        "Re-prioritize remaining work to deliver the highest-value items within budget",
-                        "Ask the Development Team to work unpaid overtime"
+                        "Estimation by Analogy.",
+                        "Wideband Delphi.",
+                        "Planning Poker.",
+                        "Three-Point Estimation."
                     ],
-                    correctAnswer: "Re-prioritize remaining work to deliver the highest-value items within budget",
-                    explanation: "The AgilePM approach is to re-prioritize remaining work to deliver the highest-value items within budget. This involves working with stakeholders to identify which remaining requirements deliver the most value for the available investment.",
-                    tip: "AgilePM's iterative approach means projects can deliver substantial value even if not all planned requirements are completed. Focus on value maximization rather than scope completion."
+                    correctAnswer: "Estimation by Analogy.",
+                    explanation: "Estimation by Analogy involves comparing the current task with a similar task completed in the past, leveraging the team's or individual's experience to provide an estimate. This is a common method in AgilePM, especially when the team leader has relevant historical data.",
+                    tip: "AgilePM encourages pragmatic estimation techniques that leverage experience and collaboration."
                 },
                 {
-                    scenario: "The Development Team wants to adopt a new testing framework that would improve efficiency long-term but requires significant learning investment in the short-term.",
-                    question: "How should this trade-off between short-term disruption and long-term benefit be evaluated?",
+                    question: "What is the key purpose of the **Solution Architecture Definition (SAD)** in the Foundations phase?",
                     options: [
-                        "Always prioritize short-term delivery over long-term improvements",
-                        "Implement the change immediately without considering impacts",
-                        "Evaluate the ROI and plan the transition with minimal disruption",
-                        "Reject all technical improvements to maintain stability"
+                        "To define every detail of the final system design.",
+                        "To provide the *technical firm foundation* and the architectural framework that guides the incremental development.",
+                        "To manage all the technical debt that will be incurred during the project.",
+                        "To replace the **Project Approach Questionnaire (PAQ)**."
                     ],
-                    correctAnswer: "Evaluate the ROI and plan the transition with minimal disruption",
-                    explanation: "The team should evaluate the ROI and plan the transition with minimal disruption. This might involve phased adoption, training timeboxes, or implementing the change during less critical project phases.",
-                    tip: "Technical improvement decisions in AgilePM should balance short-term delivery needs with long-term efficiency. Not every improvement is worth the transition cost."
+                    correctAnswer: "To provide the *technical firm foundation* and the architectural framework that guides the incremental development.",
+                    explanation: "The SAD, owned by the Solution Architect, sets the high-level technical direction, defines key non-functional requirements, and establishes the architectural constraints (the 'Firm Foundation') that the development teams must adhere to during the iterative timeboxes.",
+                    tip: "The SAD ensures technical consistency and prevents the architecture from becoming chaotic as the solution evolves."
                 },
                 {
-                    scenario: "During a timebox retrospective, the team identifies that requirements clarification is consuming excessive time during the timebox itself.",
-                    question: "What AgilePM practice could help move requirement clarification earlier in the process?",
+                    question: "Which of the following best describes the Project Manager's primary activity during a **Pre-Project** phase?",
                     options: [
-                        "Eliminate requirement clarification entirely",
-                        "Implement more formal backlog refinement sessions before timebox planning",
-                        "Ask the Business Ambassador to provide perfect requirements initially",
-                        "Reduce communication with business stakeholders"
+                        "Creating the detailed Delivery Plan with the team.",
+                        "Conducting the **Feasibility Assessment** and ensuring the **Business Sponsor** is in place.",
+                        "Starting the first Development Timebox to build a prototype.",
+                        "Finalizing the **Prioritised Requirements List (PRL)**."
                     ],
-                    correctAnswer: "Implement more formal backlog refinement sessions before timebox planning",
-                    explanation: "Implementing more formal backlog refinement sessions before timebox planning can help move requirement clarification earlier. This ensures that requirements are well-understood before commitment, reducing clarification needs during timebox execution.",
-                    tip: "In AgilePM, investing in backlog refinement often pays dividends in timebox efficiency. Well-refined backlogs lead to smoother execution."
+                    correctAnswer: "Conducting the **Feasibility Assessment** and ensuring the **Business Sponsor** is in place.",
+                    explanation: "The Pre-Project phase is about ensuring the basic prerequisites for success are in place. This includes performing the Feasibility Assessment (Is AgilePM suitable?) and formally identifying and confirming the Business Sponsor and Business Visionary.",
+                    tip: "The Pre-Project phase is a critical, short check to confirm the project's 'Readiness' before significant investment begins."
+                },
+                {
+                    question: "How does the principle **Communicate Continuously and Clearly** affect the reporting structure in a large-scale agile program?",
+                    options: [
+                        "It requires all reporting to be verbal and informal to save time.",
+                        "It ensures that reports are tailored to the needs of the audience (e.g., using Burn-Up charts for management, detailed status for other teams).",
+                        "It mandates that only the Project Manager communicates with the Business Sponsor.",
+                        "It means all team members must attend every single meeting."
+                    ],
+                    correctAnswer: "It ensures that reports are tailored to the needs of the audience (e.g., using Burn-Up charts for management, detailed status for other teams).",
+                    explanation: "Continuous and clear communication means delivering the *right* information to the *right* people in the *right* format. Different stakeholders have different needs; senior management needs outcome-focused summaries (like Burn-Ups), while teams need detailed technical status.",
+                    tip: "Tailoring communication is key to maintaining transparency without causing information overload."
                 }
-                // Note: In a full implementation, we would continue adding questions to reach 80 total
-                // For brevity in this example, I'm showing the pattern and first 25 questions
             ]
         };
 
@@ -737,7 +686,6 @@
         const currentScoreEl = document.getElementById('current-score');
         const progressBarEl = document.getElementById('progress-bar');
         const questionTextEl = document.getElementById('question-text');
-        const scenarioContainerEl = document.getElementById('scenario-container');
         const optionsContainerEl = document.getElementById('options-container');
         const explanationBoxEl = document.getElementById('explanation-box');
         const explanationTitleEl = document.getElementById('explanation-title');
@@ -761,7 +709,7 @@
         let score = 0;
         let userAnswers = [];
         let questions = [];
-        let selectedQuestionCount = 80;
+        let selectedQuestionCount = 30; // Defaulting to 30 for exam simulation
 
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
@@ -796,14 +744,6 @@
             tipBoxEl.classList.add('d-none');
             
             const question = questions[index];
-            
-            // Display scenario if available
-            if (question.scenario) {
-                scenarioContainerEl.innerHTML = `<div class="scenario-box"><strong>Scenario:</strong> ${question.scenario}</div>`;
-            } else {
-                scenarioContainerEl.innerHTML = '';
-            }
-            
             questionTextEl.textContent = question.question;
             
             // Clear previous options
@@ -918,18 +858,19 @@
             let scoreColor;
             let recommendationsHtml;
 
-            if (percentage >= 85) {
+            // Passing score for official exam is 60%
+            if (percentage >= 80) {
                 scoreColor = 'var(--success-color)';
-                recommendationsHtml = '<h5><i class="fas fa-star text-warning"></i> Excellent Practical Skills!</h5><p>You demonstrate strong ability to apply AgilePM principles in complex real-world scenarios. Your practical understanding is at an expert level.</p>';
-            } else if (percentage >= 70) {
-                scoreColor = 'var(--scenario-teal)';
-                recommendationsHtml = '<h5><i class="fas fa-chart-line text-info"></i> Strong Practical Application!</h5><p>You have good practical understanding of AgilePM in complex situations. Continue practicing with real scenarios to refine your judgment.</p>';
+                recommendationsHtml = '<h5><i class="fas fa-trophy text-warning"></i> Certified Level!</h5><p>Outstanding performance! Your score suggests you are fully prepared for the official AgilePM Advanced exam. Focus on reinforcing your weakest areas for maximum confidence.</p>';
+            } else if (percentage >= 60) {
+                scoreColor = 'var(--exam-orange)';
+                recommendationsHtml = '<h5><i class="fas fa-check-circle text-success"></i> Passed! (Official Score)</h5><p>Congratulations, your score meets the passing requirement for the official exam. Review the questions you got wrong to solidify your knowledge and achieve a higher score.</p>';
             } else if (percentage >= 50) {
                 scoreColor = 'var(--agile-blue)';
-                recommendationsHtml = '<h5><i class="fas fa-book text-primary"></i> Developing Practical Skills!</h5><p>You understand the basics but need more experience with complex scenarios. Focus on applying AgilePM principles to real-world challenges.</p>';
+                recommendationsHtml = '<h5><i class="fas fa-redo-alt text-primary"></i> Needs Refinement!</h5><p>You are very close to the passing mark. Focus your study on the official roles, principles, and lifecycle stages, as the exam often tests subtle distinctions.</p>';
             } else {
                 scoreColor = 'var(--danger-color)';
-                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> Needs More Practice!</h5><p>Practical application of AgilePM requires more study. Review how AgilePM principles apply to complex, real-world situations.</p>';
+                recommendationsHtml = '<h5><i class="fas fa-book-open text-secondary"></i> Study Required!</h5><p>The Advanced level requires a deep and nuanced understanding. We strongly recommend reviewing the core principles and the detailed responsibilities of each AgilePM role.</p>';
             }
 
             finalScoreCorrectEl.textContent = score;
