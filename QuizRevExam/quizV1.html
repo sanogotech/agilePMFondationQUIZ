@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgilePM v3 - Learning & Assessment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-dark: #3a0ca3;
+            --secondary: #7209b7;
+            --success: #4cc9f0;
+            --info: #4895ef;
+            --warning: #f72585;
+            --danger: #ef476f;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --learn-blue: #e3f2fd;
+            --learn-green: #e8f5e9;
+            --learn-yellow: #fff3cd;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            color: var(--dark);
+            min-height: 100vh;
+        }
+        
+        .header-section {
+            background: linear-gradient(rgba(28, 37, 65, 0.9), rgba(28, 37, 65, 0.95)), 
+                        url('https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            border-radius: 0 0 30px 30px;
+            margin-bottom: 3rem;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .exam-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border-left: 8px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .exam-card:hover {
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .question-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-exam {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .btn-exam:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+            color: white;
+        }
+        
+        .btn-outline-exam {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            background: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-outline-exam:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .progress-bar-custom {
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--success));
+            border-radius: 10px;
+        }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .category-badge {
+            background: var(--info);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 1rem;
+        }
+        
+        .timer-display {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--danger);
+            text-align: center;
+            background: rgba(239, 71, 111, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            border: 2px solid var(--danger);
+        }
+        
+        .timer-warning {
+            color: #ff6b35;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .learning-panel {
+            background: var(--learn-blue);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-left: 5px solid var(--info);
+        }
+        
+        .tip-box {
+            background: var(--learn-yellow);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .explanation-box {
+            background: var(--learn-green);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid #198754;
+        }
+        
+        .feedback-box {
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .chapter-tag {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .difficulty-badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-easy {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .difficulty-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .difficulty-hard {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .answer-option {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 0.8rem;
+            border: 2px solid #dee2e6;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .answer-option:hover {
+            background: #f8f9fa;
+            border-color: var(--primary);
+        }
+        
+        .answer-option.selected {
+            background: rgba(67, 97, 238, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .answer-option.correct {
+            background: rgba(76, 201, 240, 0.15);
+            border-color: var(--success);
+        }
+        
+        .answer-option.incorrect {
+            background: rgba(239, 71, 111, 0.1);
+            border-color: var(--danger);
+        }
+        
+        .answer-option.correct .form-check-label::after {
+            content: " ✓ Correct";
+            color: var(--success);
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .answer-option.incorrect .form-check-label::after {
+            content: " ✗ Incorrect";
+            color: var(--danger);
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .results-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            display: none;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .chapter-progress {
+            margin-bottom: 1.5rem;
+        }
+        
+        .chapter-name {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .question-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .question-item {
+            padding: 0.8rem;
+            border-bottom: 1px solid #dee2e6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .question-item:hover {
+            background: #f8f9fa;
+        }
+        
+        .question-correct {
+            border-left: 4px solid var(--success);
+        }
+        
+        .question-incorrect {
+            border-left: 4px solid var(--danger);
+        }
+        
+        .question-unanswered {
+            border-left: 4px solid #6c757d;
+        }
+        
+        .mode-badge {
+            background: var(--warning);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .score-evolution {
+            height: 60px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .score-line {
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 3;
+        }
+        
+        .score-point {
+            fill: var(--primary);
+            stroke: white;
+            stroke-width: 2;
+        }
+        
+        .score-label {
+            font-size: 0.8rem;
+            fill: #666;
+        }
+        
+        .correct-indicator {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .incorrect-indicator {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .performance-meter {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .meter-circle {
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .meter-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        @media (max-width: 768px) {
+            .header-section {
+                padding: 2rem 0;
+            }
+            
+            .exam-card {
+                padding: 1.5rem;
+            }
+            
+            .score-display {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body class="learning-mode">
+    <section class="header-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold mb-3">AgilePM v3 - Learning & Assessment</h1>
+                    <p class="lead mb-4">120 questions with detailed explanations and learning tips</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-light text-dark">Learning Mode</span>
+                        <span class="badge bg-light text-dark">120 Questions</span>
+                        <span class="badge bg-light text-dark">8 Chapters</span>
+                        <span class="badge bg-light text-dark">Instant Feedback</span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="timer-display mb-3" id="exam-timer">∞</div>
+                    <div class="text-white">
+                        <i class="fas fa-graduation-cap me-2"></i>Adaptive Learning Mode
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mb-5" id="config-section">
+        <div class="exam-card">
+            <h3 class="mb-4"><i class="fas fa-cog me-2"></i>Test Configuration</h3>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-question-circle me-2"></i>Number of Questions</h5>
+                    <div class="btn-group w-100" role="group">
+                        <button type="button" class="btn btn-outline-exam active" onclick="setQuestionCount(10)">10</button>
+                        <button type="button" class="btn btn-outline-exam" onclick="setQuestionCount(20)">20</button>
+                        <button type="button" class="btn btn-outline-exam" onclick="setQuestionCount(30)">30</button>
+                        <button type="button" class="btn btn-outline-exam" onclick="setQuestionCount(40)">40</button>
+                        <button type="button" class="btn btn-outline-exam" onclick="setQuestionCount(50)">50</button>
+                    </div>
+                    <p class="text-muted mt-2"><i class="fas fa-lightbulb me-1"></i>Recommended: 20 questions for a quick session</p>
+                </div>
+                
+                <div class="col-md-6">
+                    <h5><i class="fas fa-clock me-2"></i>Time Settings</h5>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <span id="time-info">40 minutes for 50 questions (proportional)</span>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="enable-timer" checked onchange="toggleTimer()">
+                        <label class="form-check-label" for="enable-timer">
+                            Enable countdown timer
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h5><i class="fas fa-book me-2"></i>Chapter Selection</h5>
+                    <div class="row" id="chapter-selector">
+                        <!-- Chapters will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h5><i class="fas fa-chart-pie me-2"></i>Chapter Distribution (Estimated)</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Chapter</th>
+                                    <th>Questions (Total)</th>
+                                    <th>% Weight</th>
+                                    <th>Selected (Est.)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="chapter-distribution">
+                                <!-- Distribution will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-exam btn-lg" onclick="startExam()">
+                    <i class="fas fa-play-circle me-2"></i>Start Learning Session
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5" id="exam-section" style="display: none;">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="exam-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div class="d-flex align-items-center">
+                            <span class="question-number" id="current-question">1</span>
+                            <div>
+                                <h4 class="mb-0">Question</h4>
+                                <div class="d-flex align-items-center mt-1">
+                                    <span class="chapter-tag" id="question-chapter">Roles</span>
+                                    <span class="difficulty-badge difficulty-medium" id="question-difficulty">Medium</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-muted">
+                            <i class="fas fa-list-ol me-1"></i>
+                            <span id="current-question-num">1</span> / <span id="total-questions">10</span>
+                        </div>
+                    </div>
+                    
+                    <h5 id="question-text" class="mb-4"></h5>
+                    
+                    <div id="options-container">
+                        <!-- Options will be loaded here -->
+                    </div>
+                    
+                    <div class="learning-panel" id="learning-panel" style="display: none;">
+                        <h5><i class="fas fa-graduation-cap me-2"></i>Learning Zone</h5>
+                        
+                        <div class="feedback-box" id="feedback-box">
+                            <h6><i class="fas fa-comment-dots me-2"></i>Feedback</h6>
+                            <p id="feedback-text"></p>
+                        </div>
+                        
+                        <div class="explanation-box" id="explanation-box">
+                            <h6><i class="fas fa-info-circle me-2"></i>Explanation</h6>
+                            <p id="explanation-text"></p>
+                        </div>
+                        
+                        <div class="tip-box" id="tip-box">
+                            <h6><i class="fas fa-lightbulb me-2"></i>Exam Tip</h6>
+                            <p id="tip-text"></p>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <h6><i class="fas fa-book me-2"></i>References</h6>
+                            <p class="mb-1" id="reference-text"></p>
+                            <small class="text-muted" id="chapter-reference"></small>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <button class="btn btn-outline-exam" onclick="previousQuestion()" id="prev-btn">
+                            <i class="fas fa-arrow-left me-2"></i>Previous
+                        </button>
+                        
+                        <div>
+                            <button class="btn btn-outline-exam me-2" onclick="markForReview()" id="review-btn">
+                                <i class="far fa-flag me-2"></i>Mark
+                            </button>
+                            <button class="btn btn-exam" onclick="nextQuestion()" id="next-btn">
+                                Next <i class="fas fa-arrow-right ms-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="exam-card">
+                    <div class="text-center mb-4">
+                        <div class="performance-meter">
+                            <svg width="120" height="120" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="54" fill="none" stroke="#e9ecef" stroke-width="12"/>
+                                <circle id="score-circle" cx="60" cy="60" r="54" fill="none" stroke="var(--primary)" stroke-width="12" 
+                                        stroke-dasharray="339.292" stroke-dashoffset="339.292" class="meter-circle"/>
+                            </svg>
+                            <div class="meter-text" id="current-score">0%</div>
+                        </div>
+                        <h6 class="mt-2">Current Score</h6>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Progress</span>
+                            <span id="progress-percent">0%</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar progress-bar-custom" id="progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Question Status</h6>
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="answered-count">0</div>
+                                    <small>Answered</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="correct-count">0</div>
+                                    <small>Correct</small>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="stat-card">
+                                    <div class="stat-number" id="review-count">0</div>
+                                    <small>Review</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h6>Quick Navigation</h6>
+                        <div class="row" id="question-grid">
+                            <!-- Question grid will be loaded here -->
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button class="btn btn-exam w-100" onclick="submitExam()">
+                            <i class="fas fa-paper-plane me-2"></i>Submit Test
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5" id="results-section" style="display: none;">
+        <div class="results-section">
+            <h2 class="text-center mb-4"><i class="fas fa-trophy me-2"></i>Test Results</h2>
+            
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="final-score">0%</div>
+                        <small>Final Score</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-correct">0</div>
+                        <small>Correct Answers</small>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-card">
+                        <div class="stat-number" id="time-taken">0:00</div>
+                        <small>Time Taken</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-chart-line me-2"></i>Performance by Chapter</h5>
+                    <div id="chapter-performance">
+                        <!-- Chapter performance will be loaded here -->
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5><i class="fas fa-medal me-2"></i>Recommendations</h5>
+                    <div class="tip-box">
+                        <h6><i class="fas fa-star me-2"></i>Strengths</h6>
+                        <p id="strengths-text"></p>
+                    </div>
+                    <div class="tip-box">
+                        <h6><i class="fas fa-exclamation-triangle me-2"></i>Areas to Improve</h6>
+                        <p id="improvements-text"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <h5><i class="fas fa-list me-2"></i>Question Details</h5>
+                <div class="question-list" id="question-review-list">
+                    <!-- Question review list will be loaded here -->
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button class="btn btn-exam me-3" onclick="restartExam()">
+                    <i class="fas fa-redo me-2"></i>Start New Session
+                </button>
+                <button class="btn btn-outline-exam" onclick="backToConfig()">
+                    <i class="fas fa-cog me-2"></i>Change Configuration
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Configuration and data
+        const chapters = [
+            { id: 1, name: "Roles & RACI", weight: 20, selected: true },
+            { id: 2, name: "MoSCoW & Timeboxing", weight: 15, selected: true },
+            { id: 3, name: "AgilePM Products", weight: 15, selected: true },
+            { id: 4, name: "Quality & Risks", weight: 10, selected: true },
+            { id: 5, name: "Governance", weight: 10, selected: true },
+            { id: 6, name: "Lifecycle", weight: 10, selected: true },
+            { id: 7, name: "Leadership & Culture", weight: 10, selected: true },
+            { id: 8, name: "Estimation & Planning", weight: 10, selected: true }
+        ];
+
+		// Question bank (translated to English from original) - 120 questions total
+const questionBank = [
+    // --- CHAPTER 1: Roles & RACI (24 Questions) ---
+    { id: 1, chapter: 1, difficulty: "medium", text: "Which role is the owner of the budget and overall project vision in AgilePM?", options: ["Project Manager", "Business Visionary", "Business Sponsor", "Technical Coordinator"], correct: 2, explanation: "The Business Sponsor (BS) owns the budget, has executive authority and bears ultimate responsibility for project success. He/She is Accountable (A) for the Business Case.", tip: "Think of BS as 'Budget Source' or 'Big Stakeholder'.", reference: "AgilePM Handbook v3 - Section 3.2: Business Sponsor", chapterRef: "Ch1: Roles, p.45" },
+    { id: 2, chapter: 1, difficulty: "easy", text: "Who is Responsible for managing Timeboxes and the team on a daily basis, including facilitating Daily Stand-ups?", options: ["Project Manager", "Team Leader", "Business Analyst", "Technical Coordinator"], correct: 1, explanation: "The Team Leader (TL) is Responsible (R) for daily team management and Timebox facilitation, acting as a 'servant leader'.", tip: "TL manages the team, PM manages the project.", reference: "AgilePM Handbook v3 - Section 5.6: Team Leader", chapterRef: "Ch1: Roles, p.70" },
+    { id: 3, chapter: 1, difficulty: "medium", text: "The Project Manager is primarily responsible for:", options: ["Defining the technical architecture of the solution", "Maintaining the Prioritised Requirements List (PRL)", "Managing stakeholder relationships and ensuring governance", "Developing the Solution Increment"], correct: 2, explanation: "The Project Manager (PM) is the link between the project and governance. He/She manages logistics, external communication, risks and stakeholder relationships.", tip: "PM is the administrative 'conductor', not the technical team leader.", reference: "AgilePM Handbook v3 - Section 5.1: Project Manager", chapterRef: "Ch1: Roles, p.55" },
+    { id: 4, chapter: 1, difficulty: "hard", text: "Which role ensures that the solution meets the business need and is usable by end-users?", options: ["Business Analyst", "Business Visionary", "Technical Coordinator", "Solution Developer"], correct: 1, explanation: "The Business Visionary (BV) defines the 'what' - the overall business need and vision. He/She ensures the solution is fit for business purpose.", tip: "BV = Business Vision, BS = Budget & Strategy.", reference: "AgilePM Handbook v3 - Section 3.1: Business Visionary", chapterRef: "Ch1: Roles, p.40" },
+    { id: 5, chapter: 1, difficulty: "easy", text: "Who is responsible for translating business requirements into solution requirements?", options: ["Business Visionary", "Business Analyst", "Team Leader", "Technical Coordinator"], correct: 1, explanation: "The Business Analyst (BA) acts as a bridge between business and solution development, translating needs into requirements.", tip: "BA = Bridge Analyst or Business-to-Agile translator.", reference: "AgilePM Handbook v3 - Section 5.3: Business Analyst", chapterRef: "Ch1: Roles, p.60" },
+    { id: 6, chapter: 1, difficulty: "medium", text: "In the RACI matrix, who is typically Accountable (A) for the Business Case?", options: ["Business Analyst", "Project Manager", "Business Sponsor", "Team Leader"], correct: 2, explanation: "The Business Sponsor is Accountable (A) for the Business Case - they have ultimate accountability for its success.", tip: "RACI: A = Accountable (ultimately answerable), R = Responsible (does the work).", reference: "AgilePM Handbook v3 - Section 10.2: RACI Matrix", chapterRef: "Ch1: Roles, p.110" },
+    { id: 7, chapter: 1, difficulty: "easy", text: "Which role focuses on the technical aspects and ensures the solution is technically sound?", options: ["Technical Coordinator", "Solution Developer", "Project Manager", "Business Analyst"], correct: 0, explanation: "The Technical Coordinator (TC) ensures technical coherence, coordinates technical teams, and advises on technical feasibility.", tip: "TC = Technical Chief or Technical Coordinator.", reference: "AgilePM Handbook v3 - Section 5.5: Technical Coordinator", chapterRef: "Ch1: Roles, p.68" },
+    { id: 8, chapter: 1, difficulty: "hard", text: "Who chairs the Project Board in AgilePM?", options: ["Business Visionary", "Business Sponsor", "Project Manager", "Team Leader"], correct: 1, explanation: "The Business Sponsor chairs the Project Board and has casting vote in decisions.", tip: "Business Sponsor = Board Sponsor.", reference: "AgilePM Handbook v3 - Section 9.1: Project Board", chapterRef: "Ch1: Roles, p.95" },
+    { id: 9, chapter: 1, difficulty: "medium", text: "Which role is typically Responsible (R) for maintaining the Solution Architecture Definition?", options: ["Business Analyst", "Technical Coordinator", "Solution Developer", "Project Manager"], correct: 1, explanation: "The Technical Coordinator is Responsible (R) for the technical aspects including Solution Architecture Definition.", tip: "Technical artifacts = Technical Coordinator's responsibility.", reference: "AgilePM Handbook v3 - Section 7.3: Solution Architecture Definition", chapterRef: "Ch1: Roles, p.80" },
+    { id: 10, chapter: 1, difficulty: "easy", text: "Who represents the end-users and ensures usability of the solution?", options: ["Business Visionary", "Business Ambassador", "Technical Coordinator", "Project Manager"], correct: 1, explanation: "Business Ambassadors are senior users who represent user community and provide business expertise.", tip: "Ambassador = represents users abroad (in the project).", reference: "AgilePM Handbook v3 - Section 5.2: Business Ambassador", chapterRef: "Ch1: Roles, p.58" },
+    { id: 11, chapter: 1, difficulty: "medium", text: "Which role is Consulted (C) for technical decisions but not Responsible for implementation?", options: ["Technical Coordinator", "Solution Developer", "Business Analyst", "Project Manager"], correct: 0, explanation: "Technical Coordinator is often Consulted (C) for technical decisions but Solution Developers are Responsible (R) for implementation.", tip: "C = Consulted (provides input), I = Informed (kept up-to-date).", reference: "AgilePM Handbook v3 - Section 10.2: RACI Matrix", chapterRef: "Ch1: Roles, p.112" },
+    { id: 12, chapter: 1, difficulty: "hard", text: "Who has the authority to stop the project if it's no longer viable?", options: ["Project Manager", "Business Visionary", "Business Sponsor", "Team Leader"], correct: 2, explanation: "The Business Sponsor has ultimate authority to stop the project if the Business Case is no longer valid.", tip: "Sponsor = has the 'purse strings' and ultimate control.", reference: "AgilePM Handbook v3 - Section 9.3: Project Control", chapterRef: "Ch1: Roles, p.100" },
+    { id: 13, chapter: 1, difficulty: "medium", text: "Which role typically creates the initial Prioritised Requirements List (PRL)?", options: ["Business Analyst", "Business Visionary", "Project Manager", "Technical Coordinator"], correct: 1, explanation: "The Business Visionary creates the initial PRL based on business needs and vision.", tip: "Visionary = sees what's needed and prioritizes it.", reference: "AgilePM Handbook v3 - Section 7.1: Prioritised Requirements List", chapterRef: "Ch1: Roles, p.75" },
+    { id: 14, chapter: 1, difficulty: "easy", text: "Who facilitates the Daily Stand-up meetings?", options: ["Project Manager", "Team Leader", "Business Analyst", "Technical Coordinator"], correct: 1, explanation: "The Team Leader facilitates Daily Stand-ups to coordinate team activities and remove impediments.", tip: "Team Leader = team facilitator.", reference: "AgilePM Handbook v3 - Section 6.4: Daily Stand-up", chapterRef: "Ch1: Roles, p.72" },
+    { id: 15, chapter: 1, difficulty: "hard", text: "Which role is Accountable (A) for the Delivery Plan?", options: ["Project Manager", "Team Leader", "Business Sponsor", "Technical Coordinator"], correct: 0, explanation: "The Project Manager is Accountable (A) for the Delivery Plan - ensuring it's created and maintained.", tip: "PM = Plan Manager.", reference: "AgilePM Handbook v3 - Section 7.4: Delivery Plan", chapterRef: "Ch1: Roles, p.82" },
+    { id: 16, chapter: 1, difficulty: "medium", text: "Who is Responsible (R) for creating the Timebox Plan?", options: ["Project Manager", "Team Leader", "Business Analyst", "Technical Coordinator"], correct: 1, explanation: "The Team Leader is Responsible (R) for creating the detailed Timebox Plan with the team.", tip: "Team Leader plans the team's work in timeboxes.", reference: "AgilePM Handbook v3 - Section 8.2: Timebox Plan", chapterRef: "Ch1: Roles, p.85" },
+    { id: 17, chapter: 1, difficulty: "easy", text: "Which role represents the project to external stakeholders?", options: ["Project Manager", "Business Visionary", "Business Sponsor", "Team Leader"], correct: 0, explanation: "The Project Manager represents the project externally and manages external communications.", tip: "PM = Project Messenger (external).", reference: "AgilePM Handbook v3 - Section 5.1: Project Manager", chapterRef: "Ch1: Roles, p.56" },
+    { id: 18, chapter: 1, difficulty: "medium", text: "Who ensures that business requirements are accurately captured and documented?", options: ["Business Visionary", "Business Analyst", "Technical Coordinator", "Project Manager"], correct: 1, explanation: "The Business Analyst ensures requirements are captured, analyzed, and documented clearly.", tip: "BA = Business Archaeologist (digs out requirements).", reference: "AgilePM Handbook v3 - Section 5.3: Business Analyst", chapterRef: "Ch1: Roles, p.61" },
+    { id: 19, chapter: 1, difficulty: "hard", text: "In the RACI matrix, who is typically Informed (I) about project progress?", options: ["Business Sponsor", "Business Visionary", "Business Ambassador", "All of the above"], correct: 3, explanation: "All business roles (Sponsor, Visionary, Ambassador) are typically Informed (I) about project progress.", tip: "I = Informed (receives information but doesn't need to act).", reference: "AgilePM Handbook v3 - Section 10.2: RACI Matrix", chapterRef: "Ch1: Roles, p.113" },
+    { id: 20, chapter: 1, difficulty: "medium", text: "Which role has the final say on scope changes during a Timebox?", options: ["Business Visionary", "Team Leader", "Project Manager", "Business Sponsor"], correct: 0, explanation: "The Business Visionary has final say on scope changes within a Timebox, ensuring business needs are met.", tip: "Visionary = vision keeper during timeboxes.", reference: "AgilePM Handbook v3 - Section 8.3: Timebox Execution", chapterRef: "Ch1: Roles, p.88" },
+    { id: 21, chapter: 1, difficulty: "easy", text: "Who manages project risks and issues on a daily basis?", options: ["Project Manager", "Team Leader", "Business Analyst", "Technical Coordinator"], correct: 0, explanation: "The Project Manager maintains the Risk Log and Issue Log, managing them proactively.", tip: "PM = Problem Manager.", reference: "AgilePM Handbook v3 - Section 11.2: Risk Management", chapterRef: "Ch1: Roles, p.120" },
+    { id: 22, chapter: 1, difficulty: "hard", text: "Which role is Responsible (R) for the Solution Increment at the end of each Timebox?", options: ["Team Leader", "Technical Coordinator", "Solution Developers", "Business Analyst"], correct: 2, explanation: "Solution Developers are Responsible (R) for creating the Solution Increment that meets acceptance criteria.", tip: "Developers deliver the increment.", reference: "AgilePM Handbook v3 - Section 5.7: Solution Developer", chapterRef: "Ch1: Roles, p.73" },
+    { id: 23, chapter: 1, difficulty: "medium", text: "Who validates that the solution meets business requirements?", options: ["Business Visionary", "Business Ambassador", "Business Analyst", "All of the above"], correct: 3, explanation: "All business roles collaborate to validate that the solution meets requirements and business needs.", tip: "Validation = business team responsibility.", reference: "AgilePM Handbook v3 - Section 12.3: Solution Validation", chapterRef: "Ch1: Roles, p.130" },
+    { id: 24, chapter: 1, difficulty: "easy", text: "Which role ensures the team follows Agile practices and principles?", options: ["Team Leader", "Project Manager", "Technical Coordinator", "Business Analyst"], correct: 0, explanation: "The Team Leader ensures the team follows Agile practices and maintains Agile ways of working.", tip: "Team Leader = Agile practice leader.", reference: "AgilePM Handbook v3 - Section 5.6: Team Leader", chapterRef: "Ch1: Roles, p.71" },
+
+    // --- CHAPTER 2: MoSCoW & Timeboxing (18 Questions) ---
+    { id: 25, chapter: 2, difficulty: "easy", text: "What does MoSCoW stand for in AgilePM?", options: ["Must, Should, Could, Won't", "Must, Should, Can, Would", "Must, Shall, Could, Won't", "Major, Secondary, Could, Won't"], correct: 0, explanation: "MoSCoW stands for: Must have, Should have, Could have, Won't have (this time).", tip: "Remember: Must Should Could Won't - in that order.", reference: "AgilePM Handbook v3 - Section 4.1: MoSCoW Prioritisation", chapterRef: "Ch2: MoSCoW, p.48" },
+    { id: 26, chapter: 2, difficulty: "medium", text: "Which MoSCoW category contains requirements that are critical for project success?", options: ["Should have", "Must have", "Could have", "Won't have"], correct: 1, explanation: "Must have requirements are critical - without them, the project fails or delivers no value.", tip: "Must = Minimum Usable Subset.", reference: "AgilePM Handbook v3 - Section 4.1: MoSCoW Prioritisation", chapterRef: "Ch2: MoSCoW, p.49" },
+    { id: 27, chapter: 2, difficulty: "hard", text: "What percentage of effort should typically be allocated to 'Must have' requirements?", options: ["40-50%", "50-60%", "60-70%", "70-80%"], correct: 2, explanation: "Typically 60% of effort is allocated to Must haves, 20% to Should haves, and 20% to Could haves as contingency.", tip: "60-20-20 rule for Must-Should-Could.", reference: "AgilePM Handbook v3 - Section 4.2: Effort Allocation", chapterRef: "Ch2: MoSCoW, p.52" },
+    { id: 28, chapter: 2, difficulty: "easy", text: "Which MoSCoW category is often used for 'nice-to-have' features?", options: ["Must have", "Should have", "Could have", "Won't have"], correct: 2, explanation: "Could have requirements are nice-to-have features that can be included if time permits.", tip: "Could = Conditional or Contingency.", reference: "AgilePM Handbook v3 - Section 4.1: MoSCoW Prioritisation", chapterRef: "Ch2: MoSCoW, p.50" },
+    { id: 29, chapter: 2, difficulty: "medium", text: "What is the primary purpose of Timeboxing in AgilePM?", options: ["To create detailed Gantt charts", "To impose strict deadlines", "To focus effort and manage scope", "To track individual productivity"], correct: 2, explanation: "Timeboxing creates fixed time periods to focus effort, manage scope, and deliver increments regularly.", tip: "Timebox = Time boundary for scope flexibility.", reference: "AgilePM Handbook v3 - Section 8.1: Timeboxing Principles", chapterRef: "Ch2: Timeboxing, p.83" },
+    { id: 30, chapter: 2, difficulty: "hard", text: "How long is a typical Timebox in AgilePM?", options: ["1-2 weeks", "2-4 weeks", "4-6 weeks", "6-8 weeks"], correct: 1, explanation: "Typical Timeboxes are 2-4 weeks, balancing planning overhead with delivery frequency.", tip: "2-4 weeks = sprint length in most Agile frameworks.", reference: "AgilePM Handbook v3 - Section 8.2: Timebox Planning", chapterRef: "Ch2: Timeboxing, p.85" },
+    { id: 31, chapter: 2, difficulty: "medium", text: "Which of these is NOT a phase in the AgilePM Timebox cycle?", options: ["Planning", "Refinement", "Stand-ups", "Review"], correct: 1, explanation: "The Timebox phases are: Planning, Daily Stand-ups, Review, and Retrospective. Refinement happens outside Timeboxes.", tip: "Plan-Do-Check-Adapt cycle in each Timebox.", reference: "AgilePM Handbook v3 - Section 8.3: Timebox Execution", chapterRef: "Ch2: Timeboxing, p.87" },
+    { id: 32, chapter: 2, difficulty: "easy", text: "What happens if 'Must have' requirements cannot be completed within a Timebox?", options: ["Timebox is extended", "Scope is reduced", "Quality is lowered", "Timebox is failed"], correct: 3, explanation: "If Must haves aren't completed, the Timebox is considered failed and must be replanned.", tip: "Must haves = non-negotiable for Timebox success.", reference: "AgilePM Handbook v3 - Section 8.4: Timebox Review", chapterRef: "Ch2: Timeboxing, p.90" },
+    { id: 33, chapter: 2, difficulty: "hard", text: "Who has authority to move requirements between MoSCoW categories during a Timebox?", options: ["Team Leader", "Project Manager", "Business Visionary", "Technical Coordinator"], correct: 2, explanation: "The Business Visionary can re-prioritize and move requirements between categories during Planning.", tip: "Business decides priority, team decides feasibility.", reference: "AgilePM Handbook v3 - Section 4.3: Dynamic Prioritisation", chapterRef: "Ch2: MoSCoW, p.54" },
+    { id: 34, chapter: 2, difficulty: "medium", text: "What is the 'timebox end date' rule in AgilePM?", options: ["It can be extended by 10% if needed", "It's fixed and never extended", "It can be extended once per project", "It's flexible based on team velocity"], correct: 1, explanation: "The timebox end date is fixed - scope is adjusted instead of extending time.", tip: "Fixed time, flexible scope principle.", reference: "AgilePM Handbook v3 - Section 8.1: Timeboxing Principles", chapterRef: "Ch2: Timeboxing, p.84" },
+    { id: 35, chapter: 2, difficulty: "easy", text: "Which MoSCoW category requirements are often descoped first if needed?", options: ["Must have", "Should have", "Could have", "Won't have"], correct: 2, explanation: "Could have requirements are the first to be descoped if time is running short.", tip: "Could = Can be dropped if necessary.", reference: "AgilePM Handbook v3 - Section 4.4: Scope Management", chapterRef: "Ch2: MoSCoW, p.55" },
+    { id: 36, chapter: 2, difficulty: "hard", text: "What percentage of Timebox time should be spent on planning activities?", options: ["5-10%", "10-15%", "15-20%", "20-25%"], correct: 1, explanation: "Typically 10-15% of Timebox duration is spent on planning activities.", tip: "Plan just enough, not perfect planning.", reference: "AgilePM Handbook v3 - Section 8.2: Timebox Planning", chapterRef: "Ch2: Timeboxing, p.86" },
+    { id: 37, chapter: 2, difficulty: "medium", text: "What is the purpose of the 'Won't have' category in MoSCoW?", options: ["Requirements to be done later", "Requirements explicitly excluded", "Low priority requirements", "Technical debt items"], correct: 1, explanation: "Won't have requirements are explicitly excluded from current delivery, providing clear scope boundaries.", tip: "Won't = Won't do now (sets clear expectations).", reference: "AgilePM Handbook v3 - Section 4.1: MoSCoW Prioritisation", chapterRef: "Ch2: MoSCoW, p.51" },
+    { id: 38, chapter: 2, difficulty: "easy", text: "How often are Daily Stand-ups held during a Timebox?", options: ["Every day", "Every other day", "Three times a week", "At team discretion"], correct: 0, explanation: "Daily Stand-ups are held every day to coordinate team activities and identify impediments.", tip: "Daily = every working day.", reference: "AgilePM Handbook v3 - Section 8.3: Timebox Execution", chapterRef: "Ch2: Timeboxing, p.88" },
+    { id: 39, chapter: 2, difficulty: "hard", text: "What is the recommended approach if a Timebox consistently fails to deliver Must haves?", options: ["Extend Timebox duration", "Reduce team size", "Re-evaluate estimation approach", "Lower quality standards"], correct: 2, explanation: "Consistent failure suggests estimation issues - re-evaluate estimation techniques and team velocity.", tip: "Pattern of failure = systemic issue, not one-time problem.", reference: "AgilePM Handbook v3 - Section 8.5: Timebox Retrospective", chapterRef: "Ch2: Timeboxing, p.92" },
+    { id: 40, chapter: 2, difficulty: "medium", text: "Which role is responsible for timekeeping during Daily Stand-ups?", options: ["Project Manager", "Team Leader", "Timekeeper (rotating)", "Business Analyst"], correct: 1, explanation: "The Team Leader ensures Stand-ups are timeboxed (typically 15 minutes) and focused.", tip: "Team Leader = time guardian for Stand-ups.", reference: "AgilePM Handbook v3 - Section 6.4: Daily Stand-up", chapterRef: "Ch2: Timeboxing, p.72" },
+    { id: 41, chapter: 2, difficulty: "easy", text: "What happens to incomplete 'Should have' requirements at Timebox end?", options: ["Carried to next Timebox", "Discarded permanently", "Converted to Must haves", "Given to another team"], correct: 0, explanation: "Incomplete Should haves are typically carried forward to the next Timebox for completion.", tip: "Should = can be delayed without project failure.", reference: "AgilePM Handbook v3 - Section 8.4: Timebox Review", chapterRef: "Ch2: Timeboxing, p.91" },
+    { id: 42, chapter: 2, difficulty: "hard", text: "When can MoSCoW priorities be changed during a Timebox?", options: ["Anytime by the team", "Only during Planning", "Only with Sponsor approval", "Only in emergency situations"], correct: 3, explanation: "MoSCoW priorities can only be changed during a Timebox in exceptional circumstances with Business Visionary approval.", tip: "Stable priorities during execution, flexible during planning.", reference: "AgilePM Handbook v3 - Section 4.3: Dynamic Prioritisation", chapterRef: "Ch2: MoSCoW, p.54" },
+
+    // --- CHAPTER 3: AgilePM Products (18 Questions) ---
+    { id: 43, chapter: 3, difficulty: "hard", text: "What is the main purpose of the Business Case in AgilePM?", options: ["To secure project funding", "To define technical architecture", "To track team velocity", "To document user stories"], correct: 0, explanation: "The Business Case justifies the project investment, defines benefits, costs, and establishes viability.", tip: "Business Case = Why we're doing this project.", reference: "AgilePM Handbook v3 - Section 7.2: Business Case", chapterRef: "Ch3: Products, p.77" },
+    { id: 44, chapter: 3, difficulty: "medium", text: "Which product defines 'how' the solution will be built?", options: ["Business Case", "Solution Architecture Definition", "Prioritised Requirements List", "Delivery Plan"], correct: 1, explanation: "Solution Architecture Definition describes the technical approach and architecture for building the solution.", tip: "Architecture = technical 'how'.", reference: "AgilePM Handbook v3 - Section 7.3: Solution Architecture Definition", chapterRef: "Ch3: Products, p.79" },
+    { id: 45, chapter: 3, difficulty: "easy", text: "What is the primary input to the Prioritised Requirements List (PRL)?", options: ["Business Case", "Solution Architecture", "Stakeholder Analysis", "Risk Log"], correct: 0, explanation: "The Business Case provides the strategic context and objectives that inform the PRL.", tip: "Business Case → PRL (strategy → requirements).", reference: "AgilePM Handbook v3 - Section 7.1: Prioritised Requirements List", chapterRef: "Ch3: Products, p.75" },
+    { id: 46, chapter: 3, difficulty: "hard", text: "Which product is owned by the Business Sponsor?", options: ["Delivery Plan", "Business Case", "Timebox Plan", "Solution Increment"], correct: 1, explanation: "The Business Sponsor owns and is accountable for the Business Case.", tip: "Sponsor owns the 'why' (Business Case).", reference: "AgilePM Handbook v3 - Section 7.2: Business Case", chapterRef: "Ch3: Products, p.78" },
+    { id: 47, chapter: 3, difficulty: "medium", text: "What does the Delivery Plan primarily describe?", options: ["Technical design details", "High-level project timeline", "Individual task assignments", "Business benefits realization"], correct: 1, explanation: "The Delivery Plan outlines the high-level timeline, phases, and major milestones.", tip: "Delivery Plan = project roadmap.", reference: "AgilePM Handbook v3 - Section 7.4: Delivery Plan", chapterRef: "Ch3: Products, p.81" },
+    { id: 48, chapter: 3, difficulty: "easy", text: "Which product is created and updated during each Timebox?", options: ["Business Case", "Solution Architecture Definition", "Timebox Plan", "Prioritised Requirements List"], correct: 2, explanation: "The Timebox Plan is created at the start of each Timebox and updated as needed.", tip: "Timebox Plan = detailed plan for each iteration.", reference: "AgilePM Handbook v3 - Section 8.2: Timebox Plan", chapterRef: "Ch3: Products, p.85" },
+    { id: 49, chapter: 3, difficulty: "hard", text: "What is the relationship between the PRL and the Business Case?", options: ["PRL implements Business Case", "Business Case validates PRL", "They are independent", "PRL replaces Business Case"], correct: 0, explanation: "The PRL contains requirements that implement and deliver the objectives stated in the Business Case.", tip: "Business Case (objectives) → PRL (requirements to meet objectives).", reference: "AgilePM Handbook v3 - Section 7.1: Prioritised Requirements List", chapterRef: "Ch3: Products, p.76" },
+    { id: 50, chapter: 3, difficulty: "medium", text: "Which product defines acceptance criteria for requirements?", options: ["Solution Architecture Definition", "Business Case", "Prioritised Requirements List", "Delivery Plan"], correct: 2, explanation: "The PRL includes acceptance criteria for each requirement to define 'done'.", tip: "PRL = requirements + acceptance criteria.", reference: "AgilePM Handbook v3 - Section 7.1: Prioritised Requirements List", chapterRef: "Ch3: Products, p.76" },
+    { id: 51, chapter: 3, difficulty: "easy", text: "Who is responsible for the Solution Architecture Definition?", options: ["Business Analyst", "Technical Coordinator", "Project Manager", "Business Visionary"], correct: 1, explanation: "The Technical Coordinator is responsible for creating and maintaining the Solution Architecture Definition.", tip: "Technical product = Technical Coordinator's responsibility.", reference: "AgilePM Handbook v3 - Section 7.3: Solution Architecture Definition", chapterRef: "Ch3: Products, p.80" },
+    { id: 52, chapter: 3, difficulty: "hard", text: "When is the Business Case typically reviewed and updated?", options: ["After each Timebox", "Monthly", "At project milestones", "When significant changes occur"], correct: 3, explanation: "The Business Case is reviewed when significant changes occur that affect project viability or benefits.", tip: "Business Case = living document, updated when needed.", reference: "AgilePM Handbook v3 - Section 7.2: Business Case", chapterRef: "Ch3: Products, p.78" },
+    { id: 53, chapter: 3, difficulty: "medium", text: "What is the main output of each Timebox?", options: ["Updated Business Case", "Solution Increment", "Revised Delivery Plan", "Team velocity report"], correct: 1, explanation: "The primary output of each Timebox is a potentially shippable Solution Increment.", tip: "Timebox delivers working software (increment).", reference: "AgilePM Handbook v3 - Section 8.4: Timebox Review", chapterRef: "Ch3: Products, p.90" },
+    { id: 54, chapter: 3, difficulty: "easy", text: "Which product helps manage stakeholder expectations about what will NOT be delivered?", options: ["Business Case", "Prioritised Requirements List", "Delivery Plan", "Solution Architecture"], correct: 1, explanation: "The PRL's 'Won't have' category clearly communicates what won't be delivered, managing expectations.", tip: "PRL includes both what will and won't be done.", reference: "AgilePM Handbook v3 - Section 7.1: Prioritised Requirements List", chapterRef: "Ch3: Products, p.75" },
+    { id: 55, chapter: 3, difficulty: "hard", text: "What triggers a revision of the Delivery Plan?", options: ["Every Timebox", "When team changes", "When scope changes significantly", "Monthly regardless of changes"], correct: 2, explanation: "The Delivery Plan is revised when significant scope changes occur that affect the overall timeline.", tip: "Delivery Plan updated when major changes happen.", reference: "AgilePM Handbook v3 - Section 7.4: Delivery Plan", chapterRef: "Ch3: Products, p.82" },
+    { id: 56, chapter: 3, difficulty: "medium", text: "Which product contains the project's risk management approach?", options: ["Business Case", "Delivery Plan", "Risk Log", "Solution Architecture"], correct: 2, explanation: "The Risk Log documents identified risks, their assessment, and mitigation strategies.", tip: "Risk Log = risk management product.", reference: "AgilePM Handbook v3 - Section 11.2: Risk Management", chapterRef: "Ch3: Products, p.120" },
+    { id: 57, chapter: 3, difficulty: "easy", text: "What is the purpose of the Timebox Plan?", options: ["Define long-term strategy", "Plan detailed work for current Timebox", "Document business benefits", "Track financial expenditure"], correct: 1, explanation: "The Timebox Plan details what will be done in the current Timebox, including tasks and assignments.", tip: "Timebox Plan = detailed iteration plan.", reference: "AgilePM Handbook v3 - Section 8.2: Timebox Plan", chapterRef: "Ch3: Products, p.85" },
+    { id: 58, chapter: 3, difficulty: "hard", text: "Which product ensures technical consistency across the solution?", options: ["Delivery Plan", "Solution Architecture Definition", "Prioritised Requirements List", "Business Case"], correct: 1, explanation: "The Solution Architecture Definition ensures technical consistency and coherence across the solution.", tip: "Architecture = technical consistency guide.", reference: "AgilePM Handbook v3 - Section 7.3: Solution Architecture Definition", chapterRef: "Ch3: Products, p.80" },
+    { id: 59, chapter: 3, difficulty: "medium", text: "Who approves the initial Delivery Plan?", options: ["Team Leader", "Project Manager", "Business Sponsor", "Technical Coordinator"], correct: 2, explanation: "The Business Sponsor approves the Delivery Plan as part of project initiation.", tip: "Sponsor approves the plan (along with Business Case).", reference: "AgilePM Handbook v3 - Section 7.4: Delivery Plan", chapterRef: "Ch3: Products, p.82" },
+    { id: 60, chapter: 3, difficulty: "easy", text: "What is recorded in the Issue Log?", options: ["Technical design decisions", "Problems needing resolution", "Team vacation schedules", "Business benefits achieved"], correct: 1, explanation: "The Issue Log records problems, obstacles, or concerns that need resolution.", tip: "Issue Log = problem tracking product.", reference: "AgilePM Handbook v3 - Section 11.3: Issue Management", chapterRef: "Ch3: Products, p.122" },
+
+    // --- CHAPTER 4: Quality & Risks (12 Questions) ---
+    { id: 61, chapter: 4, difficulty: "medium", text: "What is the primary purpose of quality management in AgilePM?", options: ["To ensure compliance with standards", "To deliver fit-for-purpose solutions", "To minimize testing effort", "To document all defects"], correct: 1, explanation: "Quality management ensures the solution is fit for purpose and meets business needs.", tip: "Quality = fitness for purpose, not just defect-free.", reference: "AgilePM Handbook v3 - Section 12.1: Quality Management", chapterRef: "Ch4: Quality, p.125" },
+    { id: 62, chapter: 4, difficulty: "easy", text: "When is testing typically performed in AgilePM?", options: ["At the end of the project", "Only by dedicated testers", "Continuously throughout", "After each major release"], correct: 2, explanation: "Testing is continuous throughout the project, integrated into daily development activities.", tip: "Test early, test often, test continuously.", reference: "AgilePM Handbook v3 - Section 12.4: Testing Approach", chapterRef: "Ch4: Quality, p.132" },
+    { id: 63, chapter: 4, difficulty: "hard", text: "What is the main risk management technique in AgilePM?", options: ["Risk avoidance", "Risk transfer", "Proactive identification and mitigation", "Insurance procurement"], correct: 2, explanation: "AgilePM emphasizes proactive risk identification, assessment, and mitigation.", tip: "Proactive risk management, not reactive.", reference: "AgilePM Handbook v3 - Section 11.1: Risk Management Principles", chapterRef: "Ch4: Risks, p.118" },
+    { id: 64, chapter: 4, difficulty: "medium", text: "Who is responsible for product quality in AgilePM?", options: ["Quality Manager", "Project Manager", "Entire team", "Technical Coordinator"], correct: 2, explanation: "Quality is everyone's responsibility - the entire team owns product quality.", tip: "Whole team quality ownership.", reference: "AgilePM Handbook v3 - Section 12.2: Quality Responsibilities", chapterRef: "Ch4: Quality, p.128" },
+    { id: 65, chapter: 4, difficulty: "easy", text: "What is a 'risk appetite' in AgilePM?", options: ["Team's willingness to take risks", "Amount of risk organization will tolerate", "Risk management budget", "Insurance coverage amount"], correct: 1, explanation: "Risk appetite defines how much risk the organization is willing to accept in pursuit of objectives.", tip: "Risk appetite = organizational risk tolerance.", reference: "AgilePM Handbook v3 - Section 11.2: Risk Assessment", chapterRef: "Ch4: Risks, p.119" },
+    { id: 66, chapter: 4, difficulty: "hard", text: "Which quality technique involves checking work as it's produced?", options: ["Final inspection", "Quality gate reviews", "Continuous integration", "User acceptance testing"], correct: 2, explanation: "Continuous integration involves frequent integration and testing of code as it's developed.", tip: "CI = Continuous Improvement of quality.", reference: "AgilePM Handbook v3 - Section 12.5: Quality Techniques", chapterRef: "Ch4: Quality, p.135" },
+    { id: 67, chapter: 4, difficulty: "medium", text: "What should happen to a risk that becomes a reality?", options: ["Close it in Risk Log", "Transfer to Issue Log", "Ignore if small impact", "Document as lesson learned"], correct: 1, explanation: "When a risk materializes, it becomes an issue and is transferred to the Issue Log for resolution.", tip: "Risk → Issue when materialized.", reference: "AgilePM Handbook v3 - Section 11.4: Risk Monitoring", chapterRef: "Ch4: Risks, p.124" },
+    { id: 68, chapter: 4, difficulty: "easy", text: "Who defines acceptance criteria for requirements?", options: ["Business Analyst", "Business Visionary", "Technical Coordinator", "Solution Developer"], correct: 1, explanation: "The Business Visionary, with input from Business Ambassadors, defines acceptance criteria.", tip: "Business defines 'done' (acceptance criteria).", reference: "AgilePM Handbook v3 - Section 12.3: Solution Validation", chapterRef: "Ch4: Quality, p.130" },
+    { id: 69, chapter: 4, difficulty: "hard", text: "What is the recommended frequency for risk reviews?", options: ["Daily", "Weekly", "Monthly", "At each Timebox"], correct: 3, explanation: "Risks should be reviewed at each Timebox planning session and as needed.", tip: "Review risks at Timebox boundaries.", reference: "AgilePM Handbook v3 - Section 11.3: Risk Review", chapterRef: "Ch4: Risks, p.122" },
+    { id: 70, chapter: 4, difficulty: "medium", text: "Which practice helps prevent defects rather than finding them?", options: ["Extensive testing", "Pair programming", "Code reviews", "Test automation"], correct: 1, explanation: "Pair programming prevents defects through real-time review and collaboration.", tip: "Prevention better than detection.", reference: "AgilePM Handbook v3 - Section 12.5: Quality Techniques", chapterRef: "Ch4: Quality, p.136" },
+    { id: 71, chapter: 4, difficulty: "easy", text: "What is recorded in the Risk Log?", options: ["Only high-priority risks", "All identified risks", "Only financial risks", "Risks that materialized"], correct: 1, explanation: "All identified risks, regardless of priority, should be recorded in the Risk Log.", tip: "Log all risks, prioritize accordingly.", reference: "AgilePM Handbook v3 - Section 11.2: Risk Log", chapterRef: "Ch4: Risks, p.120" },
+    { id: 72, chapter: 4, difficulty: "hard", text: "What is the purpose of a 'risk burn-down chart'?", options: ["Track team velocity", "Monitor risk reduction over time", "Measure defect density", "Calculate project ROI"], correct: 1, explanation: "Risk burn-down charts visualize how risks are being mitigated over time.", tip: "Risk burn-down = risk reduction progress.", reference: "AgilePM Handbook v3 - Section 11.4: Risk Monitoring", chapterRef: "Ch4: Risks, p.124" },
+
+    // --- CHAPTER 5: Governance (12 Questions) ---
+    { id: 73, chapter: 5, difficulty: "medium", text: "What is the primary purpose of governance in AgilePM?", options: ["To control the team", "To ensure project aligns with strategy", "To create bureaucracy", "To report to senior management"], correct: 1, explanation: "Governance ensures the project delivers value and aligns with organizational strategy.", tip: "Governance = strategic alignment.", reference: "AgilePM Handbook v3 - Section 9.1: Governance Principles", chapterRef: "Ch5: Governance, p.95" },
+    { id: 74, chapter: 5, difficulty: "easy", text: "Who chairs the Project Board?", options: ["Project Manager", "Business Sponsor", "Business Visionary", "Team Leader"], correct: 1, explanation: "The Business Sponsor chairs the Project Board and has ultimate decision authority.", tip: "Sponsor = Board chair.", reference: "AgilePM Handbook v3 - Section 9.2: Project Board", chapterRef: "Ch5: Governance, p.97" },
+    { id: 75, chapter: 5, difficulty: "hard", text: "What is a 'tolerances' in AgilePM governance?", options: ["Team's error rate", "Acceptable variation from plan", "Stakeholder patience level", "Budget contingency percentage"], correct: 1, explanation: "Tolerances define acceptable variations from plan before escalation is required.", tip: "Tolerances = boundaries for autonomy.", reference: "AgilePM Handbook v3 - Section 9.3: Tolerances", chapterRef: "Ch5: Governance, p.100" },
+    { id: 76, chapter: 5, difficulty: "medium", text: "When should the Project Board be escalated to?", options: ["Daily", "Weekly", "When tolerances are breached", "At each Timebox"], correct: 2, explanation: "Escalate to Project Board when tolerances (time, cost, scope, risk) are breached.", tip: "Breach tolerances → escalate.", reference: "AgilePM Handbook v3 - Section 9.4: Escalation", chapterRef: "Ch5: Governance, p.102" },
+    { id: 77, chapter: 5, difficulty: "easy", text: "What is the main decision made at project initiation?", options: ["Detailed project plan", "Team composition", "Whether to proceed with project", "Technical architecture"], correct: 2, explanation: "The key initiation decision is whether to proceed with the project based on Business Case.", tip: "Initiation = go/no-go decision.", reference: "AgilePM Handbook v3 - Section 9.5: Project Initiation", chapterRef: "Ch5: Governance, p.104" },
+    { id: 78, chapter: 5, difficulty: "hard", text: "What triggers a project closure in AgilePM?", options: ["All requirements completed", "Budget exhausted", "Business objectives met or no longer valid", "Team reaches maximum velocity"], correct: 2, explanation: "Projects close when business objectives are met or the Business Case is no longer valid.", tip: "Close when done or no longer viable.", reference: "AgilePM Handbook v3 - Section 9.6: Project Closure", chapterRef: "Ch5: Governance, p.106" },
+    { id: 79, chapter: 5, difficulty: "medium", text: "Who can authorize exceptional changes during a Timebox?", options: ["Team Leader", "Project Manager", "Business Visionary", "Project Board"], correct: 3, explanation: "Exceptional changes that breach tolerances require Project Board authorization.", tip: "Board authorizes exceptional changes.", reference: "AgilePM Handbook v3 - Section 9.4: Escalation", chapterRef: "Ch5: Governance, p.103" },
+    { id: 80, chapter: 5, difficulty: "easy", text: "What is the purpose of stage boundaries in AgilePM?", options: ["To create detailed plans", "To review progress and revalidate Business Case", "To change team members", "To update technical documentation"], correct: 1, explanation: "Stage boundaries provide checkpoints to review progress and revalidate the Business Case.", tip: "Stage boundaries = governance checkpoints.", reference: "AgilePM Handbook v3 - Section 9.3: Stage Boundaries", chapterRef: "Ch5: Governance, p.101" },
+    { id: 81, chapter: 5, difficulty: "hard", text: "How does AgilePM handle change control?", options: ["Formal change control board", "Flexible within Timeboxes", "No change allowed after planning", "Weekly change review meetings"], correct: 1, explanation: "Changes are flexible within Timeboxes but require governance approval if they breach tolerances.", tip: "Flexible within boxes, controlled at boundaries.", reference: "AgilePM Handbook v3 - Section 9.7: Change Control", chapterRef: "Ch5: Governance, p.108" },
+    { id: 82, chapter: 5, difficulty: "medium", text: "Who is responsible for day-to-day governance?", options: ["Project Board", "Project Manager", "Team Leader", "Business Sponsor"], correct: 1, explanation: "The Project Manager handles day-to-day governance within established tolerances.", tip: "PM manages within tolerances.", reference: "AgilePM Handbook v3 - Section 9.2: Project Manager Role", chapterRef: "Ch5: Governance, p.98" },
+    { id: 83, chapter: 5, difficulty: "easy", text: "What document is key to governance decisions?", options: ["Timebox Plan", "Business Case", "Solution Architecture", "Team velocity report"], correct: 1, explanation: "The Business Case is the primary reference for governance decisions.", tip: "Business Case = governance compass.", reference: "AgilePM Handbook v3 - Section 9.1: Governance Principles", chapterRef: "Ch5: Governance, p.96" },
+    { id: 84, chapter: 5, difficulty: "hard", text: "What is the 'management by exception' principle?", options: ["Manage only failures", "Focus on exceptional performers", "Intervene only when tolerances breached", "Ignore small deviations"], correct: 2, explanation: "Management by exception means management intervenes only when tolerances are breached.", tip: "Manage exceptions, not routine.", reference: "AgilePM Handbook v3 - Section 9.3: Tolerances", chapterRef: "Ch5: Governance, p.100" },
+
+    // --- CHAPTER 6: Lifecycle (12 Questions) ---
+    { id: 85, chapter: 6, difficulty: "medium", text: "What are the two main phases in AgilePM lifecycle?", options: ["Plan and Execute", "Feasibility and Foundations", "Initiation and Delivery", "Design and Build"], correct: 1, explanation: "The two main phases are Feasibility (is it possible?) and Foundations (how will we do it?).", tip: "Feasibility + Foundations = pre-delivery phases.", reference: "AgilePM Handbook v3 - Section 6.1: Lifecycle Overview", chapterRef: "Ch6: Lifecycle, p.65" },
+    { id: 86, chapter: 6, difficulty: "easy", text: "What happens in the Feasibility phase?", options: ["Detailed design", "Team formation", "Assess project viability", "First Timebox execution"], correct: 2, explanation: "Feasibility phase assesses whether the project is viable and worth pursuing.", tip: "Feasibility = can we/should we do this?", reference: "AgilePM Handbook v3 - Section 6.2: Feasibility Phase", chapterRef: "Ch6: Lifecycle, p.66" },
+    { id: 87, chapter: 6, difficulty: "hard", text: "What is the main output of the Foundations phase?", options: ["Working software", "Detailed project plan", "Agreed approach and plans", "Final business requirements"], correct: 2, explanation: "Foundations phase produces agreed approach, plans, and foundations for delivery.", tip: "Foundations = project setup phase.", reference: "AgilePM Handbook v3 - Section 6.3: Foundations Phase", chapterRef: "Ch6: Lifecycle, p.68" },
+    { id: 88, chapter: 6, difficulty: "medium", text: "How are the delivery phases structured in AgilePM?", options: ["Sequential waterfall phases", "Iterative Timeboxes", "Parallel work streams", "Ad-hoc as needed"], correct: 1, explanation: "Delivery occurs through iterative Timeboxes that build the solution incrementally.", tip: "Delivery = series of Timeboxes.", reference: "AgilePM Handbook v3 - Section 6.4: Delivery Phase", chapterRef: "Ch6: Lifecycle, p.70" },
+    { id: 89, chapter: 6, difficulty: "easy", text: "What phase follows Foundations?", options: ["Feasibility", "Delivery", "Closure", "Evaluation"], correct: 1, explanation: "After Foundations is established, the project moves into Delivery phase.", tip: "Foundations → Delivery.", reference: "AgilePM Handbook v3 - Section 6.1: Lifecycle Overview", chapterRef: "Ch6: Lifecycle, p.65" },
+    { id: 90, chapter: 6, difficulty: "hard", text: "When can the project return to Feasibility phase?", options: ["Never", "At any major issue", "Only at project start", "When Business Case invalidated"], correct: 3, explanation: "Return to Feasibility if Business Case becomes invalid or major assumptions change.", tip: "Re-feasibility if fundamentals change.", reference: "AgilePM Handbook v3 - Section 6.5: Lifecycle Flexibility", chapterRef: "Ch6: Lifecycle, p.73" },
+    { id: 91, chapter: 6, difficulty: "medium", text: "What is the purpose of the Exploration step in Timebox?", options: ["Discover new requirements", "Understand and analyze work", "Explore technical options", "Research market trends"], correct: 1, explanation: "Exploration involves understanding and analyzing the work to be done in the Timebox.", tip: "Explore = understand what to build.", reference: "AgilePM Handbook v3 - Section 8.3: Timebox Execution", chapterRef: "Ch6: Lifecycle, p.87" },
+    { id: 92, chapter: 6, difficulty: "easy", text: "What happens in the Engineering step of Timebox?", options: ["Design system architecture", "Build and test solution", "Plan next Timebox", "Document requirements"], correct: 1, explanation: "Engineering involves building, integrating, and testing the solution increment.", tip: "Engineering = build it.", reference: "AgilePM Handbook v3 - Section 8.3: Timebox Execution", chapterRef: "Ch6: Lifecycle, p.88" },
+    { id: 93, chapter: 6, difficulty: "hard", text: "What is the 'Adapt' phase in the AgilePM lifecycle?", options: ["Adjust team composition", "Learn and improve processes", "Change project scope", "Update Business Case"], correct: 1, explanation: "Adapt involves learning from experience and improving processes for future Timeboxes.", tip: "Adapt = continuous improvement.", reference: "AgilePM Handbook v3 - Section 6.6: Adapt Phase", chapterRef: "Ch6: Lifecycle, p.74" },
+    { id: 94, chapter: 6, difficulty: "medium", text: "When does the Deployment phase occur?", options: ["After each Timebox", "At project end", "When Business decides", "Continuously throughout"], correct: 2, explanation: "Deployment occurs when the Business decides to release the solution to users.", tip: "Deploy when business ready, not necessarily when technical ready.", reference: "AgilePM Handbook v3 - Section 6.7: Deployment", chapterRef: "Ch6: Lifecycle, p.76" },
+    { id: 95, chapter: 6, difficulty: "easy", text: "What is the final phase in AgilePM lifecycle?", options: ["Delivery", "Deployment", "Post-Project", "Evaluation"], correct: 2, explanation: "Post-Project phase involves evaluating benefits and learning lessons.", tip: "Post-Project = benefits realization and learning.", reference: "AgilePM Handbook v3 - Section 6.8: Post-Project", chapterRef: "Ch6: Lifecycle, p.78" },
+    { id: 96, chapter: 6, difficulty: "hard", text: "Can phases overlap in AgilePM?", options: ["No, strictly sequential", "Yes, to accelerate delivery", "Only Feasibility and Foundations", "Only in emergency situations"], correct: 1, explanation: "Phases can overlap to accelerate delivery while maintaining governance.", tip: "Overlap possible but managed carefully.", reference: "AgilePM Handbook v3 - Section 6.5: Lifecycle Flexibility", chapterRef: "Ch6: Lifecycle, p.73" },
+
+    // --- CHAPTER 7: Leadership & Culture (12 Questions) ---
+    { id: 97, chapter: 7, difficulty: "medium", text: "What is the primary leadership style in AgilePM?", options: ["Command and control", "Servant leadership", "Laissez-faire", "Democratic"], correct: 1, explanation: "AgilePM emphasizes servant leadership - leaders enable teams to succeed.", tip: "Servant leadership = serve the team.", reference: "AgilePM Handbook v3 - Section 13.1: Leadership Principles", chapterRef: "Ch7: Leadership, p.140" },
+    { id: 98, chapter: 7, difficulty: "easy", text: "What cultural value is most important in AgilePM?", options: ["Following processes", "Documentation completeness", "Collaboration and trust", "Individual excellence"], correct: 2, explanation: "Collaboration and trust are fundamental cultural values in AgilePM.", tip: "Culture of collaboration, not competition.", reference: "AgilePM Handbook v3 - Section 13.2: Cultural Values", chapterRef: "Ch7: Culture, p.143" },
+    { id: 99, chapter: 7, difficulty: "hard", text: "How should conflicts be resolved in Agile teams?", options: ["By Project Manager", "Through escalation to management", "Collaboratively by team", "By majority vote"], correct: 2, explanation: "Teams should resolve conflicts collaboratively, with facilitation if needed.", tip: "Team resolves own conflicts where possible.", reference: "AgilePM Handbook v3 - Section 13.3: Conflict Resolution", chapterRef: "Ch7: Leadership, p.146" },
+    { id: 100, chapter: 7, difficulty: "medium", text: "What is 'psychological safety' in Agile teams?", options: ["Physical workplace safety", "Freedom to take risks without fear", "Job security guarantees", "Emotional support systems"], correct: 1, explanation: "Psychological safety means team members feel safe to take risks and speak up.", tip: "Safe to fail = safe to innovate.", reference: "AgilePM Handbook v3 - Section 13.4: Team Environment", chapterRef: "Ch7: Culture, p.148" },
+    { id: 101, chapter: 7, difficulty: "easy", text: "Who is responsible for team motivation?", options: ["Project Manager", "Team Leader", "Business Sponsor", "Entire leadership team"], correct: 3, explanation: "All leaders share responsibility for creating motivating environment.", tip: "Leadership team motivates, not just one person.", reference: "AgilePM Handbook v3 - Section 13.5: Motivation", chapterRef: "Ch7: Leadership, p.150" },
+    { id: 102, chapter: 7, difficulty: "hard", text: "What is the 'buy-in' concept in AgilePM?", options: ["Financial investment", "Stakeholder agreement and commitment", "Team member hiring", "Vendor contract signing"], correct: 1, explanation: "Buy-in means stakeholders agree with and commit to project approach and decisions.", tip: "Buy-in = commitment, not just agreement.", reference: "AgilePM Handbook v3 - Section 13.6: Stakeholder Engagement", chapterRef: "Ch7: Leadership, p.152" },
+    { id: 103, chapter: 7, difficulty: "medium", text: "How should feedback be delivered in Agile teams?", options: ["Formally in writing", "Only positive feedback", "Constructively and regularly", "Only at performance reviews"], correct: 2, explanation: "Feedback should be constructive, regular, and focused on improvement.", tip: "Feedback = feedforward for improvement.", reference: "AgilePM Handbook v3 - Section 13.7: Feedback Culture", chapterRef: "Ch7: Culture, p.154" },
+    { id: 104, chapter: 7, difficulty: "easy", text: "What is 'empowerment' in AgilePM?", options: ["Giving teams unlimited authority", "Providing resources teams need", "Letting teams make decisions within boundaries", "Removing all management oversight"], correct: 2, explanation: "Empowerment means teams can make decisions within agreed boundaries and tolerances.", tip: "Empowerment = autonomy within boundaries.", reference: "AgilePM Handbook v3 - Section 13.8: Empowerment", chapterRef: "Ch7: Leadership, p.156" },
+    { id: 105, chapter: 7, difficulty: "hard", text: "What is the role of transparency in Agile culture?", options: ["To monitor team performance", "To build trust through openness", "To satisfy audit requirements", "To document all decisions"], correct: 1, explanation: "Transparency builds trust by making information visible and accessible.", tip: "Transparency = trust builder.", reference: "AgilePM Handbook v3 - Section 13.9: Transparency", chapterRef: "Ch7: Culture, p.158" },
+    { id: 106, chapter: 7, difficulty: "medium", text: "How should leaders respond to failures?", options: ["Assign blame", "Ignore and move on", "Learn and improve", "Punish to prevent recurrence"], correct: 2, explanation: "Leaders should focus on learning from failures rather than blaming individuals.", tip: "Failures = learning opportunities.", reference: "AgilePM Handbook v3 - Section 13.10: Learning Culture", chapterRef: "Ch7: Culture, p.160" },
+    { id: 107, chapter: 7, difficulty: "easy", text: "What is 'continuous improvement' culture?", options: ["Always seeking perfection", "Regularly reflecting and improving", "Never changing processes", "Focusing only on major improvements"], correct: 1, explanation: "Continuous improvement means regularly reflecting on what works and making small improvements.", tip: "Kaizen = continuous small improvements.", reference: "AgilePM Handbook v3 - Section 13.11: Continuous Improvement", chapterRef: "Ch7: Culture, p.162" },
+    { id: 108, chapter: 7, difficulty: "hard", text: "What leadership behavior most supports Agile adoption?", options: ["Micromanagement", "Modeling Agile values", "Detailed reporting", "Strict process adherence"], correct: 1, explanation: "Leaders must model Agile values and behaviors for teams to adopt them.", tip: "Walk the talk = model Agile behavior.", reference: "AgilePM Handbook v3 - Section 13.12: Leading Change", chapterRef: "Ch7: Leadership, p.164" },
+
+    // --- CHAPTER 8: Estimation & Planning (12 Questions) ---
+    { id: 109, chapter: 8, difficulty: "medium", text: "What is the preferred estimation technique in AgilePM?", options: ["Detailed bottom-up", "Expert judgment", "Relative sizing", "Parametric modeling"], correct: 2, explanation: "Relative sizing (e.g., story points) is preferred as it's faster and more accurate for Agile projects.", tip: "Relative sizing = compare to reference items.", reference: "AgilePM Handbook v3 - Section 14.1: Estimation Principles", chapterRef: "Ch8: Estimation, p.168" },
+    { id: 110, chapter: 8, difficulty: "easy", text: "What is 'velocity' in Agile planning?", options: ["Team speed of work", "Amount of work completed per Timebox", "Individual productivity rate", "Project timeline compression"], correct: 1, explanation: "Velocity measures how much work a team completes in a Timebox, used for forecasting.", tip: "Velocity = team's throughput.", reference: "AgilePM Handbook v3 - Section 14.2: Velocity", chapterRef: "Ch8: Planning, p.170" },
+    { id: 111, chapter: 8, difficulty: "hard", text: "What is the 'planning onion' concept?", options: ["Layered planning approach", "Onion-shaped organization chart", "Risk layering technique", "Quality testing layers"], correct: 0, explanation: "Planning onion shows different planning levels from strategy to daily tasks.", tip: "Onion layers = different planning horizons.", reference: "AgilePM Handbook v3 - Section 14.3: Planning Levels", chapterRef: "Ch8: Planning, p.172" },
+    { id: 112, chapter: 8, difficulty: "medium", text: "How is contingency typically handled in Agile estimation?", options: ["Added to each estimate", "Separate contingency buffer", "Included in velocity", "Not needed due to iterative nature"], correct: 2, explanation: "Contingency is built into velocity through historical performance data.", tip: "Velocity includes natural variation.", reference: "AgilePM Handbook v3 - Section 14.4: Contingency", chapterRef: "Ch8: Estimation, p.174" },
+    { id: 113, chapter: 8, difficulty: "easy", text: "What is a 'planning poker'?", options: ["Game for team building", "Estimation technique using cards", "Risk assessment game", "Priority setting exercise"], correct: 1, explanation: "Planning poker uses cards with numbers for team-based relative estimation.", tip: "Planning poker = collaborative estimation game.", reference: "AgilePM Handbook v3 - Section 14.5: Estimation Techniques", chapterRef: "Ch8: Estimation, p.176" },
+    { id: 114, chapter: 8, difficulty: "hard", text: "What is the purpose of a 'burn-down chart'?", options: ["Track team morale", "Visualize work remaining", "Measure budget expenditure", "Monitor risk levels"], correct: 1, explanation: "Burn-down charts show work remaining over time, helping track progress.", tip: "Burn-down = visualize completion progress.", reference: "AgilePM Handbook v3 - Section 14.6: Progress Tracking", chapterRef: "Ch8: Planning, p.178" },
+    { id: 115, chapter: 8, difficulty: "medium", text: "How should estimates be expressed in AgilePM?", options: ["Hours or days", "Story points or ideal days", "Months and years", "Percentage complete"], correct: 1, explanation: "Estimates use abstract units like story points to avoid false precision.", tip: "Story points = abstract effort units.", reference: "AgilePM Handbook v3 - Section 14.1: Estimation Principles", chapterRef: "Ch8: Estimation, p.169" },
+    { id: 116, chapter: 8, difficulty: "easy", text: "What is 'yesterday's weather' in planning?", options: ["Using historical velocity", "Weather-dependent planning", "Pessimistic forecasting", "Team mood assessment"], correct: 0, explanation: "Using recent velocity (yesterday's weather) to forecast future performance.", tip: "Yesterday's weather = recent performance pattern.", reference: "AgilePM Handbook v3 - Section 14.2: Velocity", chapterRef: "Ch8: Planning, p.171" },
+    { id: 117, chapter: 8, difficulty: "hard", text: "What is the 'cone of uncertainty' in estimation?", options: ["Risk visualization", "Estimation accuracy over time", "Team communication pattern", "Budget variance range"], correct: 1, explanation: "Cone of uncertainty shows how estimation accuracy improves as project progresses.", tip: "Cone narrows as uncertainty reduces.", reference: "AgilePM Handbook v3 - Section 14.7: Estimation Accuracy", chapterRef: "Ch8: Estimation, p.180" },
+    { id: 118, chapter: 8, difficulty: "medium", text: "How often should planning occur in AgilePM?", options: ["Once at project start", "Monthly", "At each Timebox", "When requested by management"], correct: 2, explanation: "Planning happens at each Timebox boundary, with high-level planning at project start.", tip: "Just-in-time planning at Timebox boundaries.", reference: "AgilePM Handbook v3 - Section 14.8: Planning Frequency", chapterRef: "Ch8: Planning, p.182" },
+    { id: 119, chapter: 8, difficulty: "easy", text: "Who participates in estimation?", options: ["Project Manager only", "Technical team only", "Whole delivery team", "Business stakeholders only"], correct: 2, explanation: "The whole delivery team participates in estimation for accuracy and commitment.", tip: "Whole team estimates = better accuracy.", reference: "AgilePM Handbook v3 - Section 14.5: Estimation Techniques", chapterRef: "Ch8: Estimation, p.177" },
+    { id: 120, chapter: 8, difficulty: "hard", text: "What is 'confidence level' in Agile forecasting?", options: ["Team's self-confidence", "Statistical probability of meeting forecast", "Stakeholder trust level", "Management approval rating"], correct: 1, explanation: "Confidence level expresses statistical probability that forecast will be met.", tip: "80% confidence = 80% chance of meeting forecast.", reference: "AgilePM Handbook v3 - Section 14.9: Forecasting", chapterRef: "Ch8: Planning, p.184" }
+];
+
+        // State variables
+        let selectedQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let markedForReview = new Set();
+        let examStarted = false;
+        let startTime;
+        let timerInterval;
+        let questionCount = 10;
+        let timerEnabled = true;
+        let examDuration = 0;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeChapterSelector();
+            updateChapterDistribution();
+            updateTimerInfo();
+        });
+
+        function initializeChapterSelector() {
+            const container = document.getElementById('chapter-selector');
+            chapters.forEach(chapter => {
+                const col = document.createElement('div');
+                col.className = 'col-md-3 mb-3';
+                col.innerHTML = `
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="chapter-${chapter.id}" ${chapter.selected ? 'checked' : ''} 
+                            onchange="toggleChapterSelection(${chapter.id})">
+                        <label class="form-check-label" for="chapter-${chapter.id}">
+                            ${chapter.name} (${questionBank.filter(q => q.chapter === chapter.id).length})
+                        </label>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+
+        function toggleChapterSelection(chapterId) {
+            const chapter = chapters.find(c => c.id === chapterId);
+            if (chapter) {
+                chapter.selected = !chapter.selected;
+            }
+            updateChapterDistribution();
+        }
+
+        function updateTimerInfo() {
+            const timeInfo = document.getElementById('time-info');
+            const baseTime = 40; // 40 minutes for 50 questions
+            const timePerQuestion = baseTime / 50; // 0.8 minutes per question
+            const estimatedTime = Math.round(timePerQuestion * questionCount);
+            
+            timeInfo.textContent = `${estimatedTime} minutes for ${questionCount} questions (${Math.round(timePerQuestion * 60)} seconds per question)`;
+            
+            // Calculate exam duration in seconds
+            examDuration = estimatedTime * 60;
+            
+            // Update timer display
+            updateTimerDisplay(examDuration);
+        }
+
+        function setQuestionCount(count) {
+            questionCount = count;
+            document.querySelectorAll('#config-section .col-md-6:first-child .btn-group button').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.startsWith(count.toString())) {
+                    btn.classList.add('active');
+                }
+            });
+            updateChapterDistribution();
+            updateTimerInfo();
+        }
+
+        function toggleTimer() {
+            timerEnabled = document.getElementById('enable-timer').checked;
+            const timerElement = document.getElementById('exam-timer');
+            if (!timerEnabled) {
+                timerElement.textContent = '∞';
+            } else {
+                updateTimerDisplay(examDuration);
+            }
+        }
+
+        function updateChapterDistribution() {
+            const tbody = document.getElementById('chapter-distribution');
+            tbody.innerHTML = '';
+            
+            const selectedChapters = chapters.filter(c => c.selected);
+            const totalWeight = selectedChapters.reduce((sum, c) => sum + c.weight, 0);
+
+            let estimatedCounts = {};
+            let totalEstimated = 0;
+
+            selectedChapters.forEach(chapter => {
+                const totalInChapter = questionBank.filter(q => q.chapter === chapter.id).length;
+                let estimatedCount = totalWeight > 0 
+                    ? Math.floor((chapter.weight / totalWeight) * questionCount) 
+                    : 0;
+                
+                estimatedCount = Math.min(estimatedCount, totalInChapter);
+                estimatedCounts[chapter.id] = estimatedCount;
+                totalEstimated += estimatedCount;
+            });
+            
+            let remaining = questionCount - totalEstimated;
+            let chapterIndex = 0;
+            const chaptersForAdjustment = [...selectedChapters].sort((a, b) => b.weight - a.weight);
+
+            while (remaining > 0 && chapterIndex < selectedChapters.length * 2) {
+                const chapter = chaptersForAdjustment[chapterIndex % chaptersForAdjustment.length];
+                const totalInChapter = questionBank.filter(q => q.chapter === chapter.id).length;
+                
+                if (estimatedCounts[chapter.id] < totalInChapter) {
+                    estimatedCounts[chapter.id]++;
+                    remaining--;
+                    totalEstimated++;
+                }
+                chapterIndex++;
+            }
+
+            chapters.forEach(chapter => {
+                const totalInChapter = questionBank.filter(q => q.chapter === chapter.id).length;
+                const calculatedCount = chapter.selected ? (estimatedCounts[chapter.id] || 0) : 0;
+                
+                let row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${chapter.name}</td>
+                    <td>${totalInChapter}</td>
+                    <td>${chapter.weight}%</td>
+                    <td>${calculatedCount}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function startExam() {
+            const selectedChapters = chapters.filter(c => c.selected);
+            if (selectedChapters.length === 0) {
+                alert('Please select at least one chapter');
+                return;
+            }
+
+            generateQuestions();
+            
+            document.getElementById('config-section').style.display = 'none';
+            document.getElementById('exam-section').style.display = 'block';
+            
+            examStarted = true;
+            startTime = new Date();
+            
+            if (timerEnabled && examDuration > 0) {
+                startTimer();
+            } else {
+                document.getElementById('exam-timer').textContent = '∞';
+            }
+            
+            updateProgress();
+            updateQuestionDisplay();
+            generateQuestionGrid();
+        }
+
+        function generateQuestions() {
+            const selectedChapters = chapters.filter(c => c.selected);
+            const totalWeight = selectedChapters.reduce((sum, c) => sum + c.weight, 0);
+            let questionsByChapter = {};
+            
+            selectedChapters.forEach(chapter => {
+                const availableQuestions = questionBank.filter(q => q.chapter === chapter.id);
+                let count = totalWeight > 0 ? Math.floor((chapter.weight / totalWeight) * questionCount) : 0;
+                count = Math.min(count, availableQuestions.length);
+                questionsByChapter[chapter.id] = count;
+            });
+
+            let currentTotal = Object.values(questionsByChapter).reduce((sum, count) => sum + count, 0);
+            let remaining = questionCount - currentTotal;
+            let chapterIndex = 0;
+            const chaptersForAdjustment = [...selectedChapters].sort((a, b) => b.weight - a.weight);
+
+            while (remaining > 0 && chapterIndex < selectedChapters.length * 2) { 
+                const chapter = chaptersForAdjustment[chapterIndex % chaptersForAdjustment.length];
+                const totalInChapter = questionBank.filter(q => q.chapter === chapter.id).length;
+                
+                if (questionsByChapter[chapter.id] < totalInChapter) {
+                    questionsByChapter[chapter.id]++;
+                    remaining--;
+                }
+                chapterIndex++;
+            }
+            
+            selectedQuestions = [];
+            selectedChapters.forEach(chapter => {
+                const available = questionBank.filter(q => q.chapter === chapter.id);
+                const count = questionsByChapter[chapter.id];
+                
+                const shuffled = available.sort(() => 0.5 - Math.random());
+                selectedQuestions.push(...shuffled.slice(0, count));
+            });
+            
+            selectedQuestions = selectedQuestions.slice(0, questionCount);
+            selectedQuestions = selectedQuestions.sort(() => 0.5 - Math.random());
+
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            markedForReview = new Set();
+        }
+
+        function updateQuestionDisplay() {
+            if (!examStarted || selectedQuestions.length === 0) return;
+            const question = selectedQuestions[currentQuestionIndex];
+            const userAnswerIndex = userAnswers[question.id];
+            const isAnswered = userAnswerIndex !== undefined;
+
+            document.getElementById('current-question').textContent = currentQuestionIndex + 1;
+            document.getElementById('current-question-num').textContent = currentQuestionIndex + 1;
+            document.getElementById('total-questions').textContent = selectedQuestions.length;
+            document.getElementById('question-text').textContent = question.text;
+            
+            const chapter = chapters.find(c => c.id === question.chapter);
+            document.getElementById('question-chapter').textContent = chapter.name;
+
+            const difficultyBadge = document.getElementById('question-difficulty');
+            difficultyBadge.className = `difficulty-badge difficulty-${question.difficulty}`;
+            difficultyBadge.textContent = question.difficulty === 'easy' ? 'Easy' : question.difficulty === 'medium' ? 'Medium' : 'Hard';
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'answer-option';
+                
+                if (userAnswerIndex === index) {
+                    optionDiv.classList.add('selected');
+                }
+
+                if (isAnswered) {
+                    if (index === question.correct) {
+                        optionDiv.classList.add('correct');
+                    } else if (index === userAnswerIndex) {
+                        optionDiv.classList.add('incorrect');
+                    }
+                }
+                
+                const isDisabled = isAnswered;
+                
+                optionDiv.innerHTML = `
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="question-${question.id}" id="option-${index}" 
+                            ${userAnswerIndex === index ? 'checked' : ''} 
+                            onclick="selectAnswer(${question.id}, ${index})"
+                            ${isDisabled ? 'disabled' : ''}>
+                        <label class="form-check-label" for="option-${index}">
+                            ${option}
+                        </label>
+                    </div>
+                `;
+                container.appendChild(optionDiv);
+            });
+
+            const learningPanel = document.getElementById('learning-panel');
+            if (isAnswered) {
+                learningPanel.style.display = 'block';
+                
+                const isCorrect = userAnswerIndex === question.correct;
+                const feedbackText = isCorrect ? 
+                    `🎉 <strong>Correct!</strong> You chose the right answer.` : 
+                    `❌ <strong>Incorrect.</strong> You selected "${question.options[userAnswerIndex]}", but the correct answer is "${question.options[question.correct]}".`;
+                
+                document.getElementById('feedback-text').innerHTML = feedbackText;
+                document.getElementById('explanation-text').textContent = question.explanation;
+                document.getElementById('tip-text').textContent = question.tip;
+                document.getElementById('reference-text').textContent = question.reference;
+                document.getElementById('chapter-reference').textContent = question.chapterRef;
+            } else {
+                learningPanel.style.display = 'none';
+            }
+
+            document.getElementById('prev-btn').disabled = currentQuestionIndex === 0;
+            document.getElementById('next-btn').disabled = currentQuestionIndex === selectedQuestions.length - 1;
+            
+            const reviewBtn = document.getElementById('review-btn');
+            if (markedForReview.has(question.id)) {
+                reviewBtn.innerHTML = '<i class="fas fa-flag me-2"></i>Marked';
+                reviewBtn.classList.add('btn-warning');
+                reviewBtn.classList.remove('btn-outline-exam');
+            } else {
+                reviewBtn.innerHTML = '<i class="far fa-flag me-2"></i>Mark';
+                reviewBtn.classList.remove('btn-warning');
+                reviewBtn.classList.add('btn-outline-exam');
+            }
+        }
+
+        function selectAnswer(questionId, optionIndex) {
+            const question = selectedQuestions.find(q => q.id === questionId);
+            
+            userAnswers[questionId] = optionIndex;
+            
+            // Immediate feedback
+            updateProgress();
+            updateQuestionDisplay();
+            
+            // Auto-advance after 2 seconds (optional)
+            setTimeout(() => {
+                if (currentQuestionIndex < selectedQuestions.length - 1) {
+                    nextQuestion();
+                }
+            }, 2000);
+        }
+
+        function updateProgress() {
+            const totalQuestions = selectedQuestions.length;
+            let answeredCount = 0;
+            let correctCount = 0;
+
+            selectedQuestions.forEach(question => {
+                if (userAnswers[question.id] !== undefined) {
+                    answeredCount++;
+                    if (userAnswers[question.id] === question.correct) {
+                        correctCount++;
+                    }
+                }
+            });
+
+            const answeredPercent = totalQuestions > 0 ? Math.round((answeredCount / totalQuestions) * 100) : 0;
+            const scorePercent = totalQuestions > 0 ? Math.round((correctCount / totalQuestions) * 100) : 0;
+
+            document.getElementById('answered-count').textContent = answeredCount;
+            document.getElementById('correct-count').textContent = correctCount;
+            document.getElementById('review-count').textContent = markedForReview.size;
+
+            document.getElementById('progress-percent').innerHTML = `
+                <span class="text-secondary">${answeredPercent}%</span>
+                ${answeredCount > 0 ? `<small class="text-success ms-2">(${correctCount}/${answeredCount})</small>` : ''}
+            `;
+            
+            document.getElementById('progress-bar').style.width = `${answeredPercent}%`;
+            
+            // Update score circle
+            const circle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 54;
+            const offset = circumference - (scorePercent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+            document.getElementById('current-score').textContent = `${scorePercent}%`;
+
+            generateQuestionGrid();
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            let timeLeft = examDuration;
+            updateTimerDisplay(timeLeft);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay(timeLeft);
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            const timerElement = document.getElementById('exam-timer');
+            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            
+            // Add warning class when less than 10 minutes remain
+            if (seconds < 600) {
+                timerElement.classList.add('timer-warning');
+            } else {
+                timerElement.classList.remove('timer-warning');
+            }
+        }
+
+        function markForReview() {
+            const question = selectedQuestions[currentQuestionIndex];
+            if (markedForReview.has(question.id)) {
+                markedForReview.delete(question.id);
+            } else {
+                markedForReview.add(question.id);
+            }
+            updateProgress();
+            updateQuestionDisplay();
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestionDisplay();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < selectedQuestions.length - 1) {
+                currentQuestionIndex++;
+                updateQuestionDisplay();
+            }
+        }
+
+        function jumpToQuestion(index) {
+            currentQuestionIndex = index;
+            updateQuestionDisplay();
+        }
+
+        function generateQuestionGrid() {
+            const container = document.getElementById('question-grid');
+            container.innerHTML = '';
+            selectedQuestions.forEach((question, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-sm m-1';
+                btn.style.width = '40px';
+                btn.style.height = '40px';
+                
+                let btnClass = 'btn-outline-secondary';
+                if (userAnswers[question.id] !== undefined) {
+                    const isCorrect = userAnswers[question.id] === question.correct;
+                    btnClass = isCorrect ? 'btn-success' : 'btn-danger';
+                }
+
+                if (index === currentQuestionIndex) {
+                    btnClass = 'btn-exam'; 
+                }
+                
+                if (markedForReview.has(question.id)) {
+                    btnClass = 'btn-warning'; 
+                }
+
+                if (index === currentQuestionIndex && markedForReview.has(question.id)) {
+                    btnClass = 'btn-warning'; 
+                } else if (index === currentQuestionIndex) {
+                     btnClass = 'btn-exam';
+                }
+
+                btn.className = `btn btn-sm m-1 ${btnClass}`;
+                btn.textContent = index + 1;
+                btn.onclick = () => jumpToQuestion(index);
+                container.appendChild(btn);
+            });
+        }
+
+        function submitExam() {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            const endTime = new Date();
+            const timeDiff = Math.floor((endTime - startTime) / 1000);
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+
+            document.getElementById('time-taken').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            let totalCorrect = 0;
+            let chapterPerformance = {};
+            
+            chapters.forEach(chapter => {
+                chapterPerformance[chapter.id] = { total: 0, correct: 0 };
+            });
+
+            selectedQuestions.forEach(question => {
+                chapterPerformance[question.chapter].total++;
+                if (userAnswers[question.id] !== undefined) {
+                    if (userAnswers[question.id] === question.correct) {
+                        totalCorrect++;
+                        chapterPerformance[question.chapter].correct++;
+                    }
+                }
+            });
+
+            const finalScore = selectedQuestions.length > 0 ? Math.round((totalCorrect / selectedQuestions.length) * 100) : 0;
+
+            document.getElementById('final-score').textContent = `${finalScore}%`;
+            document.getElementById('total-correct').textContent = `${totalCorrect} / ${selectedQuestions.length}`;
+            
+            document.getElementById('exam-section').style.display = 'none';
+            document.getElementById('results-section').style.display = 'block';
+
+            const container = document.getElementById('chapter-performance');
+            container.innerHTML = '';
+            chapters.forEach(chapter => {
+                if (chapterPerformance[chapter.id].total > 0) {
+                    const perf = chapterPerformance[chapter.id];
+                    const percentage = Math.round((perf.correct / perf.total) * 100);
+                    const progressClass = percentage >= 70 ? 'bg-success' : percentage >= 50 ? 'bg-warning' : 'bg-danger';
+                    
+                    const div = document.createElement('div');
+                    div.className = 'chapter-progress';
+                    div.innerHTML = `
+                        <div class="d-flex justify-content-between">
+                            <span class="chapter-name">${chapter.name}</span>
+                            <span>${perf.correct}/${perf.total} (${percentage}%)</span>
+                        </div>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar ${progressClass}" style="width: ${percentage}%"></div>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                }
+            });
+
+            generateRecommendations(chapterPerformance);
+            generateQuestionReviewList();
+        }
+
+        function generateRecommendations(chapterPerformance) {
+            const strengths = [];
+            const improvements = [];
+
+            chapters.forEach(chapter => {
+                const perf = chapterPerformance[chapter.id];
+                if (perf && perf.total > 0) {
+                    const percentage = Math.round((perf.correct / perf.total) * 100);
+                    if (percentage >= 75) {
+                        strengths.push(chapter.name);
+                    } else if (percentage < 60) {
+                        improvements.push(chapter.name);
+                    }
+                }
+            });
+
+            document.getElementById('strengths-text').textContent = strengths.length > 0
+                ? `Strong in: ${strengths.join(', ')}.`
+                : 'Excellent work across all sections!';
+
+            document.getElementById('improvements-text').textContent = improvements.length > 0
+                ? `Focus on: ${improvements.join(', ')}. Review these chapters and try another practice session.`
+                : 'Continue reviewing to transform average sections into strengths.';
+        }
+
+        function generateQuestionReviewList() {
+            const container = document.getElementById('question-review-list');
+            container.innerHTML = '';
+
+            selectedQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[question.id];
+                const isCorrect = userAnswer === question.correct;
+                const status = userAnswer !== undefined ? (isCorrect ? 'Correct' : 'Incorrect') : 'Unanswered';
+                const statusClass = userAnswer !== undefined ? (isCorrect ? 'question-correct' : 'question-incorrect') : 'question-unanswered';
+                
+                const item = document.createElement('div');
+                item.className = `question-item ${statusClass}`;
+                item.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>#${index + 1}</strong>
+                            <span class="badge ${isCorrect ? 'bg-success' : 'bg-danger'}">${status}</span>
+                        </div>
+                        <button class="btn btn-sm btn-outline-primary" onclick="reviewQuestion(${index})">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="mb-1 mt-2">${question.text}</p>
+                    <small class="text-muted">Your answer: ${userAnswers[question.id] !== undefined ? 
+                        question.options[userAnswers[question.id]] : 'None'}</small>
+                `;
+                
+                container.appendChild(item);
+            });
+        }
+
+        function reviewQuestion(index) {
+            currentQuestionIndex = index;
+            document.getElementById('results-section').style.display = 'none';
+            document.getElementById('exam-section').style.display = 'block';
+            updateQuestionDisplay();
+        }
+
+        function restartExam() {
+            examStarted = false;
+            document.getElementById('results-section').style.display = 'none';
+            document.getElementById('config-section').style.display = 'block';
+            selectedQuestions = [];
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            markedForReview = new Set();
+        }
+
+        function backToConfig() {
+            restartExam();
+        }
+    </script>
+</body>
+</html>
